@@ -203,7 +203,7 @@ def column(x, thermal):
         icon=i_chip, sfs=13.8)
     arrow(x, Y["lin"] + BH / 2, x, Y["mask"] - BH / 2)
     if thermal:
-        box(x, Y["mask"], "lin", "One mask, 16 passes", r"transmission $(1 + g\,\psi/16)/M$", icon=i_passes, sfs=13.6, sdx=0.3)
+        box(x, Y["mask"], "lin", "One mask, 16 passes", r"transmission $|1 + g\,\psi/16|/M$", icon=i_passes, sfs=13.6, sdx=0.3)
         box(x, Y["out"], "out", "Camera", r"$|1 + g\,\psi/16|^{32}$, 8,192 pixels", meas=True,
             icon=i_cam, sfs=14.2)
     else:
