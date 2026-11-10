@@ -86,7 +86,11 @@ exactly to an opto-electronic system (interferometer meshes, balanced detectors,
 > $|1+g\psi/n|^{2n}$, which approach $e^{2g\mathrm{Re}\psi}$ through the limit $(1+z/n)^n\to e^z$, with $2g$
 > playing the role of inverse temperature. At every finite $n$, the readout remains a Born probability, while its word
 > evidence—with the normalisers held at their input values—admits exact finite quadrature. We complete this work in
-> the rule’s hundredth year, in gratitude to Born, Boltzmann and Gibbs.
+> the rule’s hundredth year, in gratitude to Born, Boltzmann, Gibbs
+> and the many others whose work this one rests on.
+>
+> If this work stands, it stands on their shoulders. What we add is small: another way to use Born’s rule, to write
+> a word and show how each earlier word contributed to it.
 >
 > *The authors, 10 November 2026*
 
