@@ -137,7 +137,7 @@ def _thermal_lse(ar, ai, br, bi, g, n: int):
 class CausalBorn(nn.Module):
     family = "B"
 
-    def __init__(self, vocab, max_len, d=32, heads=2, d_ff=170, blocks=2, per_token=4, ref=True, gain0=None, power=4, norm=False, tie=False, wide=0, pair=None, pair_rank=4, pair_mix=1, mlp_mix=1, thermal=0, softlimit=0):
+    def __init__(self, vocab, max_len, d=32, heads=2, d_ff=170, blocks=2, per_token=4, ref=True, gain0=None, power=4, norm=False, tie=False, wide=0, pair=None, pair_rank=4, pair_mix=1, mlp_mix=1, thermal=0, softlimit=0, linhead=0):
         super().__init__()
         assert d % heads == 0
         self.norm = norm                      # pre-norm, held: each block reads h / rms(h), the rms a held constant
@@ -202,6 +202,12 @@ class CausalBorn(nn.Module):
             assert not softlimit or thermal, "softlimit needs t<n> (any n) for the thermal code paths"
             if thermal:
                 self.log_gain = nn.Parameter(torch.tensor(math.log(math.sqrt(vocab))))
+        # linhead (the paper's control, Table 1): the same Born body, its last block's measured numbers u read by an
+        # ordinary linear softmax head over the words. Not a Born readout, no exact evidence; pair_a / pair_b unused.
+        self.linhead = bool(linhead)
+        if linhead:
+            assert wide, "linhead reads the wide last block's u"
+            self.lin = nn.Linear(wide, vocab)
         self.per_token = per_token                                           # S_v = outcomes v*k .. v*k + k - 1
         self.register_buffer("share", torch.full((vocab,), 1 / vocab))       # b_v = 1 / V
         # The [V, N] group matrix it replaces (N^2 for a word vocabulary) is still in older checkpoints
@@ -298,6 +304,9 @@ class CausalBorn(nn.Module):
         """log P_target [B, L] for training: log I_target - log Z, with no [B, L, V] probabilities built (the same
         numbers as log probs(ids) gathered, faster for a word vocabulary). target -100 gives 0 there."""
         h, _ = self.hidden(ids, self.amplitudes(ids))
+        if getattr(self, "linhead", False):
+            lp = torch.log_softmax(self.lin(h.real if h.is_complex() else h), -1)
+            return lp.gather(-1, target.clamp(min=0)[..., None])[..., 0] * (target >= 0)
         if self.pair:
             return self._pair_logp(h, target)
         r = self.readout_rows()
@@ -404,6 +413,9 @@ class CausalBorn(nn.Module):
         return h, fz
 
     def probs(self, ids, amp=None):
+        if getattr(self, "linhead", False):
+            h, _ = self.hidden(ids, self.amplitudes(ids) if amp is None else amp)
+            return torch.softmax(self.lin(h.real if h.is_complex() else h), -1)
         num, z = self.numerators(ids, self.amplitudes(ids) if amp is None else amp)
         return num / (z[..., None] + 1e-30) + self.share
 
@@ -473,7 +485,7 @@ def build(name, vocab, max_len):
         kw = dict(d=32, blocks=2, power=4, pair_rank=2, pair_mix=8)
         for opt in name.split(":", 1)[1].split(","):
             kw[{"d": "d", "b": "blocks", "p": "power", "n": "norm", "h": "heads", "f": "d_ff", "m": "mlp_mix",
-                "t": "thermal", "x": "pair_mix", "r": "pair_rank", "s": "softlimit"}[opt[0]]] = int(opt[1:])
+                "t": "thermal", "x": "pair_mix", "r": "pair_rank", "s": "softlimit", "l": "linhead"}[opt[0]]] = int(opt[1:])
         return CausalBorn(vocab, max_len, per_token=1, tie=True, wide=64, gain0=0.0, pair=(64, 128), **kw)
     if name == "softmax-w96":                             # softmax-w at about the Born 8x2 model's size (~1M)
         return CausalSoftmax(vocab, max_len, d=96, d_ff=384, tie=True)

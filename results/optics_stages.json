@@ -1,0 +1,64 @@
+{
+ "tag": "words_born-therm16p2_s0",
+ "windows": 8,
+ "stages": [
+  {
+   "stage": "token fields",
+   "log10_light": -0.45163441708999597
+  },
+  {
+   "stage": "block 0 q, k per head (slot) / one overlap pair",
+   "log10_light": "-2.0 -2.2 / -4.3"
+  },
+  {
+   "stage": "block 0 after attention",
+   "log10_light": -4.6466437771911915
+  },
+  {
+   "stage": "block 0 MLP: light at one balanced pair (slot share, median)",
+   "log10_light": "-8.17"
+  },
+  {
+   "stage": "block 0 after MLP",
+   "log10_light": -1.3581665276808494
+  },
+  {
+   "stage": "block 1 q, k per head (slot) / one overlap pair",
+   "log10_light": "-3.0 -3.0 / -5.2"
+  },
+  {
+   "stage": "block 1 after attention",
+   "log10_light": -5.860053931987135
+  },
+  {
+   "stage": "block 1 MLP: light at one balanced pair (slot share, median)",
+   "log10_light": "-9.02"
+  },
+  {
+   "stage": "last MLP homodyne",
+   "log10_light": -6.337175186706798
+  }
+ ],
+ "photons_per_pair": {
+  "block 0 q, k per head (slot) / one overlap pair": {
+   "photons at 1e10": 501187,
+   "photons at 1e11": 5011872,
+   "photons at 1e12": 50118723
+  },
+  "block 0 MLP: light at one balanced pair (slot share, median)": {
+   "photons at 1e10": 68,
+   "photons at 1e11": 676,
+   "photons at 1e12": 6761
+  },
+  "block 1 q, k per head (slot) / one overlap pair": {
+   "photons at 1e10": 63096,
+   "photons at 1e11": 630957,
+   "photons at 1e12": 6309573
+  },
+  "block 1 MLP: light at one balanced pair (slot share, median)": {
+   "photons at 1e10": 10,
+   "photons at 1e11": 95,
+   "photons at 1e12": 955
+  }
+ }
+}

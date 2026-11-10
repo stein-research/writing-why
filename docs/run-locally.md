@@ -42,9 +42,11 @@ Download the datasets into `data/tinystories/` and `data/wikitext103/` first ([d
 
 | command | what it gives |
 |---|---|
-| `python src/train.py --model "born-x8x2:m4,t16,x1,r16,p2" --task tinywords --epochs 1 --lr 0.032 --batch 64 --n-train 1000000 --seed 0 --warmup 0.02` | the 16-copy model (Table 1); `t1`...`t8` for the pass-count ladder, no `t` for one copy, `,s1` for the softmax-limit readout; `--model softmax-w96 --lr 0.01` with no warm-up for the softmax transformer; `--task wikiwords` for WikiText-103 |
+| `python src/train.py --model "born-x8x2:m4,t16,x1,r16,p2" --task tinywords --epochs 1 --lr 0.032 --batch 64 --n-train 1000000 --seed 0 --warmup 0.02` | the 16-copy model (Table 1); `t1`...`t8` for the pass-count ladder, no `t` for one copy, `,s1` for the softmax-limit readout; `born-x8x2:m4,x1,r16,p2,l1` for the linear-head control; `--model softmax-w96 --lr 0.01` with no warm-up for the softmax transformer; `--task wikiwords` for WikiText-103 |
 | `python src/fresh_test.py <tags>` | the TinyStories test scores of Table 1 and Fig. 3 (windows sharing no story with the validation windows) |
 | `python src/word_evidence.py words_born-therm16p2_s0 words_softmax-w96_s0` | Table 2 (copy positions: flip@1, copied first, bottom-5, ceiling, gaps) |
+| `python src/bew_checks.py words_born-therm16p2_s0 --double 10` | BEW checks: each share with D/2 and D nodes (node doubling), and F, F_q at the 300 copy positions |
+| `python src/npass_check.py` | Appendix A: the n-pass formula against the model, its distance to the softmax limit, the 1/n term |
 | `python src/word_rank_agree.py words_born-therm16p2_s0 words_born-p2r16_s0` | the rank agreement of BEW and gradient times input |
 | `python src/readout_limit.py words_born-therm16p2_s0` | the distance of the 16-copy readout from its softmax limit |
 | `python src/time_evidence.py words_born-therm16p2_s0 words_born-p2r16_s0 words_softmax-w96_s0` | the cost per explained word |

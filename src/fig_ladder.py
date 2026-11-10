@@ -1,13 +1,12 @@
 """Figure: the readout ladder - accuracy and perplexity against the number of passes n of the readout
 P(w) ∝ |1 + g psi_w / n|^(2n) (one mask passed n times), same body and recipe at every n (TinyStories V2 words,
-1M windows, lr 3.2e-2, warm-up 0.02), scored on fresh_test.py's 2,000 fresh test windows. n = 16: mean of three seeds (bars: their range). The one-copy readout without
+1M windows, lr 3.2e-2, warm-up 0.02), scored on fresh_test.py's 2,000 fresh test windows. n = 8 and 16: mean of three seeds (bars: their range). The one-copy readout without
 the reference beam (|psi|^2) is drawn at n = 1 for comparison: the reference beam alone changes nothing. The softmax
 transformer of the same size is a separately trained model (three seeds), drawn as a reference line.
 
 python fig_ladder.py [--out figures/ladder]
 """
 import glob
-import os
 import json
 import sys
 
@@ -24,7 +23,6 @@ plt.rcParams.update({"font.family": ["Latin Modern Sans", "DejaVu Sans"], "matht
                      "mathtext.rm": "Latin Modern Sans", "mathtext.it": "Latin Modern Sans:italic",
                      "mathtext.bf": "Latin Modern Sans:bold", "pdf.fonttype": 3})
 out = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else "figures/ladder"
-os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
 INK, MUTED, LINE, ACCENT = "#2b2f36", "#495057", "#c9ced6", "#d9480f"
 
 FRESH = json.load(open("results/fresh_test.json"))                    # fresh_test.py: test windows nothing was chosen on
@@ -32,6 +30,8 @@ get = lambda t: dict(test_acc=FRESH[t]["acc"], test_ppl=FRESH[t]["ppl"])
 ns = [1, 2, 4, 8, 16]
 runs = {n: [get(f"words_born-therm{n}p2_s0")] for n in ns}
 runs[16] = [get(f"words_born-therm16p2_s{s}") for s in range(3)]
+runs[8] = [get(f"words_born-therm8p2_s{s}") for s in range(3)]   # three seeds since 2026-11-10 (review)
+linhead = [get(f"words_born-linhead_s{s}") for s in range(3)]      # control: the same body, linear softmax head
 plain = get("words_born-p2r16_s0")
 soft = [get(f"words_softmax-w96_s{s}") for s in range(3)]
 
@@ -47,10 +47,14 @@ for ax, key, lab, scale in ((axs[0], "test_acc", "test accuracy (%)", 100), (axs
     ax.axhline(sm, color=MUTED, lw=1.1, ls=(0, (4, 3)), zorder=2)
     ax.text(16, sm, "softmax transformer, same size", ha="right", va="bottom" if key == "test_acc" else "top",
             fontsize=7.5, color=MUTED)
+    lm = np.mean([r[key] for r in linhead]) * scale
+    ax.axhline(lm, color=MUTED, lw=1.0, ls=(0, (1, 2)), zorder=2)
+    ax.text(1, lm, "same body, linear head", ha="left", va="bottom" if key == "test_acc" else "top", fontsize=7.5,
+            color=MUTED)
     for n, v in zip(ns, m):
         acc = key == "test_acc"
         ax.annotate(f"{v:.1f}" if acc else f"{v:.2f}", (n, v), textcoords="offset points",
-                    xytext=(0, -13) if acc else (6, 5), ha="center" if acc else "left", fontsize=7.5, color=INK)
+                    xytext=(0, 7) if acc else (6, 5), ha="center" if acc else "left", fontsize=7.5, color=INK)
     ax.set_xscale("log", base=2)
     ax.set_xticks(ns, [str(n) for n in ns])
     ax.set_xlabel("passes through the mask, $n$", fontsize=8.5, color=INK)
