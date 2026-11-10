@@ -22,7 +22,8 @@ Born probability: attention $|\langle q|k\rangle|^2$, in the form of the Born ru
 products in place of the feed-forward nonlinearity; and a readout over 8,192 words. Passing the readout's mask $n$
 times sharpens it towards a softmax while each word's probability stays a ratio of polynomials in the words'
 amplitudes, so its integrated-gradient evidence, with the denominators held, is computed exactly by a finite
-quadrature: the **Born evidence per word (BEW)**.
+quadrature: the **Born evidence per word (BEW)**. A causal Born-attention language model with a plain Born readout was trained earlier in CNet
+(Crasmaru, arXiv:2610.08592, Sec. 11); what is added here is the sharp $n$-pass readout and the exact evidence.
 
 ## How it works
 
@@ -33,7 +34,10 @@ $n$-pass readout reads
 P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to\infty} P_n(w) = \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}},
 ```
 
-a softmax in the limit (Reinhardt and Hauser, arXiv:2608.11173), a polynomial at every finite $n$. With every
+a softmax only in the limit and a polynomial at every finite $n$. That repeated Born measurements give softmax
+weights was shown by Reinhardt and Hauser (arXiv:2608.11173, Corollary 17), exactly at every finite number of
+post-selected rounds, with the exponential written into the gate angles; the passes here reach it only as
+$n\to\infty$. With every
 normaliser held at its value for the actual input, $F(a) = P(w) - 1/V$ at that input is a polynomial of degree
 $D = 400n$ in the word amplitudes, and integrated gradients over the earlier words,
 
