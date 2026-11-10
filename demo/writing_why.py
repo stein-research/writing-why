@@ -101,16 +101,20 @@ def write(model, prompt, words=250, temp=0.7, top_p=0.9, seed=0, draws=1, only=N
 
 def explain(model, ids, T):
     """Why the model chose the word at position T, given the words before it: BEW over the earlier words (exact, a Born
-    model only). Returns shares [T] (the current word T - 1 and later get 0), P, F_q and the completeness gap."""
+    model only). Past 128 words the model sees only the last 128, as when it wrote; earlier words get 0. Returns
+    shares [T] (the current word T - 1 and later get 0), P, F_q and the completeness gap."""
     if model.family != "B":
         raise ValueError("exact evidence needs a Born model")
-    x = torch.tensor([ids[:T]], device=DEV)
-    pos, tgt = torch.tensor([T - 1], device=DEV), torch.tensor([[ids[T]]], device=DEV)
+    start = max(0, T - stories.L)                           # the model sees the last L words, as when it wrote
+    x = torch.tensor([ids[start:T]], device=DEV)
+    pos, tgt = torch.tensor([T - 1 - start], device=DEV), torch.tensor([[ids[T]]], device=DEV)
     ev, full, fq = E.born(model, x, pos, tgt, n_nodes=model.degree() // 2, k=128 if DEV == "cuda" else 16)
     ev, full, fq = ev[0, 0].cpu().numpy(), full[0, 0].item(), fq[0, 0].item()
     with torch.no_grad():
-        P = model.probs(x)[0, T - 1, ids[T]].item()
-    return dict(T=T, shares=ev, P=P, F_q=fq, gap=abs(ev.sum() - (full - fq)), nodes=model.degree() // 2)
+        P = model.probs(x)[0, T - 1 - start, ids[T]].item()
+    shares = np.zeros(T)                                    # words before the window have no share
+    shares[start:] = ev[:T - start]
+    return dict(T=T, shares=shares, P=P, F_q=fq, gap=abs(ev.sum() - (full - fq)), nodes=model.degree() // 2)
 
 
 def _chip(v, lim):
