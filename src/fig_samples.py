@@ -7,6 +7,7 @@ boxed, later words grey; bars: the five largest shares. Prints P, F_q and the ga
 python fig_samples.py   ->  figures/sample_story.{png,pdf}, figures/sample_wiki.{png,pdf}
 """
 import glob
+import os
 import importlib
 import json
 
@@ -100,6 +101,7 @@ def panel(tag, task, prompt, k, word, out, long=False):
     return dict(P=P, Fq=fq, T=T)
 
 
+os.makedirs("figures", exist_ok=True)
 res = {"story": panel("words_born-therm16p2_s0", "tinywords", "Once upon a time", 9, "ball", "figures/sample_story", long=True),
        "wiki": panel("wiki_born-therm16p2_s0", "wikiwords", "The river", 3, "suburbs", "figures/sample_wiki")}
 json.dump(res, open("results/fig_samples.json", "w"), indent=1)

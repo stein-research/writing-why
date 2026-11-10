@@ -9,6 +9,7 @@ evidence chips (red raised, blue lowered), Latin Modern Sans.
 python fig_story.py [--out figures/story] [--target 41]
 """
 import glob
+import os
 import json
 import sys
 
@@ -33,6 +34,7 @@ plt.rcParams.update({"font.family": ["Latin Modern Sans", "DejaVu Sans"], "matht
                      "mathtext.rm": "Latin Modern Sans", "mathtext.it": "Latin Modern Sans:italic",
                      "mathtext.bf": "Latin Modern Sans:bold", "pdf.fonttype": 3})
 out = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else "figures/story"
+os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
 T = int(sys.argv[sys.argv.index("--target") + 1]) if "--target" in sys.argv else 41
 INK, MUTED, LINE, ACCENT = "#2b2f36", "#495057", "#c9ced6", "#d9480f"
 ev_cmap = LinearSegmentedColormap.from_list("evidence", ["#08306b", "#1f78d1", "#9cc9f5", "#f7f7f7", "#f9a77e",

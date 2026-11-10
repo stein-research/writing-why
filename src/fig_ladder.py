@@ -7,6 +7,7 @@ transformer of the same size is a separately trained model (three seeds), drawn 
 python fig_ladder.py [--out figures/ladder]
 """
 import glob
+import os
 import json
 import sys
 
@@ -23,6 +24,7 @@ plt.rcParams.update({"font.family": ["Latin Modern Sans", "DejaVu Sans"], "matht
                      "mathtext.rm": "Latin Modern Sans", "mathtext.it": "Latin Modern Sans:italic",
                      "mathtext.bf": "Latin Modern Sans:bold", "pdf.fonttype": 3})
 out = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else "figures/ladder"
+os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
 INK, MUTED, LINE, ACCENT = "#2b2f36", "#495057", "#c9ced6", "#d9480f"
 
 FRESH = json.load(open("results/fresh_test.json"))                    # fresh_test.py: test windows nothing was chosen on

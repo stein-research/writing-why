@@ -30,7 +30,7 @@ probabilities may differ and, rarely, change a sampled word; the checksum tells 
 
 ## Reproduce the paper
 
-Download the datasets into `data/` first ([data/README.md](../data/README.md)).
+Download the datasets into `data/tinystories/` and `data/wikitext103/` first ([data/README.md](../data/README.md)).
 
 | command | what it gives |
 |---|---|
@@ -43,3 +43,6 @@ Download the datasets into `data/` first ([data/README.md](../data/README.md)).
 | `python src/compile_optics.py words_born-therm16p2_s0 --bits 8` and `--photons 10 11 12` | the exact optical compile, the light, the SLM precision and shot noise (Table 4) |
 | `python src/mesh_check.py words_born-therm16p2_s0` | the Clements meshes and phase errors (Table 3) |
 | `python src/fig_born_pair.py`, `fig_ladder.py`, `fig_story.py`, `fig_samples.py` | the figures |
+
+The scripts write into `results/` and `figures/`, replacing the records shipped with the paper when they share a
+name; `git checkout results/` restores them.

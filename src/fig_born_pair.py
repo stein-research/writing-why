@@ -8,6 +8,7 @@ Style and helpers from fig_arch.py (Reading Why's fig_compare3.py). Numbers: mea
 python fig_born_pair.py [--out figures/born_pair]
 """
 import glob
+import os
 import sys
 
 import matplotlib
@@ -24,6 +25,7 @@ plt.rcParams.update({"font.family": ["Latin Modern Sans", "DejaVu Sans"], "matht
                      "mathtext.rm": "Latin Modern Sans", "mathtext.it": "Latin Modern Sans:italic",
                      "mathtext.bf": "Latin Modern Sans:bold", "pdf.fonttype": 3})
 out = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else "figures/born_pair"
+os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
 
 INK, MUTED, LINE, ACCENT, BEAM = "#2b2f36", "#495057", "#c9ced6", "#d9480f", "#ffd43b"
 # box colours of the original transformer figure (Vaswani et al. 2017)
