@@ -27,7 +27,7 @@ The pass is Reading Why's compile (compile_hw.py there) made causal, with this m
 
 Reports max |P_compiled - P_trained| over every word and position of n test windows, accuracy and perplexity of
 both, the light (log10 of the source's share) at the last MLP's homodyne and at the camera, and accuracy and
-perplexity when the SLM mask is written with `bits` bits per real part (relative to its largest value).
+perplexity when the SLM mask (amplitude only: the camera reads |T|^(2n)) is written with `bits` bits, levels over [0, 1].
 """
 import json
 import math
@@ -48,20 +48,6 @@ def vmax(x, amp):
     """Largest slot field per sequence, a_t taken out: [B, 1, 1]."""
     own = torch.where(amp > 0, torch.linalg.vector_norm(x, dim=-1) / amp.clamp(min=1e-30), torch.zeros_like(amp))
     return own.amax(1)[:, None, None]
-
-
-def quant(x, bits):
-    """Uniform quantisation of each real part to `bits` bits (sign included), relative to the largest value
-    over the last axis."""
-    if bits is None:
-        return x
-    if x.is_complex():
-        top = torch.maximum(x.real.abs(), x.imag.abs()).amax(-1, keepdim=True).clamp(min=1e-300)
-        step = top / (2 ** (bits - 1) - 1)
-        return torch.complex(torch.round(x.real / step) * step, torch.round(x.imag / step) * step)
-    top = x.abs().amax(-1, keepdim=True).clamp(min=1e-300)
-    step = top / (2 ** (bits - 1) - 1)
-    return torch.round(x / step) * step
 
 
 def balanced(x, y, rate, dims):
@@ -190,20 +176,26 @@ def inner(model, ids, stages=None, reprep=False, photons=None):
         s = s * alpha / 2
         h, s = remeasure(h, s, f"block {blk} after attention")
         w2 = c(wv)
-        cw = [wi / sig(wi) for wi in w2]
         hs = h / math.sqrt(3)                                              # three-way split
-        a, b = hs @ cw[0].T, hs @ cw[1].T
+        # each of the m bilinear forms has its own pair of meshes (as mesh_check.py builds them): the W and V
+        # arms are each split m ways (1/sqrt m in field), and every form's W_j, V_j is divided by its own largest
+        # singular value; the m readings are summed as numbers
+        mix = model.mlp_mix
+        f = w2.shape[1] // mix
+        hf = hs / math.sqrt(mix)
         rate_m = None if photons is None else photons / (amp * amp).clamp(min=1e-30).amax(1)[:, None, None]
-        mid = balanced(a, b, rate_m, None)                                 # balanced homodyne, per channel
-        if stages is not None:                                             # light into the homodyne array
-            ea, eb = energy(a, amp).median(), energy(b, amp).median()
-            tot = torch.log10(10 ** ea + 10 ** eb)
-            stages.append((f"block {blk} MLP homodyne: a, b total (slot) / per channel",
-                           f"{ea:.1f} {eb:.1f} {tot:.1f} / {tot - math.log10(a.shape[-1]):.1f}"))
-        if model.mlp_mix > 1:
-            mid = mid.unflatten(-1, (model.mlp_mix, -1)).sum(-2)          # summed as numbers
-        gain = 3 * sig(w2[0]) * sig(w2[1]) / (s * s)                       # back to the trained numbers
-        mid = mid * gain
+        mid, pair_light = 0, []
+        for j in range(mix):
+            Wj, Vj = w2[0][j * f:(j + 1) * f], w2[1][j * f:(j + 1) * f]
+            sW, sV = sig(Wj), sig(Vj)
+            a, b = hf @ (Wj / sW).T, hf @ (Vj / sV).T
+            mid = mid + balanced(a, b, rate_m, None) * (3 * mix * sW * sV / (s * s))   # back to trained numbers
+            if stages is not None:                                         # light at one balanced pair
+                pair_light.append(((a.real ** 2 + a.imag ** 2 + b.real ** 2 + b.imag ** 2)
+                                   / (amp * amp).clamp(min=1e-30)[..., None])[present])
+        if stages is not None:                                             # median over slots and channels
+            pl = torch.log10(torch.cat([p.flatten() for p in pair_light]).clamp(min=1e-38)).median()
+            stages.append((f"block {blk} MLP: light at one balanced pair (slot share, median)", f"{pl:.2f}"))
         if reprep and not (model.wide and blk == model.n_blocks - 1):
             seen.append(energy(hs, amp))                                   # light into the homodyne
         if model.wide and blk == model.n_blocks - 1:
@@ -236,9 +228,12 @@ def compiled(model, ids, bits=None, stages=None, reprep=False, photons=None):
     n = model.thermal
     tm = 1 + torch.exp(model.log_gain) * psi / n
     tm = tm / tm.abs().amax(-1, keepdim=True)                              # passive mask, |T| <= 1
-    tm = quant(tm, bits)                                                   # SLM precision
+    # the camera reads |T|^(2n), so only the modulus is written: an amplitude-only SLM, `bits` levels over [0, 1]
+    tm = tm.abs()
+    if bits is not None:
+        tm = torch.round(tm * (2 ** bits - 1)) / (2 ** bits - 1)
     # n passes: field T^n on a uniform beam 1 / sqrt V; the camera reads |T|^(2n) / V (logs for range)
-    li = n * torch.log((tm.real ** 2 + tm.imag ** 2).clamp(min=1e-300)) - math.log(psi.shape[-1])
+    li = n * torch.log((tm * tm).clamp(min=1e-300)) - math.log(psi.shape[-1])
     light_cam = torch.logsumexp(li, -1) / math.log(10)
     p = torch.softmax(li, -1)
     return p, light_mid, light_cam
