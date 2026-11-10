@@ -34,15 +34,15 @@ $n$-pass readout reads
 P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to\infty} P_n(w) = \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}},
 ```
 
-a softmax only in the limit and a polynomial at every finite $n$. That repeated Born measurements give softmax
-weights was shown by Reinhardt and Hauser (arXiv:2608.11173, Corollary 17), exactly at every finite number of
-post-selected rounds, with the exponential written into the gate angles; the passes here reach it only as
-$n\to\infty$. With every
-normaliser held at its value for the actual input, $F(a) = P(w) - 1/V$ at that input is a polynomial of degree
-$D = 400n$ in the word amplitudes, and integrated gradients over the earlier words,
+a softmax only in the limit and a polynomial at every finite $n$. A related result is exact: Reinhardt and Hauser
+(arXiv:2608.11173, Corollary 17) showed that $L$ post-selected rounds of a Born measurement, each set to succeed
+with probability $e^{z}$, give the softmax at inverse temperature $L$. Here each pass is a polynomial factor, and
+only the limit $n\to\infty$ is the exponential. With every
+normaliser held at its value for the actual input, the explained quantity $F(a)$, equal to $P(w) - 1/V$ at that
+input, is a polynomial of degree $D = 400n$ in the word amplitudes, and integrated gradients over the earlier words,
 
 ```math
-e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a)\,d\alpha, \qquad \sum_{t \lt i} e_t = P(w) - \tfrac{1}{V} - F_q,
+e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a_{\lt i},\, a_i)\,d\alpha, \qquad \sum_{t \lt i} e_t = P(w) - \tfrac{1}{V} - F_q,
 ```
 
 are computed with no quadrature error by $D/2$ Gauss-Legendre nodes ($F_q$ is the query-only baseline term: the
