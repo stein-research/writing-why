@@ -13,8 +13,8 @@ University).
 
 ![The two Born language models, identical up to the readout](docs/born_pair.png)
 
-*The two models, drawn as optics (simulated): one copy reads the readout state once, $|\psi|^2$; 16 copies passes one
-mask 16 times, $|1+g\psi/16|^{32}$.*
+The two models, drawn as optics (simulated): one copy reads the readout state once, $|\psi|^2$; 16 copies passes one
+mask 16 times, $|1+g\psi/16|^{32}$.
 
 A small causal language model in which every nonlinearity is a quadratic detection (an interferometric overlap, a
 balanced reading or a camera), with a classical controller between detections, and the next word is drawn from a
@@ -30,7 +30,7 @@ The readout state $\psi_w$ over the 8,192 words is a rank-16 product of the last
 $n$-pass readout reads
 
 ```math
-P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}} \;\xrightarrow{\;n\to\infty\;}\; \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}},
+P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to\infty} P_n(w) = \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}},
 ```
 
 a softmax in the limit (Reinhardt and Hauser, arXiv:2608.11173), a polynomial at every finite $n$. With every
@@ -38,7 +38,7 @@ normaliser held at its value for the actual input, $F(a) = P(w) - 1/V$ at that i
 $D = 400n$ in the word amplitudes, and integrated gradients over the earlier words,
 
 ```math
-e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a)\,d\alpha, \qquad \sum_{t<i} e_t = P(w) - \tfrac{1}{V} - F_q,
+e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a)\,d\alpha, \qquad \sum_{t \lt i} e_t = P(w) - \tfrac{1}{V} - F_q,
 ```
 
 are computed with no quadrature error by $D/2$ Gauss-Legendre nodes ($F_q$ is the query-only baseline term: the
