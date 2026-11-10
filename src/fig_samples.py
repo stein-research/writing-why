@@ -1,5 +1,5 @@
 """Appendix figure: exact evidence (BEW) on the selected samples of the 16-copy model, one TinyStories story and one
-WikiText-103 passage (sample.py --dump results/appendix_draws.json; draws chosen by eye from the first five, see
+WikiText-103 passage (sample.py --dump results/appendix_draws_long.json and results/appendix_draws.json; draws chosen by eye from the first five, see
 paper Appendix B). Each panel explains the model's probability of one copied word at its second occurrence, with
 every normaliser held (float64, degree // 2 nodes, GPU); chips as Fig. 2 (red raised, blue lowered), the current word
 boxed, later words grey; bars: the five largest shares. Prints P, F_q and the gap.
@@ -30,14 +30,14 @@ plt.rcParams.update({"font.family": ["Latin Modern Sans", "DejaVu Sans"], "pdf.f
 INK, MUTED = "#2b2f36", "#495057"
 ev_cmap = LinearSegmentedColormap.from_list("evidence", ["#08306b", "#1f78d1", "#9cc9f5", "#f7f7f7", "#f9a77e",
                                                          "#e8431c", "#7f0d0d"])
-DRAWS = json.load(open("results/appendix_draws.json"))
+DRAWS = {**json.load(open("results/appendix_draws.json")), **{k + "|long": v for k, v in json.load(open("results/appendix_draws_long.json")).items()}}
 NOSP = {",", ".", "!", "?", ";", ":", ")"}
 
 
-def panel(tag, task, prompt, k, word, out):
+def panel(tag, task, prompt, k, word, out, long=False):
     mod = importlib.import_module(task)
     words, _ = mod.vocab()
-    ids = DRAWS[f"{tag}|{prompt}|T0.7|p0.9|s0"][k]
+    ids = DRAWS[f"{tag}|{prompt}|T0.7|p0.9|s0" + ("|long" if long else "")][k]
     toks = [words[i - mod.C0] if i >= mod.C0 else "" for i in ids]
     T = [t for t, w in enumerate(toks) if w == word][1]                   # its second occurrence
     run = json.load(open(f"results/{tag}.json"))
@@ -100,6 +100,6 @@ def panel(tag, task, prompt, k, word, out):
     return dict(P=P, Fq=fq, T=T)
 
 
-res = {"story": panel("words_born-therm16p2_s0", "tinywords", "Once upon a time", 4, "ball", "figures/sample_story"),
+res = {"story": panel("words_born-therm16p2_s0", "tinywords", "Once upon a time", 9, "ball", "figures/sample_story", long=True),
        "wiki": panel("wiki_born-therm16p2_s0", "wikiwords", "The river", 3, "suburbs", "figures/sample_wiki")}
 json.dump(res, open("results/fig_samples.json", "w"), indent=1)
