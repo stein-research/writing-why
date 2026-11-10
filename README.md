@@ -27,26 +27,29 @@ quadrature: the **Born evidence per word (BEW)**. A causal Born-attention langua
 
 ## How it works
 
-The readout state $\psi_w$ over the 8,192 words is a rank-16 product of the last block's measured numbers. The
-$n$-pass readout reads
+The readout field $\psi_w$ over the 8,192 words is constructed as a rank-16 factorisation across a $64\times128$ grid
+from the last block's measured outputs. The $n$-pass readout gives
 
 ```math
-P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to\infty} P_n(w) = \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}},
+P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to\infty} P_n(w) = \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}}.
 ```
 
-a softmax only in the limit and a polynomial at every finite $n$. A related result is exact: Reinhardt and Hauser
-(arXiv:2608.11173, Corollary 17) showed that $L$ post-selected rounds of a Born measurement, each set to succeed
-with probability $e^{z}$, give the softmax at inverse temperature $L$. Here each pass is a polynomial factor, and
-only the limit $n\to\infty$ is the exponential. With every
-normaliser held at its value for the actual input, the explained quantity $F(a)$, equal to $P(w) - 1/V$ at that
-input, is a polynomial of degree $D = 400n$ in the word amplitudes, and integrated gradients over the earlier words,
+It is a softmax only in the limit and a ratio of polynomials at every finite $n$. A related construction is exact:
+Reinhardt and Hauser (arXiv:2608.11173, Corollary 17) showed that $L$ post-selected rounds, each with success
+probability $e^z$ for nonpositive scores $z$, give softmax weights at inverse temperature $L$. Here each pass supplies
+a polynomial factor; only the limit $n\to\infty$ yields the exponential.
+
+With every normaliser held at its value for the actual input, the explained quantity $F(a)$, equal to $P(w)-1/V$ at
+that input, is a polynomial of degree at most $D=400n$ in the word amplitudes. Its integrated gradients over the
+earlier words,
 
 ```math
 e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a_{\lt i},\, a_i)\,d\alpha, \qquad \sum_{t \lt i} e_t = P(w) - \tfrac{1}{V} - F_q,
 ```
 
-are computed with no quadrature error by $D/2$ Gauss-Legendre nodes ($F_q$ is the query-only baseline term: the
-current word stays at its amplitude along the path). In double precision the sum holds to $6\times10^{-11}$.
+are computed without quadrature error by $D/2$ Gauss–Legendre nodes. Here $F_q$ is the query-only baseline term: the
+current word remains at its input amplitude along the path. In the reported double-precision evaluations, the
+numerical completeness gap is below $6\times10^{-11}$.
 
 ![Why the 16-copy model wrote "park"](docs/story.png)
 
