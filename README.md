@@ -90,7 +90,7 @@ exactly to an opto-electronic system (interferometer meshes, balanced detectors,
 > and the many others whose work this one rests on.
 >
 > If this work stands, it stands on their shoulders. What we add is small: another way to use Born’s rule, to write
-> a word and show how each earlier word contributed to it.
+> a word and show how each earlier word contributed to its predicted probability.
 >
 > *The authors, 10 November 2026*
 
