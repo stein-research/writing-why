@@ -167,7 +167,7 @@ def i_chip(x, y):
 
 
 def column(x, thermal):
-    # the light: modulator to block 2's homodyne, then written again by the mask (the controller is electronics)
+    # the light: modulator to block 2's balanced reading, then written again by the mask (the controller is electronics)
     for y0, y1 in ((Y["emb"], BLOCK[1]), (Y["mask"], Y["out"])):
         ax.add_patch(Rectangle((x - 0.32, y0), 0.64, y1 - y0, fc=BEAM, alpha=0.32, ec="none", zorder=1.5))
     ax.text(x, Y["inp"], PROMPT, ha="center", va="center", fontsize=15, style="italic", color=INK)
@@ -185,10 +185,10 @@ def column(x, thermal):
                                 boxstyle="round,pad=0,rounding_size=0.25", fc=F["blk"], ec=INK, lw=1.2, zorder=1))
     ax.text(x + BW / 2 + 0.58, (BLOCK[0] + BLOCK[1]) / 2, r"$\times 2$", ha="left", va="center", fontsize=17,
             color=INK)
-    box(x, Y["att"], "att", "Interferometers", r"$|\langle q_i|k_j\rangle|^2$ / row sum, $j \leq i$, $+\,k_\mathrm{ref}$", meas=True,
-        icon=i_interf, sfs=13.6, sdx=0.15)
+    box(x, Y["att"], "att", "Interferometers", r"controller: $|\langle q_i|k_j\rangle|^2$ / row sum, $+\,k_\mathrm{ref}$", meas=True,
+        icon=i_interf, sfs=12.4, sdx=0.32)
     box(x, Y["an1"], "norm", "Beam splitter", h=0.56, fs=15, icon=i_bs)
-    box(x, Y["ff"], "ff", "Homodyne", r"$\Sigma_{j=1}^{4}\,$Re$[(W_j h)\overline{(V_j h)}]$", meas=True,
+    box(x, Y["ff"], "ff", "Balanced reading", r"$\Sigma_{j=1}^{4}\,$Re$[(W_j h)\overline{(V_j h)}]$", meas=True,
         sfs=14.0, sdx=0.1, icon=i_interf)
     box(x, Y["an2"], "norm", "Beam splitter", h=0.56, fs=15, icon=i_bs)
     arrow(x, Y["att"] + BH / 2, x, Y["an1"] - 0.25)
@@ -197,13 +197,13 @@ def column(x, thermal):
     residual(x, Y["att"] - BH / 2 - 0.19, Y["an1"])
     residual(x, Y["an1"] + 0.25 + 0.2, Y["an2"])
     arrow(x, Y["an2"] + 0.25, x, Y["lin"] - BH / 2)
-    ax.text(x + 0.42, (BLOCK[1] + Y["lin"] - BH / 2) / 2, "64 numbers measured\nby block 2's homodyne", ha="left",
+    ax.text(x + 0.42, (BLOCK[1] + Y["lin"] - BH / 2) / 2, "64 numbers measured by\nblock 2's balanced reading", ha="left",
             va="center", fontsize=12, linespacing=1.15, color=MUTED, style="italic", zorder=6)
     box(x, Y["lin"], "lin", "Controller", r"$\psi = \Sigma_k\, A_k u \otimes B_k u$, rank 16",
         icon=i_chip, sfs=13.8)
     arrow(x, Y["lin"] + BH / 2, x, Y["mask"] - BH / 2)
     if thermal:
-        box(x, Y["mask"], "lin", "One mask, 16 passes", r"transmission $1 + g\,\psi/16$", icon=i_passes, sfs=14.2)
+        box(x, Y["mask"], "lin", "One mask, 16 passes", r"transmission $(1 + g\,\psi/16)/M$", icon=i_passes, sfs=13.6, sdx=0.3)
         box(x, Y["out"], "out", "Camera", r"$|1 + g\,\psi/16|^{32}$, 8,192 pixels", meas=True,
             icon=i_cam, sfs=14.2)
     else:
