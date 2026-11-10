@@ -48,22 +48,23 @@ current word stays at its amplitude along the path). In double precision the sum
 
 | | 16 copies | one copy | softmax transformer |
 |---|---|---|---|
-| TinyStories V2 next-word accuracy (3 seeds) | 48.8 +- 0.1 % | 42.9 +- 0.2 % | 50.7 +- 0.2 % |
+| TinyStories V2 next-word accuracy (3 seeds) | 49.0 +- 0.1 % | 43.0 +- 0.1 % | 50.9 +- 0.3 % |
 | WikiText-103 (3 seeds) | 27.8 +- 0.2 % | | 29.9 +- 0.1 % |
 | evidence sums to the explained score | to 6e-11 (no quadrature error) | to 1e-13 | integrated gradients, approximate |
 
-The same body trained with the readout's softmax limit recovers only 0.2 points, so most of the gap to the softmax
-transformer lies elsewhere in the architecture or its optimisation. At copy positions the exact evidence ranks words
+The same body trained with the readout's softmax limit scores the same (49.0 +- 0.1 %, three seeds), which suggests
+that the gap to the softmax transformer arises elsewhere in the architecture or its optimisation, not in the
+finite-pass readout. At copy positions the exact evidence ranks words
 as gradient times input does: what it adds is exactness, not a better ranking. In simulation the weights compile
 exactly to an opto-electronic system (interferometer meshes, balanced detectors, modulators, a controller and a
-16-pass mask). Numbers will be updated to the final paper.
+16-pass mask); the controller does most of the arithmetic, and the paper lists what the simulation idealises. Numbers will be updated to the final paper.
 
 ## Contents
 
 | | |
 |---|---|
 | [`src/`](src/) | the models, the trainer, sampling, the exact evidence and the evaluations, the optical compile and its mesh check, and the scripts that draw the figures |
-| [`results/`](results/) | the trained models of the paper (three seeds of each model in Table 1, the pass-count ladder, the softmax-limit readout, the mesh fine-tune), the evaluation records, the samples' token ids, and the two vocabularies |
+| [`results/`](results/) | the trained models of the paper (three seeds of each model in Table 1 and of the softmax-limit readout, the pass-count ladder, the mesh fine-tune), the evaluation records, the samples' token ids, and the two vocabularies |
 | [`data/`](data/) | where TinyStories V2 and WikiText-103 go (downloaded and checked, not stored) |
 | [`docs/`](docs/) | [running it locally and reproducing the paper](docs/run-locally.md); the figures of this page |
 

@@ -223,8 +223,8 @@ def column(x, thermal):
 column(C1, False)
 column(C2, True)
 
-FOOT = [(C1, "TinyStories 42.9 $\\pm$ 0.2 %, perplexity 16.9 (3 seeds)\nBEW exact: degree 400, gap $10^{-13}$"),
-        (C2, "TinyStories 48.8 $\\pm$ 0.1 %, perplexity 9.89 (3 seeds)\nBEW exact: degree 6,400, gap $5 \\times 10^{-11}$")]
+FOOT = [(C1, "TinyStories 43.0 $\\pm$ 0.1 %, perplexity 16.9 (3 seeds)\nBEW exact: degree 400, gap $10^{-13}$"),
+        (C2, "TinyStories 49.0 $\\pm$ 0.1 %, perplexity 9.80 (3 seeds)\nBEW exact: degree 6,400, gap $5 \\times 10^{-11}$")]
 for x, t in FOOT:
     ax.text(x, 14.25, t, ha="center", va="center", fontsize=15, color=INK, linespacing=1.35)
 meter(0.6, -0.15)
