@@ -83,7 +83,7 @@ exactly to an opto-electronic system (interferometer meshes, balanced detectors,
 > language models.
 >
 > In this work, the two meet. Passing light through a suitably chosen mask $n$ times gives weights
-> $|1+g\psi/n|^{2n}$, which approach $e^{2g\operatorname{Re}\psi}$ through the limit $(1+z/n)^n\to e^z$, with $2g$
+> $|1+g\psi/n|^{2n}$, which approach $e^{2g\mathrm{Re}\psi}$ through the limit $(1+z/n)^n\to e^z$, with $2g$
 > playing the role of inverse temperature. At every finite $n$, the readout remains a Born probability, while its word
 > evidence—with the normalisers held at their input values—admits exact finite quadrature. We complete this work in
 > the rule’s hundredth year, in gratitude to Born, Boltzmann and Gibbs.
