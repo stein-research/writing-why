@@ -1,0 +1,70 @@
+{
+ "model": "born-x8x2:m4,x1,r16,p2",
+ "task": "tinywords",
+ "epochs": 1,
+ "lr": 0.032,
+ "batch": 64,
+ "n_train": 1000000,
+ "seed": 2,
+ "tag": "words_born-p2r16_s2",
+ "ckpt_every": 3000,
+ "opt": "adam",
+ "light": 0.0,
+ "light_windows": 16,
+ "phase_noise": 0.0,
+ "init": "",
+ "warmup": 0.02,
+ "params": 1072805,
+ "light_log10": null,
+ "test_acc": 0.43000390625,
+ "test_ppl": 16.993667814488116,
+ "seconds": 1247.1632781028748,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 3.1016040134277345,
+   "test_acc": 0.43000390625,
+   "test_ppl": 16.993667814488116
+  }
+ ],
+ "known_acc": 0.4307060858133329,
+ "known_ppl": 16.922400802497503,
+ "unk_share": 0.0016484374646097422,
+ "marks": [
+  {
+   "step": 3000,
+   "epoch": 0.192,
+   "test_acc": 0.34738671875,
+   "test_ppl": 29.452012107178177,
+   "light_log10": null
+  },
+  {
+   "step": 6000,
+   "epoch": 0.384,
+   "test_acc": 0.39892578125,
+   "test_ppl": 21.000583591478634,
+   "light_log10": null
+  },
+  {
+   "step": 9000,
+   "epoch": 0.576,
+   "test_acc": 0.41542578125,
+   "test_ppl": 18.82257803274817,
+   "light_log10": null
+  },
+  {
+   "step": 12000,
+   "epoch": 0.768,
+   "test_acc": 0.42589453125,
+   "test_ppl": 17.50092786786641,
+   "light_log10": null
+  },
+  {
+   "step": 15000,
+   "epoch": 0.96,
+   "test_acc": 0.42974609375,
+   "test_ppl": 17.00472590510236,
+   "light_log10": null
+  }
+ ]
+}

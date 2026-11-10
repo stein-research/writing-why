@@ -1,0 +1,60 @@
+{
+ "model": "born-x8x2:m4,t16,x1,r16,p2",
+ "task": "tinywords",
+ "epochs": 1,
+ "lr": 0.0032,
+ "batch": 64,
+ "n_train": 256000,
+ "seed": 0,
+ "tag": "words_born-therm16p2_pn01",
+ "ckpt_every": 1000,
+ "opt": "adam",
+ "light": 0.0,
+ "light_windows": 16,
+ "phase_noise": 0.01,
+ "init": "words_born-therm16p2_s0",
+ "warmup": 0.02,
+ "params": 1072806,
+ "light_log10": -5.9480180740356445,
+ "test_acc": 0.48115625,
+ "test_ppl": 10.314918129018817,
+ "seconds": 1113.7378945350647,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 2.476458723604679,
+   "test_acc": 0.48115625,
+   "test_ppl": 10.314918129018817
+  }
+ ],
+ "marks": [
+  {
+   "step": 1000,
+   "epoch": 0.25,
+   "test_acc": 0.4771484375,
+   "test_ppl": 10.549247950401364,
+   "light_log10": -6.033352375030518
+  },
+  {
+   "step": 2000,
+   "epoch": 0.5,
+   "test_acc": 0.47896875,
+   "test_ppl": 10.42803416370167,
+   "light_log10": -5.994326114654541
+  },
+  {
+   "step": 3000,
+   "epoch": 0.75,
+   "test_acc": 0.4802578125,
+   "test_ppl": 10.356479829901627,
+   "light_log10": -5.968429088592529
+  },
+  {
+   "step": 4000,
+   "epoch": 1.0,
+   "test_acc": 0.48115625,
+   "test_ppl": 10.314918129018817,
+   "light_log10": -5.9480180740356445
+  }
+ ]
+}

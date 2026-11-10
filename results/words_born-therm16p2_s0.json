@@ -1,0 +1,57 @@
+{
+ "model": "born-x8x2:m4,t16,x1,r16,p2",
+ "task": "tinywords",
+ "epochs": 1,
+ "lr": 0.032,
+ "batch": 64,
+ "n_train": 1000000,
+ "seed": 0,
+ "tag": "words_born-therm16p2_s0",
+ "ckpt_every": 3000,
+ "opt": "adam",
+ "warmup": 0.02,
+ "params": 1072806,
+ "test_acc": 0.48846875,
+ "test_ppl": 9.951583115344434,
+ "seconds": 5277.866818189621,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 2.624053466293335,
+   "test_acc": 0.48846875,
+   "test_ppl": 9.951583115344434
+  }
+ ],
+ "marks": [
+  {
+   "step": 3000,
+   "epoch": 0.192,
+   "test_acc": 0.409640625,
+   "test_ppl": 16.65548865317587
+  },
+  {
+   "step": 6000,
+   "epoch": 0.384,
+   "test_acc": 0.451,
+   "test_ppl": 12.6022890432902
+  },
+  {
+   "step": 9000,
+   "epoch": 0.576,
+   "test_acc": 0.469546875,
+   "test_ppl": 11.143304404443912
+  },
+  {
+   "step": 12000,
+   "epoch": 0.768,
+   "test_acc": 0.48126171875,
+   "test_ppl": 10.381196565521417
+  },
+  {
+   "step": 15000,
+   "epoch": 0.96,
+   "test_acc": 0.48810546875,
+   "test_ppl": 9.95947052977623
+  }
+ ]
+}

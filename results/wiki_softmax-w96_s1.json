@@ -1,0 +1,70 @@
+{
+ "model": "softmax-w96",
+ "task": "wikiwords",
+ "epochs": 1,
+ "lr": 0.01,
+ "batch": 64,
+ "n_train": 1000000,
+ "seed": 1,
+ "tag": "wiki_softmax-w96_s1",
+ "ckpt_every": 3000,
+ "opt": "adam",
+ "light": 0.0,
+ "light_windows": 16,
+ "phase_noise": 0.0,
+ "init": "",
+ "warmup": 0.0,
+ "params": 1030784,
+ "light_log10": null,
+ "test_acc": 0.29904296875,
+ "test_ppl": 44.007271484988166,
+ "seconds": 1040.8093073368073,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 4.091675352416992,
+   "test_acc": 0.29904296875,
+   "test_ppl": 44.007271484988166
+  }
+ ],
+ "known_acc": 0.25817415780063374,
+ "known_ppl": 57.684356752105515,
+ "unk_share": 0.11735937744379044,
+ "marks": [
+  {
+   "step": 3000,
+   "epoch": 0.192,
+   "test_acc": 0.26478515625,
+   "test_ppl": 65.42186271665769,
+   "light_log10": null
+  },
+  {
+   "step": 6000,
+   "epoch": 0.384,
+   "test_acc": 0.282734375,
+   "test_ppl": 52.21510487972705,
+   "light_log10": null
+  },
+  {
+   "step": 9000,
+   "epoch": 0.576,
+   "test_acc": 0.290484375,
+   "test_ppl": 47.49146210117183,
+   "light_log10": null
+  },
+  {
+   "step": 12000,
+   "epoch": 0.768,
+   "test_acc": 0.2971484375,
+   "test_ppl": 44.812712118086814,
+   "light_log10": null
+  },
+  {
+   "step": 15000,
+   "epoch": 0.96,
+   "test_acc": 0.29902734375,
+   "test_ppl": 44.02300295398079,
+   "light_log10": null
+  }
+ ]
+}

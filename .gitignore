@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+data/tinystories/*.txt
+data/tinystories/cache/
+data/wikitext103/*.parquet
+data/wikitext103/cache/
+results/*_ckpt.*
+results/*_mesh.npz

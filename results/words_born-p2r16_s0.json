@@ -1,0 +1,73 @@
+{
+ "model": "born-x8x2:m4,x1,r16,p2",
+ "task": "tinywords",
+ "epochs": 1,
+ "lr": 0.032,
+ "batch": 64,
+ "n_train": 1000000,
+ "seed": 0,
+ "tag": "words_born-p2r16_s0",
+ "ckpt_every": 3000,
+ "opt": "adam",
+ "light": 0.0,
+ "light_windows": 16,
+ "phase_noise": 0.0,
+ "init": "",
+ "warmup": 0.02,
+ "params": 1072805,
+ "light_log10": null,
+ "test_acc": 0.4283515625,
+ "test_ppl": 17.247335588023223,
+ "seconds": 1114.1029906272888,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 3.1135069552001955,
+   "test_acc": 0.0,
+   "test_ppl": NaN
+  }
+ ],
+ "known_acc": 0.4290471010806877,
+ "known_ppl": 17.1742236581833,
+ "unk_share": 0.0016484374646097422,
+ "marks": [
+  {
+   "step": 3000,
+   "epoch": 0.192,
+   "test_acc": 0.34731640625,
+   "test_ppl": 29.004928921385527,
+   "light_log10": null
+  },
+  {
+   "step": 6000,
+   "epoch": 0.384,
+   "test_acc": 0.1876875,
+   "test_ppl": NaN,
+   "light_log10": null
+  },
+  {
+   "step": 9000,
+   "epoch": 0.576,
+   "test_acc": 7.8125e-06,
+   "test_ppl": NaN,
+   "light_log10": null
+  },
+  {
+   "step": 12000,
+   "epoch": 0.768,
+   "test_acc": 0.0,
+   "test_ppl": NaN,
+   "light_log10": null
+  },
+  {
+   "step": 15000,
+   "epoch": 0.96,
+   "test_acc": 0.0,
+   "test_ppl": NaN,
+   "light_log10": null
+  }
+ ],
+ "test_acc_float32_eval": 0.0,
+ "test_ppl_float32_eval": NaN,
+ "rescored": "float64 after training (train.py's float32 test readout overflowed from step 6000; weights finite)"
+}

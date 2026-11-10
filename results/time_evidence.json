@@ -1,0 +1,8 @@
+{
+ "words_born-therm16p2_s0 BEW (3200 nodes)": 7.783062934875488,
+ "words_born-therm16p2_s0 grad x input (held)": 0.008265018463134766,
+ "words_born-p2r16_s0 BEW (200 nodes)": 0.3228461742401123,
+ "words_born-p2r16_s0 grad x input (held)": 0.007702350616455078,
+ "words_softmax-w96_s0 IG (512 nodes)": 2.730128288269043,
+ "words_softmax-w96_s0 grad x input": 0.004945039749145508
+}

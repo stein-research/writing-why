@@ -1,0 +1,70 @@
+{
+ "model": "softmax-w96",
+ "task": "tinywords",
+ "epochs": 1,
+ "lr": 0.01,
+ "batch": 64,
+ "n_train": 1000000,
+ "seed": 1,
+ "tag": "words_softmax-w96_s1",
+ "ckpt_every": 3000,
+ "opt": "adam",
+ "light": 0.0,
+ "light_windows": 16,
+ "phase_noise": 0.0,
+ "init": "",
+ "warmup": 0.0,
+ "params": 1030784,
+ "light_log10": null,
+ "test_acc": 0.50624609375,
+ "test_ppl": 8.638926900041618,
+ "seconds": 590.3476920127869,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 2.416442900993347,
+   "test_acc": 0.50624609375,
+   "test_ppl": 8.638926900041618
+  }
+ ],
+ "known_acc": 0.5069724311169193,
+ "known_ppl": 8.599881626745065,
+ "unk_share": 0.0016484374646097422,
+ "marks": [
+  {
+   "step": 3000,
+   "epoch": 0.192,
+   "test_acc": 0.4531328125,
+   "test_ppl": 12.595662258314636,
+   "light_log10": null
+  },
+  {
+   "step": 6000,
+   "epoch": 0.384,
+   "test_acc": 0.47919140625,
+   "test_ppl": 10.273189479982914,
+   "light_log10": null
+  },
+  {
+   "step": 9000,
+   "epoch": 0.576,
+   "test_acc": 0.49418359375,
+   "test_ppl": 9.329695906006316,
+   "light_log10": null
+  },
+  {
+   "step": 12000,
+   "epoch": 0.768,
+   "test_acc": 0.50207421875,
+   "test_ppl": 8.846384684726726,
+   "light_log10": null
+  },
+  {
+   "step": 15000,
+   "epoch": 0.96,
+   "test_acc": 0.50643359375,
+   "test_ppl": 8.642100676373703,
+   "light_log10": null
+  }
+ ]
+}

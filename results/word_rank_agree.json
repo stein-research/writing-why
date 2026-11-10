@@ -1,0 +1,24 @@
+{
+ "words_born-therm16p2_s0": {
+  "positions": 300,
+  "spearman_median": 0.9994773519163765,
+  "spearman_q10": 0.997039149598133,
+  "spearman_min": 0.9761904761904763,
+  "top1_same": 0.98,
+  "keff_median": 253.49686110474778,
+  "keff_q10": 194.05880602636998,
+  "keff_q90": 351.0860055185139,
+  "degree": 6400
+ },
+ "words_born-p2r16_s0": {
+  "positions": 300,
+  "spearman_median": 0.9476387500740154,
+  "spearman_q10": 0.8497546223206245,
+  "spearman_min": 0.6363636363636365,
+  "top1_same": 0.88,
+  "keff_median": 15.920222759741305,
+  "keff_q10": 7.1833993634673945,
+  "keff_q90": 28.33147259065517,
+  "degree": 400
+ }
+}
