@@ -9,7 +9,7 @@ University).
 | Train a model, then let it write | [demo/train.ipynb](demo/train.ipynb) |
 | Run it on your own computer, and the paper's analyses | [docs/run-locally.md](docs/run-locally.md) |
 | Paper | arXiv identifier to be added |
-| Earlier work | Reading Why, [arXiv:2611.05355](https://arxiv.org/abs/2611.05355) ([code](https://github.com/stein-research/reading-why)); Seeing Why, [arXiv:2611.01993](https://arxiv.org/abs/2611.01993) ([code](https://github.com/stein-research/seeing-why)) |
+| Series | 1. Seeing Why, [arXiv:2611.01993](https://arxiv.org/abs/2611.01993) ([code](https://github.com/stein-research/seeing-why)), pictures<br>2. Reading Why, [arXiv:2611.05355](https://arxiv.org/abs/2611.05355) ([code](https://github.com/stein-research/reading-why)), sentence pairs<br>3. Writing Why (this repository), a model that writes |
 
 ![The two Born language models, identical up to the readout](docs/born_pair.png)
 
