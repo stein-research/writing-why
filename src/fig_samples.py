@@ -58,7 +58,7 @@ def panel(tag, task, prompt, k, word, out, long=False):
     r = fig.canvas.get_renderer()
     lim = np.abs(ev[:T - 1]).max()
     L0, R0, y, lh = 0.02, 0.98, 0.95, 0.06
-    xc, prev, qo = L0, None, False
+    xc, prev, pp, qo = L0, None, None, False
     for t, w in enumerate(toks):
         if w == "":
             if ids[t] == mod.EOS:
@@ -67,7 +67,10 @@ def panel(tag, task, prompt, k, word, out, long=False):
         if w == '"':
             qo = not qo
             w = "“" if qo else "”"
-        space = not (prev is None or w in NOSP or w == "”" or prev in ("“", "("))
+        space = not (prev is None or w in NOSP or w == "”" or prev in ("“", "(")
+                     or (w.isdigit() and prev.isdigit())                       # 1 2 0 -> 120
+                     or (w.isdigit() and prev in (",", ".") and (pp or "").isdigit())   # 3, 5 0 0 -> 3,500
+                     or w == "-" or prev == "-")                               # four - mile -> four-mile
         style = dict(fontsize=9.5, va="baseline", ha="left", color=MUTED if t > T else INK)
         if t == T:
             style.update(fontweight="bold", bbox=dict(boxstyle="round,pad=0.22", fc="white", ec=INK, lw=1.1))
@@ -80,7 +83,7 @@ def panel(tag, task, prompt, k, word, out, long=False):
             xc, y = L0, y - lh
             txt.set_position((xc, y))
             bb = txt.get_window_extent(renderer=r).transformed(ax.transData.inverted())
-        xc, prev = bb.x1, w
+        xc, pp, prev = bb.x1, prev, w
     top = [t for t in np.argsort(-np.abs(ev[:T - 1])) if toks[t]][:5]
     yb, row, bx, bw = y - 0.1, 0.05, 0.25, 0.55
     big = abs(ev[top[0]])
