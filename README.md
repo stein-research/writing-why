@@ -77,15 +77,16 @@ exactly to an opto-electronic system (interferometer meshes, balanced detectors,
 
 ## A century of the Born rule
 
-> In 1926 Max Born gave the rule that a measurement finds an outcome with probability $|\text{amplitude}|^2$.
-> Decades earlier, Ludwig Boltzmann and J. Willard Gibbs had given another: a system at temperature $T$ is found in a
-> state of energy $E$ with probability proportional to $e^{-E/kT}$. The second is now the softmax at the end of every
-> language model.
+> In 1926, Max Born gave the rule that a measurement finds an outcome with probability given by the squared modulus of
+> its amplitude. Decades earlier, Ludwig Boltzmann and J. Willard Gibbs had developed the statistical foundations of
+> the weight $e^{-E/(k_BT)}$. The same exponential normalisation appears today as softmax in the readout of most
+> language models.
 >
-> In this work the two meet. A mask passed $n$ times turns Born's $|1+g\psi/n|^{2n}$ into the Gibbs weight
-> $e^{2g\mathrm{Re}\psi}$ as $n$ grows, through Leonhard Euler's $(1+x/n)^n \to e^x$, with $2g$ in the place of
-> the inverse temperature. At every finite $n$ the probability is still a Born probability, and the evidence for each
-> word can be computed exactly. We finish it in the rule's hundredth year, in thanks to Born, Boltzmann and Gibbs.
+> In this work, the two meet. Passing light through a suitably chosen mask $n$ times gives weights
+> $|1+g\psi/n|^{2n}$, which approach $e^{2g\operatorname{Re}\psi}$ through the limit $(1+z/n)^n\to e^z$, with $2g$
+> playing the role of inverse temperature. At every finite $n$, the readout remains a Born probability, while its word
+> evidence—with the normalisers held at their input values—admits exact finite quadrature. We complete this work in
+> the rule’s hundredth year, in gratitude to Born, Boltzmann and Gibbs.
 
 ## Use of AI tools
 
