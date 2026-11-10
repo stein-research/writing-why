@@ -87,6 +87,8 @@ exactly to an opto-electronic system (interferometer meshes, balanced detectors,
 > playing the role of inverse temperature. At every finite $n$, the readout remains a Born probability, while its word
 > evidence—with the normalisers held at their input values—admits exact finite quadrature. We complete this work in
 > the rule’s hundredth year, in gratitude to Born, Boltzmann and Gibbs.
+>
+> *The authors, 10 November 2026*
 
 ## Use of AI tools
 
