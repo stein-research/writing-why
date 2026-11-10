@@ -14,6 +14,14 @@ Without a GPU, install PyTorch's CPU-only build first (`pip install torch --inde
 https://download.pytorch.org/whl/cpu`). Every command below runs from the repository's root. A CPU is enough for
 sampling and for a few evidence vectors; training and the evaluations want a GPU.
 
+## The notebooks
+
+```bash
+pip install jupyterlab
+jupyter lab demo/demo.ipynb        # the paper's story and passage, their evidence, a prompt of your own
+jupyter lab demo/train.ipynb       # train one of the paper's models (needs TinyStories in data/ and a GPU)
+```
+
 ## Write a story, and rerun the paper's samples
 
 The trained models and the vocabularies are in `results/`, so sampling needs no dataset:

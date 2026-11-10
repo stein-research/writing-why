@@ -5,6 +5,8 @@ University).
 
 | | |
 |---|---|
+| Write a story and see why each word was chosen | [demo/demo.ipynb](demo/demo.ipynb) |
+| Train a model, then let it write | [demo/train.ipynb](demo/train.ipynb) |
 | Run it on your own computer, and the paper's analyses | [docs/run-locally.md](docs/run-locally.md) |
 | Paper | arXiv identifier to be added |
 | Earlier work | Reading Why, [arXiv:2611.05355](https://arxiv.org/abs/2611.05355) ([code](https://github.com/stein-research/reading-why)); Seeing Why, [arXiv:2611.01993](https://arxiv.org/abs/2611.01993) ([code](https://github.com/stein-research/seeing-why)) |
@@ -63,6 +65,7 @@ exactly to an opto-electronic system (interferometer meshes, balanced detectors,
 
 | | |
 |---|---|
+| [`demo/`](demo/) | the two notebooks and their engine, [`writing_why.py`](demo/writing_why.py) |
 | [`src/`](src/) | the models, the trainer, sampling, the exact evidence and the evaluations, the optical compile and its mesh check, and the scripts that draw the figures |
 | [`results/`](results/) | the trained models of the paper (three seeds of each model in Table 1 and of the softmax-limit readout, the pass-count ladder, the mesh fine-tune), the evaluation records, the samples' token ids, and the two vocabularies |
 | [`data/`](data/) | where TinyStories V2 and WikiText-103 go (downloaded and checked, not stored) |
