@@ -53,6 +53,8 @@ numerical completeness gap is below $6\times10^{-11}$.
 
 ![Why the 16-copy model wrote "park"](docs/story.png)
 
+Why the model wrote "park": each earlier word's exact share, deeper red for a larger push; grey words came after.
+
 ## What the paper finds
 
 | | 16 copies | one copy | softmax transformer |
