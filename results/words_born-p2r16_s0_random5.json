@@ -1,0 +1,15 @@
+{
+ "born": "words_born-p2r16_s0",
+ "softmax": "words_softmax-w96_lr0.02w_s0",
+ "results": {
+  "born": {
+   "random5": 0.159,
+   "ci95": [
+    0.13749583333333334,
+    0.18100000000000002
+   ],
+   "draws": 20,
+   "positions": 300
+  }
+ }
+}

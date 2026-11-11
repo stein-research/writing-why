@@ -1,0 +1,33 @@
+{
+ "model": "softmax-w96",
+ "task": "wikiwords",
+ "epochs": 1,
+ "lr": 0.02,
+ "batch": 64,
+ "n_train": 1000000,
+ "seed": 0,
+ "tag": "wiki_softmax-w96_lr0.02w_s0",
+ "ckpt_every": 0,
+ "opt": "adam",
+ "light": 0.0,
+ "light_windows": 16,
+ "phase_noise": 0.0,
+ "init": "",
+ "warmup": 0.02,
+ "params": 1030784,
+ "light_log10": null,
+ "test_acc": 0.3020703125,
+ "test_ppl": 41.94934960631679,
+ "seconds": 609.8134014606476,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 4.1032053861236575,
+   "test_acc": 0.3020703125,
+   "test_ppl": 41.94934960631679
+  }
+ ],
+ "known_acc": 0.2619049726495424,
+ "known_ppl": 54.63585193851319,
+ "unk_share": 0.11735937744379044
+}

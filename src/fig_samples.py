@@ -1,4 +1,4 @@
-"""Appendix figure: exact evidence (BEW) on the selected samples of the 16-copy model, one TinyStories story and one
+"""Appendix figure: exact evidence (BEW) on the selected samples of the 16-pass model, one TinyStories story and one
 WikiText-103 passage (sample.py --dump results/appendix_draws_long.json and results/appendix_draws.json; draws chosen by eye from the first five, see
 paper Appendix B). Each panel explains the model's probability of one copied word at its second occurrence, with
 every normaliser held (float64, degree // 2 nodes, GPU); chips as Fig. 2 (red raised, blue lowered), the current word

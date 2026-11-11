@@ -2,7 +2,7 @@
 exact Born evidence per word (BEW).
 
     import writing_why as ww
-    m = ww.load("words_born-therm16p2_s0")            # the 16-copy model (TinyStories)
+    m = ww.load("words_born-therm16p2_s0")            # the 16-pass model (TinyStories)
     story = ww.write(m, "Once upon a time", seed=0, draws=10, only=10)
     print(story.text, story.checksum)                  # the paper's Appendix B story, checksum 9b8ef1d6e5ba
     r = ww.explain(m, story.ids, story.find("ball", 2)) # the second "ball"
@@ -11,7 +11,7 @@ exact Born evidence per word (BEW).
 The sampling loop is src/sample.py's, step for step, so a seed and a draw number give the same story there and here.
 BEW: integrated gradients of P(w) - 1/V with every normaliser held, by degree // 2 Gauss-Legendre nodes, which is
 exact for that polynomial; the current word stays at its amplitude, so the earlier words' shares sum to
-P(w) - 1/V - F_q (F_q, the query-only baseline term, is tiny for the 16-copy model).
+P(w) - 1/V - F_q (F_q, the query-only baseline term, is tiny for the 16-pass model).
 """
 import hashlib
 import html

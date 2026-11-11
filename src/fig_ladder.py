@@ -1,6 +1,6 @@
 """Figure: the readout ladder - accuracy and perplexity against the number of passes n of the readout
 P(w) ∝ |1 + g psi_w / n|^(2n) (one mask passed n times), same body and recipe at every n (TinyStories V2 words,
-1M windows, lr 3.2e-2, warm-up 0.02), scored on fresh_test.py's 2,000 fresh test windows. n = 8 and 16: mean of three seeds (bars: their range). The one-copy readout without
+1M windows, lr 3.2e-2, warm-up 0.02), scored on fresh_test.py's 2,000 fresh test windows. n = 8 and 16: mean of three seeds (bars: their range). The plain-readout readout without
 the reference beam (|psi|^2) is drawn at n = 1 for comparison: the reference beam alone changes nothing. The softmax
 transformer of the same size is a separately trained model (three seeds), drawn as a reference line.
 
@@ -33,7 +33,7 @@ runs[16] = [get(f"words_born-therm16p2_s{s}") for s in range(3)]
 runs[8] = [get(f"words_born-therm8p2_s{s}") for s in range(3)]   # three seeds since 2026-11-10 (review)
 linhead = [get(f"words_born-linhead_s{s}") for s in range(3)]      # control: the same body, linear softmax head
 plain = get("words_born-p2r16_s0")
-soft = [get(f"words_softmax-w96_s{s}") for s in range(3)]
+soft = [get(f"words_softmax-w96_lr0.02w_s{s}") for s in range(3)]   # the re-tuned baseline (lr 2e-2, warm-up)
 
 fig, axs = plt.subplots(1, 2, figsize=(7.0, 2.7))
 for ax, key, lab, scale in ((axs[0], "test_acc", "test accuracy (%)", 100), (axs[1], "test_ppl", "perplexity", 1)):

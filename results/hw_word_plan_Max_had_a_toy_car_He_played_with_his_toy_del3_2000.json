@@ -1,0 +1,90 @@
+{
+ "tag": "words_born-therm16p2_s0",
+ "prompt": "Max had a toy car . He played with his toy",
+ "words": [
+  "Max",
+  "had",
+  "a",
+  "toy",
+  "car",
+  ".",
+  "He",
+  "played",
+  "with",
+  "his",
+  "toy"
+ ],
+ "deleted": 3,
+ "shots": 2000,
+ "calibration_circuits": 32,
+ "draws": 2,
+ "exact": {
+  "top": [
+   [
+    "car",
+    0.631283781309347
+   ],
+   [
+    "cars",
+    0.21541673783890994
+   ],
+   [
+    "all",
+    0.012875949897454567
+   ]
+  ]
+ },
+ "same_word_rate": 1.0,
+ "p_word_median": 0.5706676420950695,
+ "p_word_range": [
+  0.47676103102812634,
+  0.6645742531620126
+ ],
+ "evidence_corr_median": null,
+ "evidence_corr_min": null,
+ "evidence_corr_p10": null,
+ "rows": [
+  {
+   "same_word": true,
+   "p_word": 0.6645742531620126,
+   "top": "car",
+   "calibration": [
+    {
+     "block": 1,
+     "slope": 0.7924135687828406,
+     "offset": 0.012862127436223558,
+     "n": 32,
+     "resid_sd": 0.027273765904088507
+    },
+    {
+     "block": 2,
+     "slope": 0.7932940362597477,
+     "offset": 0.005404884918780725,
+     "n": 32,
+     "resid_sd": 0.036597868830619294
+    }
+   ]
+  },
+  {
+   "same_word": true,
+   "p_word": 0.47676103102812634,
+   "top": "car",
+   "calibration": [
+    {
+     "block": 1,
+     "slope": 0.8011299732803934,
+     "offset": 0.003642615521579279,
+     "n": 32,
+     "resid_sd": 0.027066539211590246
+    },
+    {
+     "block": 2,
+     "slope": 0.8019761712170289,
+     "offset": -0.003941204073113059,
+     "n": 32,
+     "resid_sd": 0.029106488148563738
+    }
+   ]
+  }
+ ]
+}

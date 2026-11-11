@@ -1,6 +1,6 @@
-"""Figure: Writing Why's two Born Transformers side by side, drawn as optics, bottom to top: the one-copy readout (every
-step a single Born measurement) and the 16-copy readout, identical up to the readout, where the light passes one mask 16 times
-before the camera (|1 + g psi / 16|^32: still a Born probability, of 16 copies). As compile_optics.py builds it:
+"""Figure: Writing Why's two Born Transformers side by side, drawn as optics, bottom to top: the plain-readout readout (every
+step a single Born measurement) and the 16-pass readout, identical up to the readout, where the light passes one mask 16 times
+before the camera (|1 + g psi / 16|^32: still a Born probability). As compile_optics.py builds it:
 the controller computes psi from block 2's 64 measured numbers and writes one SLM - psi itself (one pass) or
 1 + g psi / 16 (16 passes through a multipass cell). Both write one word at a time.
 Style and helpers from fig_arch.py (Reading Why's fig_compare3.py). Numbers: mean and sd of three seeds on fresh_test.py's fresh test windows (TinyStories words, 1M windows).
@@ -135,8 +135,8 @@ for name, y0, y1 in BANDS:
     ax.text(0.3, (y0 + y1) / 2, name, rotation=90, ha="center", va="center", fontsize=16, color=MUTED,
             style="italic")
 
-HEAD = [(C1, "Born Transformer, one copy", "every nonlinearity a quadratic detection;\nthe camera reads the field once"),
-        (C2, "Born Transformer, 16 copies", "the same up to the readout: one mask passed\n16 times, as 16 copies in distribution")]
+HEAD = [(C1, "Born Transformer, plain readout", "every nonlinearity on the light a quadratic detection;\nthe camera reads the field once"),
+        (C2, "Born Transformer, 16 passes", "the same up to the readout: one mask passed\n16 times before the camera")]
 for x, t, s in HEAD:
     ax.text(x, 16.0, t, ha="center", va="center", fontsize=19.5, fontweight="bold", color=INK)
     ax.text(x, 15.7, s, ha="center", va="top", fontsize=16, color=MUTED, style="italic", linespacing=1.25)

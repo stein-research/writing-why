@@ -1,0 +1,1741 @@
+{
+ "purpose": "Writing Why: attention of the 16-pass model for the word after \"Sue had a red kite . She flew her\" with word 4 deleted by Hadamard tests, block 2",
+ "backend": "ibm_kingston",
+ "shots": 2000,
+ "n_circuits": 68,
+ "repeat": 0,
+ "circuit_keys": [
+  "b76a77e5df01452f",
+  "dcafb6892e68d9f6",
+  "810861552cb9a732",
+  "b4524fece8a4d013",
+  "b83a998da2734c60",
+  "a6e6ec5ad187259c",
+  "0f9d979219bce216",
+  "e11ad5914d2335e5",
+  "eb239aead96a537d",
+  "a740a6fcaeea77a5",
+  "2ac46f24b3a859dc",
+  "f04cc231f0c8f25f",
+  "c3f42c58f8bc80ff",
+  "537aca1470924466",
+  "ff7c103e71410e93",
+  "05cd996ebf6f7f3f",
+  "d6b9dd56f37067c0",
+  "5eb336490b1c5a2f",
+  "3eb1a01c02c2159a",
+  "a6d7058ba8d7e2b1",
+  "0b8bb96797cd4d9b",
+  "9afa25e1d14994e8",
+  "8eb20adfd5c7a076",
+  "1b8dea9429c9eb5c",
+  "a051644a729c30af",
+  "236645044814f006",
+  "f7b0fea536da5079",
+  "2f5db3fef977f161",
+  "06713e4aa91313d4",
+  "70e7b9a89a6cc91f",
+  "0f0ae40aa05afa2a",
+  "ec801703e39da362",
+  "fdaeff533e9578ff",
+  "0727d2a195dcbcc3",
+  "d7ca22fcfb812b1a",
+  "8d1c6ef6575006ba",
+  "071d1fcfde764da3",
+  "57b4ee3050912b3f",
+  "6ed8e16091049c81",
+  "b1cf6971e0ccb2e5",
+  "784e14ee9a683d99",
+  "b404f962c1f72e0e",
+  "1f689ec129d7250e",
+  "482d920f1be506ed",
+  "7437865e682de482",
+  "44ddd8614bf9b238",
+  "898d963e825d6692",
+  "6fca197671796aed",
+  "b70c6f064c091bb0",
+  "1050dcf6db0e8bee",
+  "41fdb88138bfbc48",
+  "682371934cc27c70",
+  "181e33265c03398d",
+  "46bd33e62566b2f7",
+  "7654e498114b5846",
+  "3bc57321bdc477d9",
+  "c741c028a348444d",
+  "4585f9587a9ab741",
+  "62b0dc9853efec49",
+  "7ec3b632ce47a84a",
+  "602d4223031fdd4a",
+  "5374b29b211be2d0",
+  "33f01f9b5104fde9",
+  "e7ae9f9bfa21e711",
+  "c765bf55f9738c65",
+  "a1323f0e1fc39be7",
+  "65b4ed10f2e67320",
+  "ac6ebd01c0e4f419"
+ ],
+ "command": "hw_word.py --prompt Sue had a red kite . She flew her --delete 4 --no-evidence --device ibm_kingston --submit",
+ "code": {
+  "git_commit": "5d0a6f93157263ba8dafe5a7e2ca57edb92c95be",
+  "uncommitted_changes": true
+ },
+ "versions": {
+  "python": "3.12.3",
+  "qiskit": "2.6.1",
+  "qiskit_ibm_runtime": "0.51.0"
+ },
+ "inputs": [
+  {
+   "file": "results/words_born-therm16p2_s0.pt",
+   "sha256": "afd5ef3d96955594909f390b942a573a0383f075d71eef1b05e09709a792053d"
+  }
+ ],
+ "transpile": {
+  "optimization_level": 3,
+  "seeds_tried": 8,
+  "per_circuit": [
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9255784670274673,
+    "seed0": 0.9193411461429905
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.919355816470888
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9193411461429905
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925013659006574,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9256388483067837,
+    "seed0": 0.9195877788195355
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9195877788195355
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9256388483067837,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9195877788195355
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925013659006574,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925013659006574,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.919355816470888
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925405359599998,
+    "seed0": 0.9195277922636228
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.919355816470888
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925013659006574,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9256388483067837,
+    "seed0": 0.9195877788195355
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9256536191298633,
+    "seed0": 0.9195731047901724
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9255932368870164,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9195731047901724
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9195877788195355
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925405359599998,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925405359599998,
+    "seed0": 0.919355816470888
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925405359599998,
+    "seed0": 0.9195131191914762
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9256388483067837,
+    "seed0": 0.9195877788195355
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9195877788195355
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925405359599998,
+    "seed0": 0.9195877788195355
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9256388483067837,
+    "seed0": 0.9195877788195355
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9193411461429905
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9256388483067837,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.925405359599998,
+    "seed0": 0.9195131191914762
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9254804976469816,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9256536191298633,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9194157918077429
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.9252470488835182,
+    "seed0": 0.9191838728421331
+   }
+  ]
+ },
+ "dynamical_decoupling": "XY4",
+ "circuits": [
+  {
+   "note": "block 2 head 0 q8 k0 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 91,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k0 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 91,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k1 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 93,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k1 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 166,
+   "ops": {
+    "rz": 95,
+    "sx": 94,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k2 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 91,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k2 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k3 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k3 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k5 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k5 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 91,
+    "cz": 37,
+    "x": 2,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k6 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 93,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k6 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 168,
+   "ops": {
+    "sx": 95,
+    "rz": 90,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k7 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 90,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k7 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 93,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k8 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 93,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 k8 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 167,
+   "ops": {
+    "sx": 95,
+    "rz": 90,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 kref Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 94,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 0 q8 kref Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 90,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k0 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 95,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k0 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 89,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k1 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 90,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k1 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 93,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k2 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 88,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k2 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 93,
+    "cz": 37,
+    "x": 2,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k3 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 91,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k3 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "x": 2,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k5 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k5 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 168,
+   "ops": {
+    "sx": 95,
+    "rz": 89,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k6 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 91,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k6 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 94,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k7 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 90,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k7 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 94,
+    "cz": 37,
+    "x": 2,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k8 Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 168,
+   "ops": {
+    "sx": 95,
+    "rz": 91,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 k8 Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 167,
+   "ops": {
+    "sx": 95,
+    "rz": 92,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 kref Re",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 head 1 q8 kref Im",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 94,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 0 ideal -0.450947",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 1 ideal +0.331963",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 94,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 2 ideal -0.186269",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 166,
+   "ops": {
+    "sx": 94,
+    "rz": 91,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 3 ideal -0.389029",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 93,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 4 ideal +0.337028",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 88,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 5 ideal +0.391265",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 6 ideal +0.739400",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 93,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 7 ideal -0.508621",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 89,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 8 ideal +0.903984",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 88,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 9 ideal -0.513112",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 93,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 10 ideal -0.960912",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 95,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 11 ideal -0.598077",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 167,
+   "ops": {
+    "sx": 95,
+    "rz": 92,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 12 ideal -0.529859",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 167,
+   "ops": {
+    "sx": 95,
+    "rz": 92,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 13 ideal +0.546363",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 14 ideal -0.307569",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "rz": 96,
+    "sx": 96,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 15 ideal +0.833294",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 168,
+   "ops": {
+    "sx": 95,
+    "rz": 91,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 16 ideal -0.633650",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 168,
+   "ops": {
+    "sx": 95,
+    "rz": 90,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 17 ideal +0.249203",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 91,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 18 ideal -0.847557",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 19 ideal +0.058198",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 20 ideal -0.533013",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 167,
+   "ops": {
+    "sx": 95,
+    "rz": 89,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 21 ideal +0.369878",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 168,
+   "ops": {
+    "sx": 95,
+    "rz": 89,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 22 ideal -0.944021",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 94,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 23 ideal -0.343002",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 24 ideal +0.405027",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 91,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 25 ideal -0.656814",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 167,
+   "ops": {
+    "sx": 95,
+    "rz": 91,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 26 ideal -0.066387",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 167,
+   "ops": {
+    "sx": 95,
+    "rz": 91,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 27 ideal -0.288629",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 28 ideal -0.423784",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 167,
+   "ops": {
+    "sx": 95,
+    "rz": 90,
+    "cz": 37,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 29 ideal +0.317415",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 90,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 30 ideal +0.105503",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 170,
+   "ops": {
+    "sx": 96,
+    "rz": 94,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  },
+  {
+   "note": "block 2 random calibration 31 ideal -0.934080",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    72,
+    71,
+    73,
+    58,
+    70
+   ],
+   "depth": 169,
+   "ops": {
+    "sx": 96,
+    "rz": 92,
+    "cz": 37,
+    "x": 1,
+    "measure": 1
+   }
+  }
+ ],
+ "status": "done",
+ "job_id": "dbq0av8ou4as73cuc3jg",
+ "created": "2026-11-11T06:04:45+00:00",
+ "finished": "2026-11-11T06:16:30+00:00",
+ "quantum_seconds": 38,
+ "ibm_metrics": {
+  "caller": "qiskit_ibm_runtime~sampler.py",
+  "qiskit_version": "qiskit_ibm_runtime-0.51.0,qiskit-2.6.1*,qiskit_aer-0.18.2*",
+  "timestamps": {
+   "created": "2026-11-11T06:04:45.468839Z",
+   "finished": "2026-11-11T06:16:28.47575Z",
+   "running": "2026-11-11T06:15:39.682036Z"
+  },
+  "usage": {
+   "qpu_charge_time_seconds": 38,
+   "value": 0.63007,
+   "unit": "resource_units",
+   "status": "complete",
+   "details": [
+    {
+     "value": 0.63007,
+     "unit": "resource_units",
+     "metric": {
+      "id": "caffe3ca-729c-5750-8777-df63bbf8bfd9",
+      "value": 38
+     }
+    }
+   ]
+  },
+  "circuits_execution_time_ns": 35967415552
+ },
+ "result_metadata": {
+  "execution": {
+   "execution_spans": "ExecutionSpans([DoubleSliceSpan(<start='2026-11-11 06:15:46', stop='2026-11-11 06:16:23', size=136000>)])"
+  },
+  "version": 2
+ }
+}

@@ -1,0 +1,108 @@
+{
+ "tag": "words_born-therm16p2_s0",
+ "prompt": "Lily went to the park . At the",
+ "words": [
+  "Lily",
+  "went",
+  "to",
+  "the",
+  "park",
+  ".",
+  "At",
+  "the"
+ ],
+ "deleted": 4,
+ "shots": 2000,
+ "calibration_circuits": 32,
+ "draws": 3,
+ "exact": {
+  "top": [
+   [
+    "park",
+    0.3912619241772716
+   ],
+   [
+    "end",
+    0.38544416249259317
+   ],
+   [
+    "store",
+    0.042771905794526374
+   ]
+  ]
+ },
+ "same_word_rate": 0.3333333333333333,
+ "p_word_median": 0.3004367756359424,
+ "p_word_range": [
+  0.24094818098833484,
+  0.45603770112873365
+ ],
+ "evidence_corr_median": null,
+ "evidence_corr_min": null,
+ "evidence_corr_p10": null,
+ "rows": [
+  {
+   "same_word": true,
+   "p_word": 0.45603770112873365,
+   "top": "park",
+   "calibration": [
+    {
+     "block": 1,
+     "slope": 0.7925878926092967,
+     "offset": 0.0075439873358725,
+     "n": 32,
+     "resid_sd": 0.03297791510184717
+    },
+    {
+     "block": 2,
+     "slope": 0.7875205349208565,
+     "offset": 0.008945954092693421,
+     "n": 32,
+     "resid_sd": 0.03370942028476931
+    }
+   ]
+  },
+  {
+   "same_word": false,
+   "p_word": 0.24094818098833484,
+   "top": "end",
+   "calibration": [
+    {
+     "block": 1,
+     "slope": 0.8025734188899789,
+     "offset": 0.007252164056524672,
+     "n": 32,
+     "resid_sd": 0.03133448900469612
+    },
+    {
+     "block": 2,
+     "slope": 0.7833836843746158,
+     "offset": 0.0052450566361220965,
+     "n": 32,
+     "resid_sd": 0.03058211124337349
+    }
+   ]
+  },
+  {
+   "same_word": false,
+   "p_word": 0.3004367756359424,
+   "top": "end",
+   "calibration": [
+    {
+     "block": 1,
+     "slope": 0.7854163038320687,
+     "offset": 0.010307268041041751,
+     "n": 32,
+     "resid_sd": 0.031541743948679236
+    },
+    {
+     "block": 2,
+     "slope": 0.7880332102571693,
+     "offset": 0.007526408862448265,
+     "n": 32,
+     "resid_sd": 0.02665890022145667
+    }
+   ]
+  }
+ ]
+}

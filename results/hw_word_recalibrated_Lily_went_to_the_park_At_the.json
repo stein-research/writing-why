@@ -1,0 +1,36 @@
+{
+ "tag": "words_born-therm16p2_s0",
+ "prompt": "Lily went to the park . At the",
+ "deleted": -1,
+ "as_run": [
+  [
+   "park",
+   0.9483701426100359
+  ],
+  [
+   "end",
+   0.008160511723627648
+  ],
+  [
+   "top",
+   0.008147606137446563
+  ]
+ ],
+ "recalibrated": [
+  [
+   "park",
+   0.9483701426100359
+  ],
+  [
+   "end",
+   0.008160511723627677
+  ],
+  [
+   "top",
+   0.008147606137446563
+  ]
+ ],
+ "p_word_as_run": 0.9483701426100359,
+ "p_word_recalibrated": 0.9483701426100359,
+ "kite_or_deleted_word": null
+}

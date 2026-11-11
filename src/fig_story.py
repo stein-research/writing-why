@@ -1,4 +1,4 @@
-"""Figure: a story the 16-copy Born Transformer wrote, with the exact evidence (BEW) for one word it chose.
+"""Figure: a story the 16-pass Born Transformer wrote, with the exact evidence (BEW) for one word it chose.
 
 The story is sample.py's third draw from words_born-therm16p2_s0 (prompt "Once upon a time", seed 0, T 0.5,
 top-p 0.9, up to 120 words), regenerated here on the CPU in float32, as it was first drawn. The explained word is "park" in "At the park" (position 41); BEW in float64 with the model's own

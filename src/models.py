@@ -381,6 +381,12 @@ class CausalBorn(nn.Module):
                 r = self.mean_gain * z.cumsum(1) / (mass_prefix[..., None] + 1e-30).to(h.dtype)
                 kr, vr = (torch.einsum("btd,ed->bte", r, m[i]).unflatten(-1, (self.heads, dh)) for i in (1, 2))
                 orr = (q.conj() * kr).sum(-1).abs().transpose(1, 2)             # [B, H, L]
+            hook = getattr(self, "overlap_hook", None)
+            if hook is not None:                       # overlaps read elsewhere (hw_word.py: Hadamard tests on qubits)
+                ov_m, orr_m = hook(blk, q, k, kr if self.ref else None)          # complex [B, H, L, L], [B, H, L]
+                ov = ov_m.abs().to(ov.dtype) * causal
+                if self.ref:
+                    orr = orr_m.abs().to(orr.dtype)
             # The loss does not see the scale of the state, which drifts (Z reached 1e24 and |<q|k>|^4 overflowed
             # float32); each row is divided by its largest overlap before any power, a held constant, so w is
             # unchanged exactly

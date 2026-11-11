@@ -46,6 +46,9 @@ p.add_argument("--nodes", type=int, default=512, help="softmax IG nodes (Reading
 p.add_argument("--k", type=int, default=128, help="BEW nodes per pass")
 p.add_argument("--bigram-windows", type=int, default=300_000)
 p.add_argument("--born-only", action="store_true", help="skip the softmax model (its numbers do not depend on the Born one)")
+p.add_argument("--random5", type=int, default=0, help="only the random bottom-5 baseline: delete 5 random context "
+                                                         "words this many times per position (referee M5)")
+p.add_argument("--suffix", default="", help="added to the output name (results/<born>_word_evidence<suffix>.json)")
 args = p.parse_args()
 dev = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -144,6 +147,29 @@ def soft_gxi(model, ids, pos, target):
 
 born, soft = load(args.born), (None if args.born_only else load(args.softmax))
 NAMES = ("born",) if args.born_only else ("born", "softmax")
+if args.random5:
+    # the baseline for bottom-5: five context words chosen at random (not by any ranking), deleted with the
+    # denominators recomputed, as bottom-5 deletes them; the share of draws that change the prediction, per position
+    g5 = torch.Generator().manual_seed(5)
+    res = {}
+    for name, model in [m for m in (("born", born), ("softmax", soft)) if m[0] in NAMES]:
+        rates = []
+        for r, i, j in found:
+            ids = torch.tensor(xt[r:r + 1, :i + 1], device=dev)
+            with torch.no_grad():
+                tgt = E.predict(model, ids)[:, i]
+                keep = torch.ones(args.random5, i + 1, dtype=torch.bool, device=dev)
+                for k in range(args.random5):
+                    keep[k, torch.randperm(i, generator=g5)[:5].to(dev)] = False
+                rates.append(float((score(model, ids, keep, i, tgt)[1] != tgt[0]).double().mean()))
+        rates = np.array(rates)
+        boot = [rng_m for rng_m in (np.random.default_rng(0).choice(rates, (2000, len(rates))).mean(1),)][0]
+        res[name] = dict(random5=float(rates.mean()), ci95=[float(np.quantile(boot, 0.025)), float(np.quantile(boot, 0.975))],
+                         draws=args.random5, positions=len(rates))
+        print(name, res[name], flush=True)
+    json.dump(dict(born=args.born, softmax=args.softmax, results=res),
+              open(f"results/{args.born}_random5{args.suffix}.json", "w"), indent=1)
+    raise SystemExit
 gen = torch.Generator().manual_seed(0)
 rows = []
 t0 = time.time()
@@ -223,4 +249,4 @@ print(f"born BEW gap: max {max(gaps):.1e}, median {np.median(gaps):.1e}; softmax
       f"median {np.median(igg):.1e}")
 json.dump(dict(born=args.born, softmax=args.softmax, positions=len(rows), results=out, rows=rows,
                born_gap_max=max(gaps), softmax_ig_gap_max=max(igg)),
-          open(f"results/{args.born}_word_evidence.json", "w"), indent=1)
+          open(f"results/{args.born}_word_evidence{args.suffix}.json", "w"), indent=1)

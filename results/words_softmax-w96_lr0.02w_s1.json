@@ -1,0 +1,33 @@
+{
+ "model": "softmax-w96",
+ "task": "tinywords",
+ "epochs": 1,
+ "lr": 0.02,
+ "batch": 64,
+ "n_train": 1000000,
+ "seed": 1,
+ "tag": "words_softmax-w96_lr0.02w_s1",
+ "ckpt_every": 0,
+ "opt": "adam",
+ "light": 0.0,
+ "light_windows": 16,
+ "phase_noise": 0.0,
+ "init": "",
+ "warmup": 0.02,
+ "params": 1030784,
+ "light_log10": null,
+ "test_acc": 0.5085625,
+ "test_ppl": 8.412827478030763,
+ "seconds": 615.5140955448151,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 2.4733463883590696,
+   "test_acc": 0.5085625,
+   "test_ppl": 8.412827478030763
+  }
+ ],
+ "known_acc": 0.5093122256219237,
+ "known_ppl": 8.37420891200437,
+ "unk_share": 0.0016484374646097422
+}

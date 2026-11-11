@@ -1,4 +1,4 @@
-"""The light at each detection stage of the compiled 16-copy model (compile_optics.inner's stage report), saved:
+"""The light at each detection stage of the compiled 16-pass model (compile_optics.inner's stage report), saved:
 the text's photons per balanced pair come from here (pair light x photons per slot).
 
     python optics_stages.py [--n 8]        # writes results/optics_stages.json

@@ -1,0 +1,44 @@
+{
+ "tag": "words_born-therm16p2_s0",
+ "prompt": "Sue had a red kite . She flew her",
+ "deleted": 4,
+ "as_run": [
+  [
+   "favorite",
+   0.12189800416439692
+  ],
+  [
+   "house",
+   0.10251348791412185
+  ],
+  [
+   "toy",
+   0.08004361380925104
+  ]
+ ],
+ "recalibrated": [
+  [
+   "favorite",
+   0.12040846520455481
+  ],
+  [
+   "house",
+   0.10471724279740666
+  ],
+  [
+   "toy",
+   0.07933999042771205
+  ]
+ ],
+ "p_word_as_run": 0.12189800416439692,
+ "p_word_recalibrated": 0.12040846520455481,
+ "kite_or_deleted_word": {
+  "word": "kite",
+  "exact": 0.006318644623445415,
+  "exact_rank": 19,
+  "as_run": 0.011107955030099337,
+  "as_run_rank": 13,
+  "recalibrated": 0.01129124621265067,
+  "recalibrated_rank": 13
+ }
+}

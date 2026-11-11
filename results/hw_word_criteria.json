@@ -1,0 +1,18 @@
+{
+ "fixed": "2026-11-11, before any job was sent (the owner: 'Yes, these criteria')",
+ "device": "ibm_kingston, 2,000 shots, 32 depth-matched calibration circuits per block (Hadamard tests of random state pairs with known Re<a|b>); one job per block",
+ "model": "words_born-therm16p2_s0 (16 passes), attention overlaps read by Hadamard tests, everything else exact",
+ "runs": [
+  {"prompt": "Lily went to the park . At the", "exact": "park 0.95",
+   "pass": "the device run gives the same word, and BEW with the device's row sums correlates with the exact BEW at r >= 0.95",
+   "plan": "results/hw_word_plan_Lily_went_to_the_park_At_the_2000.json: same word 30/30, r median 0.983, min 0.950"},
+  {"prompt": "Sue had a red kite . She flew her", "exact": "kite 0.67",
+   "pass": "the same word, and r >= 0.95",
+   "plan": "results/hw_word_plan_Sue_had_a_red_kite_She_flew_her_2000.json: same word 30/30, r median 0.994, min 0.981"},
+  {"prompt": "Sue had a red kite . She flew her", "deleted": "word 4, kite (amplitude 0)", "exact": "favorite 0.14",
+   "pass": "the device run does not answer kite; whether it answers favorite is reported, not a criterion",
+   "plan": "results/hw_word_plan_Sue_had_a_red_kite_She_flew_her_del4_2000.json: not kite 30/30, favorite 24/30"}
+ ],
+ "noise_model_of_the_plan": "Reading Why's ibm_kingston runs (3-10 Nov 2026): visibility 0.77-0.82 per block, readout offset +0.004 to +0.012, a row's own factor 1 + 0.035 N(0,1), a circuit's own error 0.0165 N(0,1), binomial shots",
+ "report": "every outcome is reported as it comes, pass or fail"
+}
