@@ -45,6 +45,7 @@ p.add_argument("--n", type=int, default=300, help="copy positions (one per windo
 p.add_argument("--nodes", type=int, default=512, help="softmax IG nodes (Reading Why: 512)")
 p.add_argument("--k", type=int, default=128, help="BEW nodes per pass")
 p.add_argument("--bigram-windows", type=int, default=300_000)
+p.add_argument("--softmax-only", action="store_true", help="skip the Born model (e.g. the softmax IG again with more nodes)")
 p.add_argument("--born-only", action="store_true", help="skip the softmax model (its numbers do not depend on the Born one)")
 p.add_argument("--random5", type=int, default=0, help="only the random bottom-5 baseline: delete 5 random context "
                                                          "words this many times per position (referee M5)")
@@ -146,7 +147,7 @@ def soft_gxi(model, ids, pos, target):
 
 
 born, soft = load(args.born), (None if args.born_only else load(args.softmax))
-NAMES = ("born",) if args.born_only else ("born", "softmax")
+NAMES = ("born",) if args.born_only else ("softmax",) if args.softmax_only else ("born", "softmax")
 if args.random5:
     # the baseline for bottom-5: five context words chosen at random (not by any ranking), deleted with the
     # denominators recomputed, as bottom-5 deletes them; the share of draws that change the prediction, per position
@@ -243,7 +244,7 @@ for subset in ("all", "copied"):
               f"current word lowest {f(res['curr_lowest'])}")
         for m in ("evidence", "gradxinput", "attention", "leaveoneout", "random"):
             print(f"  {m:12s} top1 {f(res[m + '_top1'])}  topk {f(res[m + '_topk'])}  flip1 {f(res[m + '_flip1'])}")
-gaps = [rw["born_gap"] for rw in rows]
+gaps = [rw["born_gap"] for rw in rows] if "born" in NAMES else [float("nan")]
 igg = [rw["softmax_ig_gap"] for rw in rows] if not args.born_only else [float("nan")]
 print(f"born BEW gap: max {max(gaps):.1e}, median {np.median(gaps):.1e}; softmax IG gap: max {max(igg):.1e}, "
       f"median {np.median(igg):.1e}")

@@ -1,0 +1,280 @@
+# hw_word.py: the committed script (5d0a6f9, 04:43:31 UTC, with results/hw_word_criteria.json) against the next
+# commit (d04ff9e), which holds the changes the kite and deletion jobs ran with (uncommitted at the time:
+# per-run calibration states, ledger reuse) and the analysis modes added after the runs (--bootstrap, --nulls,
+# --recalibrate). Its 8 removed lines are the only changes to code that existed when the criteria were fixed;
+# none touches the analysis (offset, slope fit, division by the slope squared). Private paths as in the original.
+diff --git a/hw_word.py b/hw_word.py
+index 030bc65..b5b07bd 100644
+--- a/hw_word.py
++++ b/hw_word.py
+@@ -26,6 +26,7 @@ measured ones (models.Frozen scaled per row, HwFrozen below). Results to runs/hw
+ """
+ import json
+ import math
++import zlib
+ import pathlib
+ import sys
+ 
+@@ -80,22 +81,67 @@ class Device:
+         self.ij, self.backend_name, self.keys = ibm_jobs, backend_name, keys
+         self.accounts = [int(x) for x in str(account).split(",")]
+         self.submit, self.purpose, self.folders, self.measured = submit, purpose, [], 0
++        self.reused, self.sources_by_block = [], []
+ 
+     def run(self, circs, notes, block):
+-        counts, folder = self.ij.sampler_counts(circs, self.backend_name, shots, self.keys,
++        # a circuit already measured in another job of this ledger (the same states: e.g. a word's overlap with itself
++        # in block 1, which no other word has reached yet) is not sent again; its counts are taken from that job
++        old = [self.ij.lookup(c, self.backend_name, shots) for c in circs]
++        new = [n for n, o in enumerate(old) if o is None]
++        seen = self.ij.measured(self.backend_name, shots)        # where each reused circuit was measured
++        self.sources = [None if o is None else str(seen[self.ij.circuit_key(c, self.backend_name, shots)][0])
++                        for c, o in zip(circs, old)]
++        self.sources_by_block.append(list(self.sources))
++        if not new:                                   # every circuit already measured (a replay of a run): no job
++            self.measured += 1
++            self.folders.append("(every circuit's counts from the ledger)")
++            return old
++        self.reused.append(dict(block=block + 1, circuits=[n for n, o in enumerate(old) if o is not None],
++                                notes=[notes[n] for n, o in enumerate(old) if o is not None]))
++        counts, folder = self.ij.sampler_counts([circs[n] for n in new], self.backend_name, shots, self.keys,
+                                                 self.accounts[min(block, len(self.accounts) - 1)],
+-                                                f"{self.purpose}, block {block + 1}", inputs=[f"runs/{tag}.pt"],
+-                                                circuit_notes=notes, dry_run=not self.submit)
++                                                f"{self.purpose}, block {block + 1}"
++                                                + (f" ({len(circs) - len(new)} circuits' counts from earlier jobs)"
++                                                   if len(new) < len(circs) else ""), inputs=[f"runs/{tag}.pt"],
++                                                circuit_notes=[notes[n] for n in new], dry_run=not self.submit)
+         self.folders.append(str(folder))
+         if counts is not None:
+             self.measured += 1
+-            return counts
++            merged = list(old)
++            for n, c in zip(new, counts):
++                merged[n] = c
++            return merged
+         sim = noisy_sim if "--noisy-dry" in args else ideal_sim
+         t = transpile(circs, backend if sim is noisy_sim else sim, optimization_level=3, seed_transpiler=0)
+         res = sim.run(t, shots=shots, seed_simulator=block).result()
+         return [res.get_counts(n) for n in range(len(circs))]
+ 
+ 
++def ledger_calibration(folder):
++    """(slope, offset) fitted to the random calibration circuits of one ledger job, from its notes and counts."""
++    rec = json.loads((pathlib.Path(folder) / "record.json").read_text())
++    counts = json.loads((pathlib.Path(folder) / "counts.json").read_text())
++    pts = [(float(n.split("ideal ")[1]), (c.get("0", 0) - c.get("1", 0)) / shots)
++           for n, c in zip([r["note"] for r in rec["circuits"]], counts) if "random calibration" in n]
++    x, y = np.array(pts).T
++    return tuple(np.linalg.lstsq(np.vstack([x, np.ones_like(x)]).T, y, rcond=None)[0])
++
++
++class Replay:
++    """Shot-noise resampling of a device run: the readings of each block as the device gave them (recorded by a first
++    replay from the ledger, nothing sent), each redrawn as binomial counts of 2,000 shots around its measured value.
++    Block 2 keeps its measured circuits' order, so its readings are resampled where they were measured."""
++
++    def __init__(self, recorded, seed, resample=True):
++        self.recorded, self.rng, self.resample = recorded, np.random.default_rng([11, seed]), resample
++
++    def readings(self, block):
++        p = self.recorded[block]
++        if not self.resample:
++            return p.copy()
++        return 2 * self.rng.binomial(shots, np.clip((1 + p) / 2, 0, 1)) / shots - 1
++
++
+ class Plan:
+     """A draw of the device as Reading Why's ibm_kingston runs measured it (see the module docstring)."""
+ 
+@@ -121,7 +167,11 @@ def circuit(q, k, imag):
+ 
+ 
+ def calibration_pairs(block, e):
+-    rng = np.random.default_rng([2611, block])
++    # each run its own calibration states (the ledger refuses a circuit already sent): the first run (park) was drawn
++    # with [2611, block], its circuits and ideal overlaps are in the ledger; every other prompt or deletion adds its own
++    key = [2611, block] if (prompt == "Lily went to the park . At the" and dpos < 0) else \
++        [2611, block, zlib.crc32(prompt.encode()), dpos + 1]
++    rng = np.random.default_rng(key)
+     out = []
+     for _ in range(ncal):
+         a, b = rng.standard_normal((2, 2, e))
+@@ -136,6 +186,8 @@ def calibration_pairs(block, e):
+ 
+ 
+ stats = dict(circuits=[], cz=[])
++recorded = []                                   # each block's readings P0 - P1, as measured (for --bootstrap)
++calib_rows = []                                 # each block's fitted (slope, offset)
+ rows_ratio, calib = [], []
+ 
+ 
+@@ -168,9 +220,11 @@ def make_hook(sim):
+             rowkey.append(("cal", n))
+         if isinstance(sim, Plan):
+             p = sim.readings(ideal, rowkey, blk)
++        elif isinstance(sim, Replay):
++            p = sim.readings(blk)
+         else:
+             circs = transpile(circs, basis_gates=["u", "cx"], optimization_level=0)   # the ledger's form
+-        if isinstance(sim, Plan):
++        if isinstance(sim, (Plan, Replay)):
+             pass
+         elif isinstance(sim, Device):
+             counts = sim.run(circs, notes, blk)
+@@ -180,12 +234,22 @@ def make_hook(sim):
+             stats["cz"] += [c.count_ops().get("cz", 0) for c in t]
+             res = sim.run(t, shots=shots, seed_simulator=blk).result()
+             counts = [res.get_counts(n) for n in range(len(circs))]
+-        if not isinstance(sim, Plan):
++        if not isinstance(sim, (Plan, Replay)):
+             p = np.array([(c.get("0", 0) - c.get("1", 0)) / shots for c in counts])
+         cal = np.array([(w[4], p[n]) for n, w in enumerate(where) if w[3] == 3])
+         slope, off = np.linalg.lstsq(np.vstack([cal[:, 0], np.ones(len(cal))]).T, cal[:, 1], rcond=None)[0]
++        calib_rows.append((float(slope), float(off)))
+         calib.append(dict(block=blk + 1, slope=float(slope), offset=float(off), n=len(cal),
+                           resid_sd=float(np.std(cal[:, 1] - slope * cal[:, 0] - off))))
++        # readings reused from an earlier job were taken at that job's visibility; they are used as measured (block 2's
++        # circuits were built from them so), and each source job's own calibration is recorded beside this one's
++        srcs = getattr(sim, "sources", None) if isinstance(sim, Device) else None
++        if srcs:
++            fits = {f: ledger_calibration(f) for f in set(srcs) if f}
++            calib[-1]["reused_from"] = {pathlib.Path(f).name: dict(slope=float(v[0]), offset=float(v[1]),
++                                                                   circuits=srcs.count(f)) for f, v in fits.items()}
++        if isinstance(sim, Device):
++            recorded.append(p.copy())                 # as measured, reused readings on this job's scale
+         ov_m, orr_m = ov.clone(), orr.clone()
+         re = {}
+         for n, (h, i, j, part, scale) in enumerate(where):
+@@ -259,7 +323,7 @@ if want_ev:
+ 
+ def one_pass(sim):
+     """The pass with the overlaps read by `sim`: (P at the explained position, evidence with its row sums or None)."""
+-    rows_ratio.clear(); calib.clear()
++    rows_ratio.clear(); calib.clear(); recorded.clear(); calib_rows.clear()
+     model.overlap_hook = make_hook(sim)
+     with torch.no_grad():
+         p = model.probs(ids)[0, -1]
+@@ -295,6 +359,114 @@ if "--plan" in args:                         # Monte Carlo of the device: what w
+         json.dump(out, f, indent=1)
+     sys.exit()
+ 
++if "--nulls" in args:                       # referee M2/M6: what the evidence correlation can and cannot tell
++    # Replays the device run from the ledger (nothing sent) and recomputes BEW with the device's row sums altered:
++    # (a) without the visibility correction (each block's ratios times its slope squared), (b) the measured ratios
++    # permuted among the rows of each block (20 draws); also the spread of the measured/exact row-sum ratios.
++    dev = Device(opt("--device", "ibm_kingston"), opt("--keys", "ibmq_keys.txt"), opt("--account", "1"),
++                 False, "replay")
++    p_run, ev_run = one_pass(dev)
++    ratios = [r.clone() for r in rows_ratio]
++    slopes = [c[0] for c in calib_rows]
++    corr = lambda e: float(np.corrcoef(a, e[0][0, 0, :L - 1].numpy())[0, 1])
++    no_vis = [r * sl ** 2 for r, sl in zip(ratios, slopes)]
++    r_novis = corr(hw_born(target, no_vis))
++    rng = np.random.default_rng(5)
++    r_perm = []
++    for k in range(int(opt("--draws", 20))):
++        perm = []
++        for blk, r in enumerate(ratios):
++            rows = list(range(L)) if blk < last else [L - 1]
++            v = r.clone()
++            flat = torch.stack([r[h, i] for h in range(H) for i in rows])
++            flat = flat[torch.tensor(rng.permutation(len(flat)))]
++            for n_, (h, i) in enumerate([(h, i) for h in range(H) for i in rows]):
++                v[h, i] = flat[n_]
++            perm.append(v)
++        r_perm.append(corr(hw_born(target, perm)))
++    vals = [ratios[0].flatten(), ratios[-1][:, L - 1]]            # block 1: every row; block 2: the explained row
++    spread = {f"block {b + 1}": dict(median=float(v.median()), min=float(v.min()), max=float(v.max()))
++              for b, v in enumerate(vals)}
++    out = dict(tag=tag, prompt=prompt, device_r=float(np.corrcoef(a, ev_run[0])[0, 1]), no_visibility_correction_r=r_novis,
++               permuted_rows_r=dict(median=float(np.median(r_perm)), min=float(min(r_perm)), max=float(max(r_perm)),
++                                    draws=len(r_perm)), row_ratio_spread=spread, slopes=slopes)
++    print(json.dumps(out, indent=1))
++    with open(f"runs/hw_word_nulls_{slug}.json", "w") as f:
++        json.dump(out, f, indent=1)
++    sys.exit()
++
++if "--recalibrate" in args:                  # referee M1: readings reused from other jobs put on this job's scale
++    # A replay from the ledger (nothing sent) gives each block's readings as the run used them. Block 1's readings that
++    # came from other jobs were taken at those jobs' visibility: map each with its source job's own calibration onto
++    # this job's, p' = (p - offset_src) / slope_src * slope_now + offset_now, and run the pass again. Block 2's
++    # circuits were built from the as-run block 1, so block 2 keeps its measured readings in their order (its states
++    # differ slightly from the recalibrated pass's: a sensitivity check, not a new measurement).
++    dev = Device(opt("--device", "ibm_kingston"), opt("--keys", "ibmq_keys.txt"), opt("--account", "1"),
++                 False, "replay")
++    p_run, _ = one_pass(dev)
++    if dev.measured != model.n_blocks:
++        sys.exit("--recalibrate: this run is not in the ledger")
++    rec = [r.copy() for r in recorded]
++    mapped = []
++    for blk, (pb, srcs) in enumerate(zip(rec, dev.sources_by_block)):
++        cal_now = calib_rows[blk]
++        pb = pb.copy()
++        for n, f in enumerate(srcs):
++            if f:
++                s0, o0 = ledger_calibration(f)
++                pb[n] = (pb[n] - o0) / s0 * cal_now[0] + cal_now[1]
++        mapped.append(pb if blk == 0 else rec[blk])
++    p_re, _ = one_pass(Replay(mapped, 0, resample=False))
++    out = dict(tag=tag, prompt=prompt, deleted=dpos, as_run=top(p_run), recalibrated=top(p_re),
++               p_word_as_run=float(p_run[target]), p_word_recalibrated=float(p_re[target]),
++               kite_or_deleted_word=None)
++    if dpos >= 0:
++        wid = int(tinywords.vocab()[1].get(toks[dpos], 0))
++        rank = lambda p: int((p > p[wid]).sum()) + 1
++        out["kite_or_deleted_word"] = dict(word=toks[dpos], exact=float(p_ex[wid]), exact_rank=rank(p_ex),
++                                           as_run=float(p_run[wid]), as_run_rank=rank(p_run),
++                                           recalibrated=float(p_re[wid]), recalibrated_rank=rank(p_re))
++    print(json.dumps(out, indent=1))
++    with open(f"runs/hw_word_recalibrated_{slug}.json", "w") as f:
++        json.dump(out, f, indent=1)
++    sys.exit()
++
++if "--bootstrap" in args:                    # shot-noise intervals of a finished device run (nothing sent)
++    dev = Device(opt("--device", "ibm_kingston"), opt("--keys", "ibmq_keys.txt"), opt("--account", "1"),
++                 False, "replay")
++    p0, ev0 = one_pass(dev)
++    if dev.measured != model.n_blocks:
++        sys.exit("--bootstrap: this run is not in the ledger (run it with --device --submit first)")
++    rec = [r.copy() for r in recorded]
++    n = int(opt("--bootstrap", 100))
++    shown = list(dict.fromkeys([int(t) for t in torch.topk(p_ex, 3).indices] + [int(t) for t in torch.topk(p0, 3).indices]))
++    draws, probs = [], []
++    for k in range(n):
++        p, ev = one_pass(Replay(rec, k))
++        probs.append([float(p[t]) for t in shown])
++        d = dict(p_word=float(p[target]), top=top(p)[0][0])
++        if ev is not None:
++            d.update(evidence=ev[0].tolist(), evidence_corr=float(np.corrcoef(a, ev[0])[0, 1]))
++        draws.append(d)
++        print(f"redraw {k}: {d['top']} {d['p_word']:.3f}" + (f" r {d['evidence_corr']:.4f}" if ev is not None else ""), flush=True)
++    q = lambda v: [float(np.quantile(v, 0.025)), float(np.quantile(v, 0.975))]
++    out = dict(tag=tag, prompt=prompt, deleted=dpos, redraws=n, device_P=float(p0[target]),
++               p_word_95=q([d["p_word"] for d in draws]),
++               same_word_share=float(np.mean([d["top"] == top(p0)[0][0] for d in draws])),
++               top_counts={w: sum(d["top"] == w for d in draws) for w in sorted({d["top"] for d in draws})},
++               words={word(t): dict(exact=float(p_ex[t]), device=float(p0[t]), device_95=q([r[n_] for r in probs]))
++                      for n_, t in enumerate(shown)})
++    if ev0 is not None:
++        E_ = np.array([d["evidence"] for d in draws])
++        out.update(device_evidence=ev0[0].tolist(), evidence_95=[q(E_[:, t]) for t in range(E_.shape[1])],
++                   evidence_corr=float(np.corrcoef(a, ev0[0])[0, 1]),
++                   evidence_corr_95=q([d["evidence_corr"] for d in draws]),
++                   signs_kept_share=float(np.mean([(np.sign(e) == np.sign(ev0[0])).all() for e in E_])))
++    print(json.dumps({k: v for k, v in out.items() if k not in ("device_evidence", "evidence_95")}, indent=1))
++    with open(f"runs/hw_word_bootstrap_{slug}{'_answer' if ev0 is None else ''}.json", "w") as f:
++        json.dump(out, f, indent=1)
++    sys.exit()
++
+ if "--device" in args:
+     sim = Device(opt("--device", "ibm_kingston"), opt("--keys", "ibmq_keys.txt"), opt("--account", "1"),
+                  "--submit" in args, f"Writing Why: attention of the 16-pass model for the word after \"{prompt}\""
+@@ -307,6 +479,7 @@ p_hw, ev = one_pass(sim)
+ measured = isinstance(sim, Device) and sim.measured == len(rows_ratio)
+ out = dict(tag=tag, prompt=prompt, words=toks, deleted=dpos, where=where_run, shots=shots,
+            calibration_circuits=ncal, measured_on_device=measured, ledger=getattr(sim, "folders", []),
++           reused_counts=getattr(sim, "reused", []),
+            exact=dict(top=top(p_ex)), run=dict(top=top(p_hw), p_of_exact_word=float(p_hw[target]),
+                                                row_ratio=[r.tolist() for r in rows_ratio], calibration=calib),
+            same_word=bool(p_hw.argmax() == p_ex.argmax()),

@@ -186,6 +186,8 @@ stats = dict(circuits=[], cz=[])
 recorded = []                                   # each block's readings P0 - P1, as measured (for --bootstrap)
 calib_rows = []                                 # each block's fitted (slope, offset)
 rows_ratio, calib = [], []
+measured_ov = []                                # each block: (overlaps, reference overlaps) read, offset off, / slope
+square_bias = []                                # each block: the shot-noise bias of the measured row sums, / exact
 
 
 def make_hook(sim):
@@ -268,6 +270,14 @@ def make_hook(sim):
             if (den_ex[0, :, i] > 0).all():
                 ratio[:, i] = den_hw[0, :, i] / slope ** 2 / den_ex[0, :, i]
         rows_ratio.append(ratio)
+        measured_ov.append((ov_m / slope, orr_m / slope, ov.clone(), orr.clone()))
+        # a squared reading is biased up by its shot variance: E[x^2] = x^2 + (1 - m^2) / shots per Re or Im reading
+        # (m the raw P0 - P1), in overlap units times scale^2 / slope^2; summed per row, over the exact row sum
+        bias = torch.zeros(H, L, dtype=torch.float64)
+        for n, (h, i, j, part, scale) in enumerate(where):
+            if part < 3:
+                bias[h, i] += scale ** 2 * (1 - p[n] ** 2) / shots / slope ** 2
+        square_bias.append(torch.stack([bias[:, i] / den_ex[0, :, i] for i in rows], -1))
         return ov_m, orr_m
     return hook
 
@@ -307,6 +317,55 @@ def hw_born(target, ratios):
     return E._ig(f, a0, pos, math.ceil(model.degree() / 2), k=16), full, E._base(f, a0, pos)
 
 
+def hw_born_dev(target, ratios, meas):
+    """BEW with block 1's attention numerators from the device too (referee M2): along the path that scales the
+    earlier words' amplitudes by alpha, a block-1 query or key of an earlier word scales by alpha (the fields are linear
+    in the amplitudes, no norm), so each measured overlap <q_i'|k_j> is carried along as alpha^m times its reading
+    (m = 2, 1 or 0 as neither, one or both of i', j is the explained word). The explained row's reference key is the
+    held-mass average of its keys, so its overlap moves by (alpha - 1) times the sum of the row's earlier measured
+    overlaps. Block 1's held row sums are the measured ones (as hw_born); block 2's overlaps are computed from the
+    state block 1 gives, its row sum the measured one. F(1) is then P of that pass less 1/V. Returns BEW [L], F(1),
+    F(0)."""
+    ovd, orrd, ov1, orr1 = meas[0]
+    rat = torch.where(ov1.abs() > 0, ovd / torch.where(ov1.abs() > 0, ov1, 1), 0)
+    ratr = torch.where(orr1.abs() > 0, orrd / torch.where(orr1.abs() > 0, orr1, 1), 0)
+    i = L - 1
+    s1, sd = ov1[0, :, i, :i].sum(-1), ovd[0, :, i, :i].sum(-1)              # [H]
+
+    def hook(blk, q, k, kr):
+        ov = torch.einsum("bihe,bjhe->bhij", q.conj(), k)
+        orr = (q.conj() * kr).sum(-1).transpose(1, 2)
+        if blk > 0:
+            return ov, orr
+        out_r = orr * ratr
+        out_r[:, :, i] = orrd[0, :, i] + (orr[:, :, i] - orr1[0, :, i]) * sd / s1
+        return ov * rat, out_r
+
+    pos = torch.tensor([L - 1])
+    a0 = model.amplitudes(ids).detach()
+    # held values recorded on the device's own pass (with the hook): block 1's row sum is then the measured one, and
+    # the readout's held norm and Z are those of the state the device gives (held exact ones would not match its
+    # numerators: |1 + g psi / 16|^32 with g = 90 turns a small change of psi into a large one of I); block 2's row
+    # sum, computed from its exact numerators, is scaled to the measured one
+    fz = HwFrozen([torch.ones_like(ratios[0]), ratios[1]])
+    model.overlap_hook = hook
+    with torch.no_grad():
+        E.born_scores(model, ids, pos, target, a0, fz)
+
+    def f(x):
+        r = x.shape[0] // ids.shape[0]
+        fz.start_replay().k = r
+        return E.born_scores(model, ids.repeat(r, 1), pos, target.repeat(r, 1), x, fz)
+    try:
+        e = E._ig(f, a0, pos, math.ceil(model.degree() / 2), k=16)
+        with torch.no_grad():
+            full = f(a0)
+        base = E._base(f, a0, pos)
+    finally:
+        model.overlap_hook = None
+    return e[0, 0, :L - 1].numpy(), float(full), float(base)
+
+
 with torch.no_grad():
     p_ex = model.probs(ids)[0, -1]
 target = p_ex.argmax().view(1, 1)
@@ -320,7 +379,7 @@ if want_ev:
 
 def one_pass(sim):
     """The pass with the overlaps read by `sim`: (P at the explained position, evidence with its row sums or None)."""
-    rows_ratio.clear(); calib.clear(); recorded.clear(); calib_rows.clear()
+    rows_ratio.clear(); calib.clear(); recorded.clear(); calib_rows.clear(); measured_ov.clear(); square_bias.clear()
     model.overlap_hook = make_hook(sim)
     with torch.no_grad():
         p = model.probs(ids)[0, -1]
@@ -389,6 +448,51 @@ if "--nulls" in args:                       # referee M2/M6: what the evidence c
                                     draws=len(r_perm)), row_ratio_spread=spread, slopes=slopes)
     print(json.dumps(out, indent=1))
     with open(f"results/hw_word_nulls_{slug}.json", "w") as f:
+        json.dump(out, f, indent=1)
+    sys.exit()
+
+if "--devnum" in args:                       # referee M2: block 1's numerators from the device too (nothing sent)
+    # The device run replayed from the ledger, then BEW with block 1's measured overlaps carried along the path
+    # (hw_born_dev), against the exact BEW; then N shot-noise redraws (Replay) of the same, for a 95 % interval per
+    # word: a test that can fail, since every earlier word's share now moves with the device's readings.
+    dev = Device(opt("--device", "ibm_kingston"), opt("--keys", "ibmq_keys.txt"), opt("--account", "1"),
+                 False, "replay")
+    p0, ev0 = one_pass(dev)
+    if dev.measured != model.n_blocks:
+        sys.exit("--devnum: this run is not in the ledger")
+    rec, ratios0, meas0 = [r.copy() for r in recorded], [r.clone() for r in rows_ratio], list(measured_ov)
+    bias0 = [b.clone() for b in square_bias]
+    e0, F0, B0 = hw_born_dev(target, ratios0, meas0)
+    draws = []
+    for kk in range(int(opt("--devnum", 0))):
+        rows_ratio.clear(); calib.clear(); recorded.clear(); calib_rows.clear(); measured_ov.clear()
+        square_bias.clear()
+        model.overlap_hook = make_hook(Replay(rec, kk))                      # the forward pass only (no hw_born)
+        with torch.no_grad():
+            model.probs(ids)
+        model.overlap_hook = None
+        e, _, _ = hw_born_dev(target, [r.clone() for r in rows_ratio], list(measured_ov))
+        draws.append(e.tolist())
+        print(f"redraw {kk}: r {np.corrcoef(a, e)[0, 1]:.4f}", flush=True)
+    out = dict(tag=tag, prompt=prompt, words=toks[:L - 1], exact=a.tolist(), F_exact=float(f_ex),
+               rowsums_only=dict(evidence=ev0[0].tolist(), r=float(np.corrcoef(a, ev0[0])[0, 1])),
+               device_numerators=dict(evidence=e0.tolist(), F=F0, F_base=B0, sum=float(e0.sum()),
+                                      r=float(np.corrcoef(a, e0)[0, 1]),
+                                      max_abs_diff=float(np.abs(e0 - a).max())),
+               square_bias_over_rowsum={f"block {b + 1}": dict(median=float(v.median()), max=float(v.max()))
+                                        for b, v in enumerate(bias0)},
+               calibration=[dict(c) for c in calib])
+    if draws:
+        D = np.array(draws)
+        lo, hi = np.quantile(D, 0.025, 0), np.quantile(D, 0.975, 0)
+        out["device_numerators"].update(
+            redraws=len(draws), evidence_95=np.stack([lo, hi], -1).tolist(),
+            exact_inside=int(((a >= lo) & (a <= hi)).sum()), words_n=len(a),
+            r_95=[float(np.quantile([np.corrcoef(a, d)[0, 1] for d in D], q)) for q in (0.025, 0.975)],
+            sign_agrees=int((np.sign(e0) == np.sign(a)).sum()),
+            half_width_median=float(np.median((hi - lo) / 2)))
+    print(json.dumps({k: v for k, v in out.items()}, indent=1))
+    with open(f"results/hw_word_devnum_{slug}.json", "w") as f:
         json.dump(out, f, indent=1)
     sys.exit()
 

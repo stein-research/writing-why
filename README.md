@@ -14,8 +14,9 @@ University).
 
 ![One written word, "park" after "Lily went to the park . At the": (a) on light, (b) on IBM's ibm_kingston](docs/overview.png)
 
-*One written word, "park", (a) on light (simulated) and (b) on IBM's ibm_kingston with the same weights: the
-device gives the same word, one of 8,192, and each earlier word's evidence follows the exact one.*
+*One written word, "park", (a) on light (simulated) and (b) with its attention overlaps measured on IBM's
+ibm_kingston, the same weights: the hybrid run recovers the same word, one of 8,192, and with block 1's attention
+from the device every earlier word's share lies within shot noise of the exact one.*
 
 A small causal language model in which the light meets no nonlinearity but quadratic detection, and the next word is
 drawn from a Born probability. Passing light $n$ times through one mask sharpens the readout towards a softmax, while
@@ -38,8 +39,10 @@ P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to
 ```
 
 A softmax only in the limit, a ratio of polynomials at every finite $n$: for real $x \ge -n$, $(1+x/n)^n$ is the
-tempered exponential at $t=1-1/n$ (Amid et al., NeurIPS 2019). Reinhardt and Hauser (arXiv:2608.11173) reach the
-softmax exactly with $L$ post-selected rounds; here only the limit is exponential. A causal Born-attention language
+tempered exponential at $t=1-1/n$ (Amid et al., NeurIPS 2019). On qubits the $n$ passes are $n$ post-selected rounds
+of a diagonal block encoding of the mask, the construction of Reinhardt and Hauser (arXiv:2608.11173) with $L=n$;
+their acceptance rate is the light that reaches the camera, $2.9\times10^{-4}$. At $n=16$ the accuracy is that of a
+readout trained at the softmax limit, while the distribution is still far from it (median total variation 0.22). A causal Born-attention language
 model with a plain readout was trained earlier in CNet (Crasmaru, arXiv:2610.08592, Sec. 11). On light no quantum
 resource is used: "Born" names the $|\text{amplitude}|^2$ detection law.
 
@@ -77,17 +80,19 @@ Why the model wrote "park": each earlier word's exact share, deeper red for a la
 
 ![The 16-pass model on qubits and light](docs/born_qubits.png)
 
-The attention overlaps read by Hadamard tests on IBM's ibm_kingston, the rest as simulated light; pass criteria fixed
-before any job was sent:
+A hybrid run: the attention overlaps read by Hadamard tests on IBM's ibm_kingston, the rest classical or simulated
+light. Criteria were fixed before any job was sent; the evidence test with the device's readings was made
+afterwards, from the same counts:
 
-| prompt | exact | ibm_kingston (95 % shot-noise interval) | evidence with the device's row sums |
+| prompt | exact | hybrid run (95 % shot-noise interval) | evidence, block 1's attention from the device |
 |---|---|---|---|
-| Lily went to the park . At the | park 0.951 | park 0.948 (0.913-0.962) | r = 0.995 (0.964-0.999) |
-| Sue had a red kite . She flew her | kite 0.670 | kite 0.723 (0.555-0.812) | r = 0.998 (0.990-1.000) |
+| Lily went to the park . At the | park 0.951 | park 0.948 (0.913-0.962) | 7 of 7 shares within shot noise |
+| Sue had a red kite . She flew her | kite 0.670 | kite 0.723 (0.555-0.812) | 7 of 8 ("a": 0.037 against 0.039-0.055) |
 | the same, "kite" deleted | favorite 0.135 | favorite 0.122; kite in none of 200 redraws | answer only |
 
 Six jobs, 389 quantum seconds, all recorded in [`ibm_jobs/`](ibm_jobs/). A demonstration, not statistics, and no
-quantum advantage is claimed; the paper also says what the evidence test and the deletion cannot show.
+quantum advantage is claimed; the paper also says what the pre-fixed criteria, the evidence test and the deletion
+cannot show.
 
 ## Contents
 

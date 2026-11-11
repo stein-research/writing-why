@@ -281,7 +281,7 @@ ax.tick_params(labelsize=LAB, colors=MUTED, length=2)
 ax.set_xlabel("ideal", fontsize=SUB, color=MUTED, labelpad=1)
 ax.set_ylabel("measured", fontsize=SUB, color=MUTED, labelpad=1)
 r = np.corrcoef(dev_ideal, dev_meas)[0, 1]
-head(ax, "on the chip", f"block 1, {len(dev_ideal)} readings:\nr = {r:.3f}; visibility {cal['slope']:.2f},\nfrom the calibrations",
+head(ax, "on the chip", f"block 1, {len(dev_ideal)} readings;\nr = {r:.3f} against ideal,\nvisibility {cal['slope']:.2f}",
      above=0.06, below=-0.34)
 arrow(0.515, 0.535, yb + hb / 2)
 ax = axes(0.6, yb + 0.028, 0.05, hb - 0.056, off=False)
@@ -296,28 +296,28 @@ except FileNotFoundError:
 head(ax, "the next word", f"{ptxt},\nexact {dev['exact']['top'][0][1]:.3f}; one of 8,192", above=0.12, below=-0.15)
 arrow(0.695, 0.715, yb + hb / 2)
 ax = axes(0.74, yb + 0.028, 0.245, hb - 0.056, off=False)
-dv = np.array(dev["run"]["evidence"])
+dn = json.load(open(f"results/hw_word_devnum_{slug}.json"))["device_numerators"]   # block 1's attention from the device
+dv = np.array(dn["evidence"])
 xw = np.arange(len(ev))
-ax.bar(xw - 0.2, ev, 0.38, color=LINE, label="exact BEW")
+ax.bar(xw - 0.2, ev, 0.38, color=LINE, label="exact")
 err = None
-if boot is not None:
-    ci = np.array(boot["evidence_95"])
+if "evidence_95" in dn:
+    ci = np.array(dn["evidence_95"])
     err = np.vstack([dv - ci[:, 0], ci[:, 1] - dv]).clip(min=0)
-ax.bar(xw + 0.2, dv, 0.38, color=ACCENT, label="row sums from ibm_kingston", yerr=err, ecolor=INK,
+ax.bar(xw + 0.2, dv, 0.38, color=ACCENT, label="block 1 from ibm_kingston", yerr=err, ecolor=INK,
        error_kw=dict(lw=0.9, capsize=1.6))
 ax.set_xticks(xw, toks[:len(ev)], fontsize=LAB, color=INK, rotation=35, ha="right", rotation_mode="anchor")
-ax.set_yticks([0, 0.1, 0.2, 0.3]), ax.tick_params(labelsize=LAB, colors=MUTED, length=2)
+ax.set_yticks([0, 0.1, 0.2]), ax.tick_params(labelsize=LAB, colors=MUTED, length=2)
 ax.set_xlim(-0.6, len(ev) - 0.4)
 for sp in ("top", "right"):
     ax.spines[sp].set_visible(False)
 [ax.spines[sp].set_color(LINE) for sp in ("left", "bottom")]
-ax.set_ylim(0, 0.4)
-ax.legend(frameon=False, fontsize=LAB, loc="upper left", bbox_to_anchor=(-0.03, 1.0), ncol=2, handlelength=0.9,
+ax.set_ylim(0, 0.37)
+ax.legend(frameon=False, fontsize=LAB, loc="upper left", bbox_to_anchor=(0.02, 1.03), ncol=2, handlelength=0.9,
           handletextpad=0.5, columnspacing=0.9, borderaxespad=0.05)
-corr = np.corrcoef(ev, dv)[0, 1]
-ci_txt = f" [{boot['evidence_corr_95'][0]:.3f}, {boot['evidence_corr_95'][1]:.3f}]" if boot is not None else ""
-head(ax, "evidence with the chip's row sums", f"r = {corr:.3f}{ci_txt};\n"
-     + ("bars: 95 % shot-noise intervals" if boot is not None else "exact numerators, measured row sums"),
+inside = int(((ev >= ci[:, 0]) & (ev <= ci[:, 1])).sum()) if err is not None else None
+head(ax, "evidence from the chip's readings", f"exact share within the 95 % shot-noise\n"
+     f"interval for {inside} of {len(ev)} words",
      above=0.12, below=-0.42)
 for ext in ("png", "pdf"):
     fig.savefig(f"{out}.{ext}", dpi=300, bbox_inches="tight", pad_inches=0.05)

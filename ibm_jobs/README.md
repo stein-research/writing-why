@@ -34,13 +34,18 @@ measured it, and the job's purpose says so:
   readings and 32 calibrations were sent (visibility 0.73). The run uses the readings as measured, since block 2's
   circuits were built from them so.
 
-The pass criteria were fixed before any job was sent, in [`../results/hw_word_criteria.json`](../results/hw_word_criteria.json).
+The pass criteria were fixed before any job was sent, in [`../results/hw_word_criteria.json`](../results/hw_word_criteria.json),
+committed with the script eleven minutes before the first job; what changed in the script before the later jobs is
+in [`hw_word_committed_vs_as_run.diff`](hw_word_committed_vs_as_run.diff) (nothing in the analysis).
 
 | run | criterion | exact | ibm_kingston | evidence with the device's row sums |
 |---|---|---|---|---|
-| park | the same word, evidence $r \ge 0.95$ | park 0.951 | park 0.948 (95 % shot-noise interval 0.914-0.961) | $r = 0.995$ (0.964-0.999) |
-| kite | the same word, evidence $r \ge 0.95$ | kite 0.670 | kite 0.723 (0.568-0.812) | $r = 0.998$ (0.990-1.000) |
+| park | the same word, evidence $r \ge 0.95$ | park 0.951 | park 0.948 (95 % shot-noise interval 0.913-0.962) | $r = 0.995$ (0.964-0.999) |
+| kite | the same word, evidence $r \ge 0.95$ | kite 0.670 | kite 0.723 (0.555-0.812) | $r = 0.998$ (0.990-1.000) |
 | kite deleted | not kite | favorite 0.135 | favorite 0.122 (0.073-0.178); kite in none of 200 redraws | answer only |
+
+Made after the runs, from the same counts: with block 1's attention numerators and row sums from the device
+(`--devnum`), 7 of 7 (park) and 7 of 8 (kite) earlier words' shares lie within their 95 % shot-noise intervals.
 
 ## What each folder holds
 
