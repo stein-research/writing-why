@@ -14,26 +14,14 @@ University).
 
 ![One written word, "park" after "Lily went to the park . At the": (a) on light, (b) on IBM's ibm_kingston](docs/overview.png)
 
-*(a) On light (simulated): the prompt's words as fields on a modulator; in each of two blocks Born attention weighs
-the earlier words by interference and a measured feed-forward reads products; the controller writes a mask that the
-light passes 16 times, and the camera, one pixel per word, gives the next word; each earlier word's exact evidence
-(BEW) sums to the word's probability above its share. (b) On IBM's ibm_kingston, with the same weights: every
-attention overlap read by Hadamard tests on five qubits, with calibration circuits in the same job; the device gives
-the same word, one of 8,192, and each word's evidence with the device's row sums follows the exact one (r = 0.995).*
+*One written word, "park", (a) on light (simulated) and (b) on IBM's ibm_kingston with the same weights: the
+device gives the same word, one of 8,192, and each earlier word's evidence follows the exact one.*
 
-A small causal language model, simulated as an opto-electronic system on classical coherent light, in which every
-nonlinearity on the light is a quadratic detection (an interferometric overlap, a balanced reading or a camera) and
-the next word is drawn from a Born probability; between detections a classical controller squares, multiplies and
-divides measured numbers (the attention weights, the normalisations, the readout's state). The model has attention $|\langle q|k\rangle|^2$, in the form of the Born rule, normalised over each row; measured
-products in place of the feed-forward nonlinearity; and a readout over 8,192 words. Passing light through the readout's mask $n$
-times sharpens it towards a softmax ($(1+x/n)^n$, for real $x \ge -n$, is the tempered exponential at $t=1-1/n$; Amid et al., NeurIPS
-2019) while each word's probability stays a ratio of polynomials in the words'
-amplitudes, so its integrated-gradient evidence, with the denominators held, is computed exactly by a finite
-quadrature: the **Born evidence per word (BEW)**. This exactness follows from the model being a polynomial once its
-normalisers are held; the Born construction is one such model that also compiles to optics. On light no quantum
-resource is used: "Born" names the $|\text{amplitude}|^2$ detection law. The same weights also run with their
-attention read on a quantum computer. A causal Born-attention language model with a plain Born readout was trained earlier in CNet
-(Crasmaru, arXiv:2610.08592, Sec. 11); what is added here is the sharp $n$-pass readout and the exact evidence.
+A small causal language model in which the light meets no nonlinearity but quadratic detection, and the next word is
+drawn from a Born probability. Passing light $n$ times through one mask sharpens the readout towards a softmax, while
+each word's probability stays a ratio of polynomials in the words' amplitudes, so the evidence for every word it
+writes, the **Born evidence per word (BEW)**, is computed exactly. The same weights also run with their attention
+read on a quantum computer.
 
 ## How it works
 
@@ -49,7 +37,11 @@ from the last block's measured outputs. The $n$-pass readout gives
 P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to\infty} P_n(w) = \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}}.
 ```
 
-It is a softmax only in the limit and a ratio of polynomials at every finite $n$. A related construction is exact:
+It is a softmax only in the limit and a ratio of polynomials at every finite $n$. For real $x \ge -n$, $(1+x/n)^n$ is the tempered exponential at $t=1-1/n$ (Amid et al.,
+NeurIPS 2019). A causal Born-attention language model with a plain Born readout was trained earlier in CNet
+(Crasmaru, arXiv:2610.08592, Sec. 11); what is added here is the sharp $n$-pass readout and the exact evidence. On
+light no quantum resource is used: "Born" names the $|\text{amplitude}|^2$ detection law, and the system is
+opto-electronic, with a classical controller between detections. A related construction is exact:
 Reinhardt and Hauser (arXiv:2608.11173, Corollary 17) showed that $L$ post-selected rounds, each with success
 probability $e^z$ for nonpositive scores $z$, give softmax weights at inverse temperature $L$. Here each pass supplies
 a polynomial factor; only the limit $n\to\infty$ yields the exponential.
