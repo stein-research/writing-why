@@ -1,0 +1,69 @@
+{
+ "tag": "words_born-therm16p2_s0",
+ "windows": 64,
+ "positions": 8192,
+ "passes": 16,
+ "ideal_accuracy": 49.23095703125,
+ "settings": {
+  "loss sigma 0.001 draw 0": {
+   "accuracy": 49.169921875,
+   "change": -0.06103515625,
+   "tv_median": 0.004605979109425335
+  },
+  "loss sigma 0.001 draw 1": {
+   "accuracy": 49.23095703125,
+   "change": 0.0,
+   "tv_median": 0.005119247229091053
+  },
+  "loss sigma 0.003 draw 0": {
+   "accuracy": 49.20654296875,
+   "change": -0.0244140625,
+   "tv_median": 0.013815542469271146
+  },
+  "loss sigma 0.003 draw 1": {
+   "accuracy": 49.21875,
+   "change": -0.01220703125,
+   "tv_median": 0.015392340042422225
+  },
+  "loss sigma 0.01 draw 0": {
+   "accuracy": 48.98681640625,
+   "change": -0.244140625,
+   "tv_median": 0.04586859388634826
+  },
+  "loss sigma 0.01 draw 1": {
+   "accuracy": 48.92578125,
+   "change": -0.30517578125,
+   "tv_median": 0.05141950380517626
+  },
+  "loss sigma 0.03 draw 0": {
+   "accuracy": 47.509765625,
+   "change": -1.72119140625,
+   "tv_median": 0.13619533927941385
+  },
+  "loss sigma 0.03 draw 1": {
+   "accuracy": 47.6318359375,
+   "change": -1.59912109375,
+   "tv_median": 0.1541499738258162
+  },
+  "misregistration eta 0.001": {
+   "accuracy": 49.23095703125,
+   "change": 0.0,
+   "tv_median": 0.004819570915023513
+  },
+  "misregistration eta 0.003": {
+   "accuracy": 49.18212890625,
+   "change": -0.048828125,
+   "tv_median": 0.015046880739332427
+  },
+  "misregistration eta 0.01": {
+   "accuracy": 48.9990234375,
+   "change": -0.23193359375,
+   "tv_median": 0.05704304041669625
+  },
+  "misregistration eta 0.03": {
+   "accuracy": 48.03466796875,
+   "change": -1.1962890625,
+   "tv_median": 0.22751303940274858
+  }
+ }
+}

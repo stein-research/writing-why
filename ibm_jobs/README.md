@@ -30,7 +30,7 @@ measured it, and the job's purpose says so:
   park run (in block 1 a word's query and key depend only on the word and its position); their counts are the park
   run's;
 - with "kite" deleted, block 1's overlaps are the kite run's except the reference keys of the rows after the deleted
-  word: 160 readings come from the kite job (measured an hour earlier, at visibility 0.80), and only the 16 changed
+  word: 160 readings come from earlier jobs (156 from the kite job, measured about 45 minutes earlier at visibility 0.80, and 4 from the park job), and only the 16 changed
   readings and 32 calibrations were sent (visibility 0.73). The run uses the readings as measured, since block 2's
   circuits were built from them so.
 
