@@ -1,4 +1,4 @@
-# Writing Why: Born-Rule Language Models with Exact Word Evidence on Light and Qubits
+# Writing Why: Born-Rule Language Models with Exact Word Evidence for Coherent Light and Qubits
 
 Companion to the paper by Teerawat Tongloy (KMITL), Jiraporn Pongsopa and Rangsan Jomtarak (Suan Dusit
 University).

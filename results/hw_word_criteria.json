@@ -1,5 +1,5 @@
 {
- "fixed": "2026-11-11, before any job was sent (the owner: 'Yes, these criteria')",
+ "fixed": "2026-11-11, before any job was sent: committed with hw_word.py at 5d0a6f9, 04:43:31 UTC; first job 04:54:51 UTC (this public copy leaves out one internal remark, nothing else changed)",
  "device": "ibm_kingston, 2,000 shots, 32 depth-matched calibration circuits per block (Hadamard tests of random state pairs with known Re<a|b>); one job per block",
  "model": "words_born-therm16p2_s0 (16 passes), attention overlaps read by Hadamard tests, everything else exact",
  "runs": [

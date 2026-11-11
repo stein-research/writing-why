@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this code or data, please cite the paper."
-title: "Writing Why: Born-Rule Language Models with Exact Word Evidence on Light and Qubits"
+title: "Writing Why: Born-Rule Language Models with Exact Word Evidence for Coherent Light and Qubits"
 type: software
 license: MIT
 repository-code: "https://github.com/stein-research/writing-why"
@@ -30,7 +30,7 @@ keywords:
   - Born rule
 preferred-citation:
   type: article
-  title: "Writing Why: Born-Rule Language Models with Exact Word Evidence on Light and Qubits"
+  title: "Writing Why: Born-Rule Language Models with Exact Word Evidence for Coherent Light and Qubits"
   authors:
     - family-names: Tongloy
       given-names: Teerawat
