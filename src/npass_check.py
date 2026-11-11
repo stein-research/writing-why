@@ -46,6 +46,7 @@ for n in [16, 64, 256, 1024, 4096, 16384]:
           f"(3) |n*gap - predicted| on words with S>1e-3: median {resid.abs().median():.3f}, "
           f"vs |predicted| median {pred[top].abs().median():.3f}")
     out.setdefault("tv_median", {})[n] = tv.median().item()
+    out.setdefault("resid_median", {})[n] = resid.abs().median().item()   # what remains of n * gap after the 1/n term
 lq = torch.log((1 + z / 16).abs() ** 2); lq = lq - torch.logsumexp(lq, -1, keepdim=True)
 agree = torch.logsumexp(16 * lq, -1).flatten() / math.log(10)        # log10 P(all 16 copies agree), per position
 q = torch.quantile(agree, torch.tensor([0.1, 0.5, 0.9], dtype=agree.dtype))

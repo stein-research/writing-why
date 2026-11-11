@@ -79,7 +79,7 @@ Why the model wrote "park": each earlier word's exact share, deeper red for a la
 | evidence sums to the explained score | to 5.2e-11 (no quadrature error) | to 1e-13 | integrated gradients, approximate |
 
 On TinyStories the same body trained with the readout's softmax limit scores the same (49.0 +- 0.1 %, three
-seeds) and with an ordinary linear softmax head less (48.0 +- 0.1 %): under the training setup tested, neither
+seeds) and with an ordinary linear softmax head less (48.1 +- 0.1 %): under the training setup tested, neither
 replacement closes the gap to the softmax transformer. At copy positions the exact evidence ranks words
 as gradient times input does: what it adds is exact accounting, not a better ranking. In simulation the weights compile
 exactly to an opto-electronic system (interferometer meshes, balanced detectors, modulators, a controller and a
