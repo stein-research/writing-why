@@ -99,8 +99,6 @@ readout as simulated light), and the pass criteria fixed before any job was sent
 | Sue had a red kite . She flew her | kite 0.670 | kite 0.723 (0.568-0.812) | r = 0.998 (0.990-1.000) |
 | the same, "kite" deleted | favorite 0.135 | favorite 0.122; kite in none of 200 redraws | answer only |
 
-![The three runs on ibm_kingston, exact against device](docs/device_kingston.png)
-
 Six jobs, 389 quantum seconds; every job's circuits, calibration and raw counts are in [`ibm_jobs/`](ibm_jobs/). The
 device reads overlaps a classical computer also computes: no quantum advantage is claimed, and two prompts and one
 deletion are a demonstration, not statistics. The evidence test has little power (the numerators stay exact; with the
