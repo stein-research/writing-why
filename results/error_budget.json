@@ -1,0 +1,68 @@
+[
+ {
+  "job": "dbpvmi0ou4as73cuata0",
+  "purpose": "Writing Why: attention of the 16-pass model for the word after \"Sue had a red kite . She flew her\" by Hadamard tests, block 2",
+  "n": 32,
+  "slope": 0.7956536579262511,
+  "offset": 0.01039762646231784,
+  "resid_sd_ddof2": 0.022271525204248754,
+  "resid_sd_ddof0": 0.02156431155267354,
+  "shot_sd": 0.02012973857256969,
+  "ratio": 1.106399128034262
+ },
+ {
+  "job": "dbpvsb0ou4as73cub8ug",
+  "purpose": "Writing Why: attention of the 16-pass model for the word after \"Sue had a red kite . She flew her\" with word 4 deleted by Hadamard tests, block 1 (160 circuits' counts from earlier jobs)",
+  "n": 32,
+  "slope": 0.7305967149212456,
+  "offset": -0.0007066295092831914,
+  "resid_sd_ddof2": 0.023883845499412845,
+  "resid_sd_ddof0": 0.023125433965654228,
+  "shot_sd": 0.020319854437839853,
+  "ratio": 1.175394517341428
+ },
+ {
+  "job": "dbpvl6dt7fqc738a38rg",
+  "purpose": "Writing Why: attention of the 16-pass model for the word after \"Sue had a red kite . She flew her\" by Hadamard tests, block 1 (4 circuits' counts from earlier jobs)",
+  "n": 32,
+  "slope": 0.8009380905435171,
+  "offset": 0.0018239940002600023,
+  "resid_sd_ddof2": 0.020437667462812618,
+  "resid_sd_ddof0": 0.019788686429699612,
+  "shot_sd": 0.019176386032044725,
+  "ratio": 1.0657726345652527
+ },
+ {
+  "job": "dbpva6s4148s739v8lpg",
+  "purpose": "Writing Why: attention of the 16-pass model for the word after \"Lily went to the park . At the\" by Hadamard tests, block 1",
+  "n": 32,
+  "slope": 0.7834613244053987,
+  "offset": 0.008370495411189333,
+  "resid_sd_ddof2": 0.021079999737827985,
+  "resid_sd_ddof0": 0.02041062198066612,
+  "shot_sd": 0.019793770721492153,
+  "ratio": 1.0649815052641405
+ },
+ {
+  "job": "dbpvbloqtr0c738f2dp0",
+  "purpose": "Writing Why: attention of the 16-pass model for the word after \"Lily went to the park . At the\" by Hadamard tests, block 2",
+  "n": 32,
+  "slope": 0.7983128892877593,
+  "offset": 0.010069126770918823,
+  "resid_sd_ddof2": 0.02455641904807916,
+  "resid_sd_ddof0": 0.023776650503925297,
+  "shot_sd": 0.019176062959455467,
+  "ratio": 1.2805766804165977
+ },
+ {
+  "job": "dbq0av8ou4as73cuc3jg",
+  "purpose": "Writing Why: attention of the 16-pass model for the word after \"Sue had a red kite . She flew her\" with word 4 deleted by Hadamard tests, block 2",
+  "n": 32,
+  "slope": 0.7454097685169884,
+  "offset": -0.009177214386557551,
+  "resid_sd_ddof2": 0.02097938059689395,
+  "resid_sd_ddof0": 0.02031319791637932,
+  "shot_sd": 0.020347419983870192,
+  "ratio": 1.0310585132426975
+ }
+]

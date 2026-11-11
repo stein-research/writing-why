@@ -16,12 +16,14 @@ University).
 
 *One written word, "park", (a) on light (simulated) and (b) with its attention overlaps measured on IBM's
 ibm_kingston, the same weights: the hybrid run recovers the same word, one of 8,192, and with block 1's attention
-from the device every earlier word's share lies within shot noise of the exact one.*
+from the device every earlier word's share lies within shot noise of the exact one (a check an ideal device passes
+equally well).*
 
 A small causal language model in which the light meets no nonlinearity but quadratic detection, and the next word is
 drawn from a Born probability. Passing light $n$ times through one mask sharpens the readout towards a softmax, while
 each word's probability stays a ratio of polynomials in the words' amplitudes, so the evidence for every word it
-writes, the **Born evidence per word (BEW)**, is computed exactly. The same weights also run with their attention
+writes, the **Born evidence per word (BEW)**, is computed exactly for that polynomial with its normalisers held. The
+held polynomial follows the probability only near the actual input, which limits what the exactness buys (below). The same weights also run with their attention
 read on a quantum computer.
 
 ## How it works
@@ -39,7 +41,8 @@ P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to
 ```
 
 A softmax only in the limit, a ratio of polynomials at every finite $n$: for real $x \ge -n$, $(1+x/n)^n$ is the
-tempered exponential at $t=1-1/n$ (Amid et al., NeurIPS 2019). On qubits the $n$ passes are $n$ post-selected rounds
+tempered exponential at $t=1-1/n$ (Amid et al., NeurIPS 2019), so the readout is a normalised tempered
+exponential (not their shift-normalised tempered softmax). On qubits the $n$ passes are $n$ post-selected rounds
 of a diagonal block encoding of the mask, the construction of Reinhardt and Hauser (arXiv:2608.11173) with $L=n$;
 their acceptance rate is the light that reaches the camera, $2.9\times10^{-4}$. At $n=16$ the accuracy is that of a
 readout trained at the softmax limit, while the distribution is still far from it (median total variation 0.22). A causal Born-attention language
@@ -55,7 +58,11 @@ e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a_{\lt i},\, a_i)\,d\a
 ```
 
 are computed without quadrature error by $D/2$ Gauss–Legendre nodes ($F_q$: the current word alone, which stays at
-its amplitude along the path); in double precision the gap is at most $5.2\times10^{-11}$.
+its amplitude along the path); in double precision the gap is at most $5.2\times10^{-11}$. The held $F$, however,
+falls to a tenth of itself when the earlier words are scaled by 0.99, while the real probability keeps 99.5 % of its
+value (`src/held_path.py`), so BEW is gradient times input rescaled; integrated gradients of the real probability
+with 512 ordinary nodes close to $1.2\times10^{-10}$ and find the copied word three times as often on the 16-pass
+model.
 
 ![Why the 16-pass model wrote "park"](docs/story.png)
 
@@ -66,13 +73,15 @@ Why the model wrote "park": each earlier word's exact share, deeper red for a la
 | | 16 passes | plain readout | softmax transformer |
 |---|---|---|---|
 | TinyStories V2 next-word accuracy (3 seeds) | 49.0 +- 0.1 % | 43.0 +- 0.1 % | 51.2 +- 0.3 % |
-| WikiText-103 (3 seeds) | 27.8 +- 0.2 % | | 30.2 +- 0.04 % |
+| WikiText-103 (3 seeds) | 27.8 +- 0.2 % | | 30.18 +- 0.04 % |
 | evidence sums to the explained score | to 5.2e-11 (no quadrature error) | to 1e-13 | integrated gradients, approximate |
 
 - On TinyStories, under the setup tested, replacing the readout does not close the gap: the same body with the
   readout's softmax limit scores the same (49.0 %), with a linear softmax head less (48.1 %). The softmax transformer was tuned over
   nine settings.
-- The exact evidence ranks words as gradient times input does: it adds exact accounting, not a better ranking.
+- The exact evidence ranks words as gradient times input does, because the held polynomial follows the probability
+  only near the actual input; integrated gradients of the real probability rank the deciding words better on the
+  16-pass model. Exactness here is a node count known in advance, not a smaller error.
 - In simulation the weights compile exactly to an opto-electronic system (meshes, balanced detectors, modulators, a
   controller and the 16-pass mask); the paper lists what the simulation idealises.
 
@@ -81,7 +90,8 @@ Why the model wrote "park": each earlier word's exact share, deeper red for a la
 ![The 16-pass model on qubits and light](docs/born_qubits.png)
 
 A hybrid run: the attention overlaps read by Hadamard tests on IBM's ibm_kingston, the rest classical or simulated
-light. Criteria were fixed before any job was sent; the evidence test with the device's readings was made
+light. Criteria were committed eleven minutes before the first job (time-stamped, not an external
+preregistration, and they could hardly fail); the evidence test with the device's readings was made
 afterwards, from the same counts:
 
 | prompt | exact | hybrid run (95 % shot-noise interval) | evidence, block 1's attention from the device |
@@ -91,7 +101,7 @@ afterwards, from the same counts:
 | the same, "kite" deleted | favorite 0.135 | favorite 0.122; kite in none of 200 redraws | answer only |
 
 Six jobs, 389 quantum seconds, all recorded in [`ibm_jobs/`](ibm_jobs/). A demonstration, not statistics, and no
-quantum advantage is claimed; the paper also says what the pre-fixed criteria, the evidence test and the deletion
+quantum advantage is claimed; the paper also says what the time-stamped criteria, the evidence test and the deletion
 cannot show.
 
 ## Contents
