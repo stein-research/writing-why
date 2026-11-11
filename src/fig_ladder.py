@@ -45,8 +45,9 @@ for ax, key, lab, scale in ((axs[0], "test_acc", "test accuracy (%)", 100), (axs
     ax.plot([0.82], [plain[key] * scale], "o", ms=6, mfc="white", mec=ACCENT, mew=1.5, zorder=5)
     sm = np.mean([r[key] for r in soft]) * scale
     ax.axhline(sm, color=MUTED, lw=1.1, ls=(0, (4, 3)), zorder=2)
-    ax.text(16, sm, "softmax transformer, same size", ha="right", va="bottom" if key == "test_acc" else "top",
-            fontsize=7.5, color=MUTED)
+    ax.annotate("softmax transformer, same size", (16, sm), xytext=(0, 3 if key == "test_acc" else -3),
+                textcoords="offset points", ha="right", va="bottom" if key == "test_acc" else "top", fontsize=7.5,
+                color=MUTED, bbox=dict(fc="white", ec="none", pad=0.6))   # off the dashed line
     lm = np.mean([r[key] for r in linhead]) * scale
     ax.axhline(lm, color=MUTED, lw=1.0, ls=(0, (1, 2)), zorder=2)
     ax.text(1, lm, "same body, linear head", ha="left", va="bottom" if key == "test_acc" else "top", fontsize=7.5,

@@ -89,7 +89,7 @@ dev_ideal, dev_meas = device_overlaps(JOB0)
 
 fig = plt.figure(figsize=(15.5, 10.2))
 W, Hf = fig.get_size_inches()
-HD, SUB, LAB = 16, 15, 14
+HD, SUB, LAB = 17, 16.5, 15.5                                       # printed at the text width: captions ~6.5 pt
 
 
 def axes(x, y, w, h, off=True):
@@ -177,11 +177,11 @@ ax = axes(0.248, ys, SW, SH, off=False)
 w = scores[1][0].mean(0).numpy()                                     # block 2, mean of heads, [L, L]
 wfull = np.concatenate([w, (1 - w.sum(-1))[:, None]], 1)             # the reference key takes the rest of each row
 ax.imshow(wfull, cmap=att_cmap, aspect="auto", interpolation="nearest")
-ax.set_xticks([]), ax.set_yticks(range(L), toks, fontsize=13, color=MUTED)
+ax.set_xticks([]), ax.set_yticks(range(L), toks, fontsize=14.5, color=MUTED)
 ax.tick_params(length=0, pad=2)
 [s.set_color(LINE) for s in ax.spines.values()]
-ax.text(L, -0.75, "ref", ha="center", va="bottom", fontsize=12, color=MUTED)
-head(ax, "Born\nattention", "$|\\langle q_i|k_j\\rangle|^2$ / row sum,\ncausal, + ref. key", above=0.1)
+ax.text(L, -0.75, "ref", ha="center", va="bottom", fontsize=13.5, color=MUTED)
+head(ax, "Born\nattention", "$|\\langle q_i|k_j\\rangle|^2$\n/ row sum", above=0.1)
 arrow(0.325, 0.34, ym)
 ax = axes(0.355, ys, SW, SH, off=False)
 m = u[0].numpy()
@@ -189,7 +189,7 @@ m = np.sign(m) * np.sqrt(np.abs(m))
 lim = np.percentile(np.abs(m), 99)
 ax.imshow(m, cmap=ev_cmap, norm=TwoSlopeNorm(0, -lim, lim), aspect="auto", interpolation="nearest")
 frame(ax)
-head(ax, "measured\nfeed-forward", "balanced:\nRe$[(W_jh)\\,\\overline{(V_jh)}]$", above=0.1)
+head(ax, "measured\nfeed-forward", "balanced\nreading", above=0.1)
 arrow(0.443, 0.457, ym)
 ax = axes(0.46, ys, 0.1, SH, off=False)
 I = inten[0, 0].numpy()
@@ -205,11 +205,11 @@ ax = axes(0.583, ys, 0.1, SH, off=False)
 ax.imshow(np.log10(np.maximum(I / I.max(), 1e-12)).reshape(64, 128), cmap=cam_cmap, vmin=-12, vmax=0, interpolation="nearest", aspect="auto")   # log: one word holds 95 % of the light
 frame(ax)
 kp = int(np.argmax(I))                                                # the brightest pixel: "park"
-ax.plot(kp % 128, kp // 128, "o", ms=9, mfc="none", mec="white", mew=1.6)
+ax.plot(kp % 128, kp // 128, "s", ms=6, mfc="none", mec="white", mew=1.4)
 assert kp == int(np.argmax(p)), "a pixel is a word id"
-ax.annotate(word(kp), (kp % 128, kp // 128), xytext=(-40, -16), textcoords="offset points",
-            color="white", fontsize=12, fontweight="bold")
-head(ax, "camera", "8,192 pixels, one a\nword (log scale)", above=0.1)
+ax.annotate(word(kp), (kp % 128, kp // 128), xytext=(kp % 128 - 22, 12), textcoords="data", ha="right", va="center",
+            color="white", fontsize=LAB, fontweight="bold", arrowprops=dict(arrowstyle="-|>", color="white", lw=1.2, shrinkA=1, shrinkB=3))
+head(ax, "camera", "8,192 pixels, one per\nword (log scale)", above=0.1)
 arrow(0.688, 0.7, ym)
 top3 = np.argsort(-p)[:3]
 ax = axes(0.745, ys + 0.02, 0.045, SH - 0.04, off=False)
@@ -252,10 +252,10 @@ for yw, x1 in ((4.6, 8.0), (2.2, 9.3)):
 ax.text(-0.2, 4.6, r"$|0\rangle$", ha="right", va="center", fontsize=SUB, color=INK)
 ax.text(-0.2, 2.2, "4", ha="right", va="center", fontsize=SUB, color=MUTED)
 ax.plot([0.3, 0.6], [2.0, 2.4], color=INK, lw=1.0)
-ax.add_patch(FancyBboxPatch((1.0, 1.3), 5.3, 4.1, boxstyle="round,pad=0,rounding_size=0.25", fc="#f9dcdf",
+ax.add_patch(FancyBboxPatch((0.75, 1.3), 5.65, 4.1, boxstyle="round,pad=0,rounding_size=0.25", fc="#f9dcdf",
                             ec=INK, lw=1.1, zorder=3))
-ax.text(3.65, 3.35, "prepare\n" + r"$|0\rangle|q_i\rangle+|1\rangle|k_j\rangle$", ha="center", va="center",
-        fontsize=LAB, color=INK, linespacing=1.3, zorder=4)
+ax.text(3.58, 3.35, "prepare\n" + r"$|0\rangle|q_i\rangle+|1\rangle|k_j\rangle$", ha="center", va="center",
+        fontsize=LAB - 1.5, color=INK, linespacing=1.4, zorder=4)
 ax.add_patch(Rectangle((6.6, 4.15), 0.9, 0.9, fc="white", ec=INK, lw=1.0, zorder=3))
 ax.text(7.05, 4.6, "H", ha="center", va="center", fontsize=LAB, fontweight="bold", color=INK, zorder=4)
 ax.add_patch(Rectangle((8.0, 4.05), 1.3, 1.1, fc="white", ec=ACCENT, lw=1.2, zorder=3))
