@@ -1,0 +1,76 @@
+{
+ "tag": "words_born-therm16p2_s0",
+ "prompt": "Sue had a red kite . She flew her",
+ "words": [
+  "Sue",
+  "had",
+  "a",
+  "red",
+  "kite",
+  ".",
+  "She",
+  "flew"
+ ],
+ "interval_halfwidths_from": "runs/hw_word_devnum_Sue_had_a_red_kite_She_flew_her.json",
+ "device_outside": 1,
+ "plan_systematics": {
+  "draws": 20,
+  "outside_mean": 2.2,
+  "outside_counts": [
+   0,
+   3,
+   1,
+   5,
+   1,
+   0,
+   2,
+   4,
+   0,
+   7,
+   0,
+   2,
+   7,
+   1,
+   1,
+   1,
+   2,
+   2,
+   1,
+   4
+  ],
+  "share_of_draws_with_any_outside": 0.8,
+  "max_abs_dev_median": 0.024692040279292976
+ },
+ "plan_shots_only": {
+  "draws": 20,
+  "outside_mean": 1.1,
+  "outside_counts": [
+   0,
+   1,
+   0,
+   0,
+   7,
+   0,
+   0,
+   1,
+   0,
+   2,
+   1,
+   1,
+   3,
+   0,
+   0,
+   2,
+   0,
+   0,
+   1,
+   3
+  ],
+  "share_of_draws_with_any_outside": 0.5,
+  "max_abs_dev_median": 0.018190557117600537
+ },
+ "ideal_simulator": {
+  "outside": 1,
+  "max_abs_dev": 0.018197410441885553
+ }
+}

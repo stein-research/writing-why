@@ -142,14 +142,15 @@ class Replay:
 class Plan:
     """A draw of the device as Reading Why's ibm_kingston runs measured it (see the module docstring)."""
 
-    def __init__(self, seed):
-        self.rng = np.random.default_rng([7, seed])
+    def __init__(self, seed, systematics=True):
+        self.rng, self.sys = np.random.default_rng([7, seed]), systematics
 
     def readings(self, ideal, rowkey, block):
         rng = self.rng
         eta, off = rng.uniform(0.77, 0.82), rng.uniform(0.004, 0.012)
-        fac = {k: 1 + 0.035 * rng.standard_normal() for k in set(rowkey)}
-        m = np.array([eta * fac[r] * x + off + 0.0165 * rng.standard_normal() for x, r in zip(ideal, rowkey)])
+        s_row, s_circ = (0.035, 0.0165) if self.sys else (0.0, 0.0)     # off: shot noise only
+        fac = {k: 1 + s_row * rng.standard_normal() for k in set(rowkey)}
+        m = np.array([eta * fac[r] * x + off + s_circ * rng.standard_normal() for x, r in zip(ideal, rowkey)])
         p0 = np.clip((1 + m) / 2, 0, 1)
         return 2 * rng.binomial(shots, p0) / shots - 1
 
@@ -462,6 +463,7 @@ if "--devnum" in args:                       # referee M2: block 1's numerators 
         sys.exit("--devnum: this run is not in the ledger")
     rec, ratios0, meas0 = [r.copy() for r in recorded], [r.clone() for r in rows_ratio], list(measured_ov)
     bias0 = [b.clone() for b in square_bias]
+    calib0 = [dict(c) for c in calib]                 # the device's fit (the redraws below overwrite `calib`)
     e0, F0, B0 = hw_born_dev(target, ratios0, meas0)
     draws = []
     for kk in range(int(opt("--devnum", 0))):
@@ -475,13 +477,15 @@ if "--devnum" in args:                       # referee M2: block 1's numerators 
         draws.append(e.tolist())
         print(f"redraw {kk}: r {np.corrcoef(a, e)[0, 1]:.4f}", flush=True)
     out = dict(tag=tag, prompt=prompt, words=toks[:L - 1], exact=a.tolist(), F_exact=float(f_ex),
-               rowsums_only=dict(evidence=ev0[0].tolist(), r=float(np.corrcoef(a, ev0[0])[0, 1])),
+               rowsums_only=dict(evidence=ev0[0].tolist(), F=ev0[1], F_base=ev0[2],
+                                 r=float(np.corrcoef(a, ev0[0])[0, 1])),
+               P_device_pass=float(p0[target]),
                device_numerators=dict(evidence=e0.tolist(), F=F0, F_base=B0, sum=float(e0.sum()),
                                       r=float(np.corrcoef(a, e0)[0, 1]),
                                       max_abs_diff=float(np.abs(e0 - a).max())),
                square_bias_over_rowsum={f"block {b + 1}": dict(median=float(v.median()), max=float(v.max()))
                                         for b, v in enumerate(bias0)},
-               calibration=[dict(c) for c in calib])
+               calibration=calib0)
     if draws:
         D = np.array(draws)
         lo, hi = np.quantile(D, 0.025, 0), np.quantile(D, 0.975, 0)
@@ -493,6 +497,46 @@ if "--devnum" in args:                       # referee M2: block 1's numerators 
             half_width_median=float(np.median((hi - lo) / 2)))
     print(json.dumps({k: v for k, v in out.items()}, indent=1))
     with open(f"results/hw_word_devnum_{slug}.json", "w") as f:
+        json.dump(out, f, indent=1)
+    sys.exit()
+
+if "--devpower" in args:                     # referee round 2 (M-C): what the --devnum test would detect
+    # The device's measured interval widths (results/hw_word_devnum_<slug>.json: each share's 95 % shot-noise interval
+    # about the device's share) are put about the shares of simulated runs, and the exact shares outside are counted:
+    # (a) the plan's device model with its systematics (visibility 0.77-0.82, offset, a row's own factor
+    # 1 + 0.035 N(0,1), a circuit's own error 0.0165 N(0,1), binomial shots); (b) the same with shot noise only;
+    # (c) the ideal simulator at the same shots. Nothing is sent.
+    dn = json.load(open(f"results/hw_word_devnum_{slug}.json"))["device_numerators"]
+    e_dev, ci = np.array(dn["evidence"]), np.array(dn["evidence_95"])
+    lo, hi = e_dev - ci[:, 0], ci[:, 1] - e_dev
+
+    def shares(sim):
+        rows_ratio.clear(); calib.clear(); recorded.clear(); calib_rows.clear(); measured_ov.clear()
+        square_bias.clear()
+        model.overlap_hook = make_hook(sim)
+        with torch.no_grad():
+            model.probs(ids)
+        model.overlap_hook = None
+        return hw_born_dev(target, [r.clone() for r in rows_ratio], list(measured_ov))[0]
+
+    outside = lambda e: int(((a < e - lo) | (a > e + hi)).sum())
+    n = int(opt("--devpower", 20))
+    res = {}
+    for name, mk in (("plan_systematics", lambda k: Plan(k)), ("plan_shots_only", lambda k: Plan(k, systematics=False))):
+        outs, devs = [], []
+        for k in range(n):
+            e = shares(mk(k))
+            outs.append(outside(e)); devs.append(float(np.abs(e - a).max()))
+            print(f"{name} {k}: outside {outs[-1]} of {len(a)}, max |e - exact| {devs[-1]:.4f}", flush=True)
+        res[name] = dict(draws=n, outside_mean=float(np.mean(outs)), outside_counts=outs,
+                         share_of_draws_with_any_outside=float(np.mean([o > 0 for o in outs])),
+                         max_abs_dev_median=float(np.median(devs)))
+    e = shares(ideal_sim)
+    res["ideal_simulator"] = dict(outside=outside(e), max_abs_dev=float(np.abs(e - a).max()))
+    out = dict(tag=tag, prompt=prompt, words=toks[:L - 1], interval_halfwidths_from=f"results/hw_word_devnum_{slug}.json",
+               device_outside=outside(e_dev), **res)
+    print(json.dumps(out, indent=1))
+    with open(f"results/hw_word_devpower_{slug}.json", "w") as f:
         json.dump(out, f, indent=1)
     sys.exit()
 

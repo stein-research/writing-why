@@ -33,7 +33,9 @@
    0.09441000736509936,
    0.14979181734783376
   ],
-  "r": 0.9984287936827445
+  "r": 0.9984287936827445,
+  "F": 0.6570353034921133,
+  "F_base": 2.3584683676814651e-07
  },
  "device_numerators": {
   "evidence": [
@@ -108,17 +110,19 @@
  "calibration": [
   {
    "block": 1,
-   "slope": 0.8089514320329373,
-   "offset": 0.001002916898585119,
+   "slope": 0.8009380959118179,
+   "offset": 0.001824009769675044,
    "n": 32,
-   "resid_sd": 0.02785051591143717
+   "resid_sd": 0.01978866695956084
   },
   {
    "block": 2,
-   "slope": 0.7994015765023831,
-   "offset": 0.013219619445239058,
+   "slope": 0.7956536753820781,
+   "offset": 0.010397564361821352,
    "n": 32,
-   "resid_sd": 0.028217173488269253
+   "resid_sd": 0.021564287798468154
   }
- ]
+ ],
+ "P_device_pass": 0.7231815179123995,
+ "note": "calibration and rowsums_only.F from the device run's file: the --devnum code that wrote this file stored the last redraw's calibration (fixed in hw_word.py; the shares and intervals are unaffected)"
 }

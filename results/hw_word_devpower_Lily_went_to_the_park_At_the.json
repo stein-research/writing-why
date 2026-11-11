@@ -1,0 +1,75 @@
+{
+ "tag": "words_born-therm16p2_s0",
+ "prompt": "Lily went to the park . At the",
+ "words": [
+  "Lily",
+  "went",
+  "to",
+  "the",
+  "park",
+  ".",
+  "At"
+ ],
+ "interval_halfwidths_from": "runs/hw_word_devnum_Lily_went_to_the_park_At_the.json",
+ "device_outside": 0,
+ "plan_systematics": {
+  "draws": 20,
+  "outside_mean": 1.8,
+  "outside_counts": [
+   3,
+   0,
+   4,
+   0,
+   2,
+   3,
+   3,
+   1,
+   2,
+   1,
+   0,
+   2,
+   3,
+   0,
+   4,
+   2,
+   4,
+   1,
+   0,
+   1
+  ],
+  "share_of_draws_with_any_outside": 0.75,
+  "max_abs_dev_median": 0.027367198640412538
+ },
+ "plan_shots_only": {
+  "draws": 20,
+  "outside_mean": 0.85,
+  "outside_counts": [
+   0,
+   1,
+   1,
+   0,
+   2,
+   0,
+   1,
+   0,
+   0,
+   2,
+   0,
+   0,
+   3,
+   0,
+   1,
+   1,
+   2,
+   1,
+   2,
+   0
+  ],
+  "share_of_draws_with_any_outside": 0.55,
+  "max_abs_dev_median": 0.013142897443739351
+ },
+ "ideal_simulator": {
+  "outside": 0,
+  "max_abs_dev": 0.016820564044879832
+ }
+}
