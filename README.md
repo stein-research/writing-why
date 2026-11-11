@@ -37,14 +37,11 @@ from the last block's measured outputs. The $n$-pass readout gives
 P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to\infty} P_n(w) = \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}}.
 ```
 
-It is a softmax only in the limit and a ratio of polynomials at every finite $n$. For real $x \ge -n$, $(1+x/n)^n$ is the tempered exponential at $t=1-1/n$ (Amid et al.,
-NeurIPS 2019). A causal Born-attention language model with a plain Born readout was trained earlier in CNet
-(Crasmaru, arXiv:2610.08592, Sec. 11); what is added here is the sharp $n$-pass readout and the exact evidence. On
-light no quantum resource is used: "Born" names the $|\text{amplitude}|^2$ detection law, and the system is
-opto-electronic, with a classical controller between detections. A related construction is exact:
-Reinhardt and Hauser (arXiv:2608.11173, Corollary 17) showed that $L$ post-selected rounds, each with success
-probability $e^z$ for nonpositive scores $z$, give softmax weights at inverse temperature $L$. Here each pass supplies
-a polynomial factor; only the limit $n\to\infty$ yields the exponential.
+A softmax only in the limit, a ratio of polynomials at every finite $n$: for real $x \ge -n$, $(1+x/n)^n$ is the
+tempered exponential at $t=1-1/n$ (Amid et al., NeurIPS 2019). Reinhardt and Hauser (arXiv:2608.11173) reach the
+softmax exactly with $L$ post-selected rounds; here only the limit is exponential. A causal Born-attention language
+model with a plain readout was trained earlier in CNet (Crasmaru, arXiv:2610.08592, Sec. 11). On light no quantum
+resource is used: "Born" names the $|\text{amplitude}|^2$ detection law.
 
 With every normaliser held at its value for the actual input, the explained quantity $F(a)$, equal to $P(w)-1/V$ at
 that input, is a polynomial of degree at most $D=400n$ in the word amplitudes. Its integrated gradients over the
@@ -54,9 +51,8 @@ earlier words,
 e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a_{\lt i},\, a_i)\,d\alpha, \qquad \sum_{t \lt i} e_t = P(w) - \tfrac{1}{V} - F_q,
 ```
 
-are computed without quadrature error by $D/2$ Gauss–Legendre nodes. Here $F_q$ is the query-only baseline term: the
-current word remains at its input amplitude along the path. In the reported double-precision evaluations, the
-numerical completeness gap is at most $5.2\times10^{-11}$ over the positions tested.
+are computed without quadrature error by $D/2$ Gauss–Legendre nodes ($F_q$: the current word alone, which stays at
+its amplitude along the path); in double precision the gap is at most $5.2\times10^{-11}$.
 
 ![Why the 16-pass model wrote "park"](docs/story.png)
 
@@ -67,35 +63,31 @@ Why the model wrote "park": each earlier word's exact share, deeper red for a la
 | | 16 passes | plain readout | softmax transformer |
 |---|---|---|---|
 | TinyStories V2 next-word accuracy (3 seeds) | 49.0 +- 0.1 % | 43.0 +- 0.1 % | 51.2 +- 0.3 % |
-| WikiText-103 (3 seeds) | 27.8 +- 0.2 % | | 30.2 +- 0.0 % |
+| WikiText-103 (3 seeds) | 27.8 +- 0.2 % | | 30.2 +- 0.04 % |
 | evidence sums to the explained score | to 5.2e-11 (no quadrature error) | to 1e-13 | integrated gradients, approximate |
 
-On TinyStories the same body trained with the readout's softmax limit scores the same (49.0 +- 0.1 %, three
-seeds) and with an ordinary linear softmax head less (48.1 +- 0.1 %): under the training setup tested, neither
-replacement closes the gap to the softmax transformer. At copy positions the exact evidence ranks words
-as gradient times input does: what it adds is exact accounting, not a better ranking. In simulation the weights compile
-exactly to an opto-electronic system (interferometer meshes, balanced detectors, modulators, a controller and a
-16-pass mask); the controller does most of the arithmetic, and the paper lists what the simulation idealises. The
-softmax transformer's learning rate and warm-up were searched (nine settings).
+- On TinyStories, under the setup tested, replacing the readout does not close the gap: the same body with the
+  readout's softmax limit scores the same (49.0 %), with a linear softmax head less (48.1 %). The softmax transformer was tuned over
+  nine settings.
+- The exact evidence ranks words as gradient times input does: it adds exact accounting, not a better ranking.
+- In simulation the weights compile exactly to an opto-electronic system (meshes, balanced detectors, modulators, a
+  controller and the 16-pass mask); the paper lists what the simulation idealises.
 
 ### On a quantum computer
 
 ![The 16-pass model on qubits and light](docs/born_qubits.png)
 
-With every attention overlap of a written word read by Hadamard tests on IBM's ibm_kingston (the feed-forward and the
-readout as simulated light), and the pass criteria fixed before any job was sent:
+The attention overlaps read by Hadamard tests on IBM's ibm_kingston, the rest as simulated light; pass criteria fixed
+before any job was sent:
 
 | prompt | exact | ibm_kingston (95 % shot-noise interval) | evidence with the device's row sums |
 |---|---|---|---|
-| Lily went to the park . At the | park 0.951 | park 0.948 (0.914-0.961) | r = 0.995 (0.964-0.999) |
-| Sue had a red kite . She flew her | kite 0.670 | kite 0.723 (0.568-0.812) | r = 0.998 (0.990-1.000) |
+| Lily went to the park . At the | park 0.951 | park 0.948 (0.913-0.962) | r = 0.995 (0.964-0.999) |
+| Sue had a red kite . She flew her | kite 0.670 | kite 0.723 (0.555-0.812) | r = 0.998 (0.990-1.000) |
 | the same, "kite" deleted | favorite 0.135 | favorite 0.122; kite in none of 200 redraws | answer only |
 
-Six jobs, 389 quantum seconds; every job's circuits, calibration and raw counts are in [`ibm_jobs/`](ibm_jobs/). The
-device reads overlaps a classical computer also computes: no quantum advantage is claimed, and two prompts and one
-deletion are a demonstration, not statistics. The evidence test has little power (the numerators stay exact; with the
-row sums permuted among the rows the correlation is still 0.99), and the deletion mainly checks that the device does
-not bring a deleted word back.
+Six jobs, 389 quantum seconds, all recorded in [`ibm_jobs/`](ibm_jobs/). A demonstration, not statistics, and no
+quantum advantage is claimed; the paper also says what the evidence test and the deletion cannot show.
 
 ## Contents
 
@@ -103,7 +95,7 @@ not bring a deleted word back.
 |---|---|
 | [`demo/`](demo/) | the two notebooks and their engine, [`writing_why.py`](demo/writing_why.py) |
 | [`src/`](src/) | the models, the trainer, sampling, the exact evidence and the evaluations, the optical compile and its mesh check, and the scripts that draw the figures |
-| [`results/`](results/) | the trained models of the paper (three seeds of each model in Table 1 and of the softmax-limit readout, the pass-count ladder, the mesh fine-tune), the evaluation records, the samples' token ids, and the two vocabularies |
+| [`results/`](results/) | the trained models (three seeds of each model of the paper, the pass-count ladder, the mesh fine-tune), the evaluation records and checks, the device runs and their plans, and the two vocabularies |
 | [`data/`](data/) | where TinyStories V2 and WikiText-103 go (downloaded and checked, not stored) |
 | [`docs/`](docs/) | [running it locally and reproducing the paper](docs/run-locally.md); [checking and repeating the IBM runs](docs/check-and-repeat-ibm.md); the figures of this page |
 | [`ibm_jobs/`](ibm_jobs/) | the record of every job run on IBM's ibm_kingston: job id, times, calibration, qubits, circuits as built and as sent, raw counts (account details removed); see [`ibm_jobs/README.md`](ibm_jobs/README.md) |
