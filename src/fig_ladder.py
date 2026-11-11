@@ -55,7 +55,9 @@ for ax, key, lab, scale in ((axs[0], "test_acc", "test accuracy (%)", 100), (axs
     for n, v in zip(ns, m):
         acc = key == "test_acc"
         ax.annotate(f"{v:.1f}" if acc else f"{v:.2f}", (n, v), textcoords="offset points",
-                    xytext=(0, 7) if acc else (6, 5), ha="center" if acc else "left", fontsize=7.5, color=INK)
+                    xytext=((7, -2) if n == 1 else (0, 7)) if acc else (6, 5),           # n = 1: right of the point,
+                    ha=("left" if n == 1 else "center") if acc else "left",          # clear of the hollow marker
+                    va="center" if (acc and n == 1) else "baseline", fontsize=7.5, color=INK)
     ax.set_xscale("log", base=2)
     ax.set_xticks(ns, [str(n) for n in ns])
     ax.set_xlabel("passes through the mask, $n$", fontsize=8.5, color=INK)
@@ -69,7 +71,7 @@ for ax, key, lab, scale in ((axs[0], "test_acc", "test accuracy (%)", 100), (axs
 axs[0].set_ylim(40.5, 52)
 axs[1].set_ylim(7.5, 19)
 axs[0].annotate(r"$|\psi|^2$", (0.82, plain["test_acc"] * 100), textcoords="offset points",
-                xytext=(-4, 7), ha="center", fontsize=7, color=MUTED)
+                xytext=(0, -9), ha="center", va="top", fontsize=7, color=MUTED)   # below its marker
 fig.tight_layout(w_pad=2.5)
 for ext in ("png", "pdf"):
     fig.savefig(f"{out}.{ext}", dpi=300, bbox_inches="tight", pad_inches=0.04)

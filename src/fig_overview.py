@@ -176,7 +176,11 @@ fig.text(0.439, ys - 0.117, "$\\times$2 blocks", ha="right", fontsize=SUB, color
 ax = axes(0.248, ys, SW, SH, off=False)
 w = scores[1][0].mean(0).numpy()                                     # block 2, mean of heads, [L, L]
 wfull = np.concatenate([w, (1 - w.sum(-1))[:, None]], 1)             # the reference key takes the rest of each row
-ax.imshow(wfull, cmap=att_cmap, aspect="auto", interpolation="nearest")
+future = np.triu(np.ones((L, L), bool), 1)                       # j > i: a later word, never read (causal)
+masked = np.ma.masked_array(wfull, np.concatenate([future, np.zeros((L, 1), bool)], 1))
+cm = att_cmap.copy()
+cm.set_bad("#cfd4da")                                              # light grey: masked, not a small weight
+ax.imshow(masked, cmap=cm, aspect="auto", interpolation="nearest")
 ax.set_xticks([]), ax.set_yticks(range(L), toks, fontsize=14.5, color=MUTED)
 ax.tick_params(length=0, pad=2)
 [s.set_color(LINE) for s in ax.spines.values()]
