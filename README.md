@@ -31,7 +31,7 @@ far that exactness goes.
 passes light through one mask 16 times, |1 + gψ/16|³².*
 
 ```math
-P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}} \;\xrightarrow{\;n\to\infty\;}\; \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}}
+P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to\infty} P_n(w) = \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}}.
 ```
 
 - At every finite *n* the readout is a normalised tempered exponential, a ratio of polynomials; only the limit is
