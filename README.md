@@ -10,6 +10,7 @@ University).
 | Run it on your own computer, and the paper's analyses | [docs/run-locally.md](docs/run-locally.md) |
 | Check the IBM runs from their raw counts (no account), or repeat them | [docs/check-and-repeat-ibm.md](docs/check-and-repeat-ibm.md) |
 | Paper | arXiv identifier to be added |
+| Archived copy (always the latest version) | [doi:10.5281/zenodo.24161974](https://doi.org/10.5281/zenodo.24161974) |
 | Series | 1. Seeing Why, [arXiv:2611.01993](https://arxiv.org/abs/2611.01993) ([code](https://github.com/stein-research/seeing-why)), pictures<br>2. Reading Why, [arXiv:2611.05355](https://arxiv.org/abs/2611.05355) ([code](https://github.com/stein-research/reading-why)), sentence pairs<br>3. Writing Why (this repository), a model that writes |
 
 ![One written word, "park" after "Lily went to the park . At the": (a) on light, (b) on IBM's ibm_kingston](docs/overview.png)

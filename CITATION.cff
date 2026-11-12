@@ -4,6 +4,7 @@ title: "Writing Why: Born-Rule Language Models, Their Exact Word Evidence and It
 type: software
 license: MIT
 repository-code: "https://github.com/stein-research/writing-why"
+doi: "10.5281/zenodo.24161974"
 version: "1.0"
 authors:
   - family-names: Tongloy
