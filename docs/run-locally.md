@@ -51,7 +51,8 @@ Download the datasets into `data/tinystories/` and `data/wikitext103/` first ([d
 | `python src/word_rank_agree.py words_born-therm16p2_s0 words_born-p2r16_s0` | the rank agreement of BEW and gradient times input |
 | `python src/held_path.py words_born-therm16p2_s0 words_born-p2r16_s0` | the held function against the real probability along BEW's path (Table 4), and integrated gradients of the real probability (Table 3's "IG of the real $P$" rows) |
 | `python src/error_budget.py` | the calibration circuits' scatter against shot noise (Appendix D, error budget), from `ibm_jobs/` |
-| `python src/held_sets.py` | which held normaliser makes the held function fall away from the probability (the norm of $u$), and integrated gradients with it recomputed (Section 4.3) |
+| `python src/held_sets.py` | which held normaliser makes the held function fall away from the probability (the readout's scale: the norm of $u$, or $Z$ for the plain readout), and integrated gradients with it recomputed (Section 4.3) |
+| `python src/bew_nodes.py` | BEW with 32-200 nodes against the guaranteed $D/2$ (Section 4.3) |
 | `python src/decisive.py` | how often the copy's deciding words decide for the model, the recency rows and the $\rho_\mathrm{LOO}$ column of Table 3 |
 | `python src/attention_null.py` | the device prompts with the attention made uninformative: what the answer and the device-readings test can see (Section 4.5) |
 | `python src/readout_limit.py words_born-therm16p2_s0` | the distance of the 16-pass readout from its softmax limit |

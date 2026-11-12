@@ -1,0 +1,56 @@
+{
+ "words_born-therm16p2_s0": {
+  "degree": 6400,
+  "a_priori_nodes": 3200,
+  "positions": 300,
+  "nodes": {
+   "32": {
+    "max_share_error": 0.0019853453341452942,
+    "max_gap": 0.01005301813353654,
+    "median_seconds": 0.028020262718200684
+   },
+   "64": {
+    "max_share_error": 1.5022194321812066e-09,
+    "max_gap": 7.597178997009735e-09,
+    "median_seconds": 0.0492253303527832
+   },
+   "100": {
+    "max_share_error": 1.3155754263749486e-11,
+    "max_gap": 3.143041382713818e-13,
+    "median_seconds": 0.07032299041748047
+   },
+   "200": {
+    "max_share_error": 1.3579470881097677e-11,
+    "max_gap": 1.2916334668489071e-12,
+    "median_seconds": 0.14735853672027588
+   }
+  }
+ },
+ "words_born-p2r16_s0": {
+  "degree": 400,
+  "a_priori_nodes": 200,
+  "positions": 300,
+  "nodes": {
+   "32": {
+    "max_share_error": 5.873079800267078e-14,
+    "max_gap": 6.733502644351574e-14,
+    "median_seconds": 0.027329444885253906
+   },
+   "64": {
+    "max_share_error": 4.496403249731884e-14,
+    "max_gap": 2.0539125955565396e-14,
+    "median_seconds": 0.048100948333740234
+   },
+   "100": {
+    "max_share_error": 6.050715484207103e-14,
+    "max_gap": 1.27675647831893e-14,
+    "median_seconds": 0.07007825374603271
+   },
+   "200": {
+    "max_share_error": 4.440892098500626e-16,
+    "max_gap": 1.0236256287043943e-13,
+    "median_seconds": 0.14691483974456787
+   }
+  }
+ }
+}

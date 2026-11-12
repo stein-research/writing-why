@@ -1,6 +1,6 @@
 """Which held normaliser makes the held F fall away from P along BEW's path (referee round 6, M1), 16-pass model.
 
-The 16-pass readout holds, in order, the hidden normalisers (prefix mass, prenorms, each row's largest overlap, the
+The 16-pass readout holds, in order, the hidden normalisers (prefix mass; per block each row's largest overlap and the
 attention row sums), the norm of u (|u|, the readout's input), the readout's common scale (top) and Z. Per copy
 position of Table 3 (results/words_born-therm16p2_s0_word_evidence.json), along x(alpha) = (alpha a_<i, a_i):
   sets      median F(alpha)/F(1) with: every normaliser held (BEW's F); only |u| recomputed; |u| and top recomputed;
@@ -10,6 +10,8 @@ position of Table 3 (results/words_born-therm16p2_s0_word_evidence.json), along 
             BEW, held gradient x input, integrated gradients of the real P, and integrated gradients of the held F
             with only |u| recomputed (512 Gauss-Legendre nodes; not a polynomial, so its completeness gap against
             F_u(1) - F_u(alpha -> 0+) is reported). Median over positions. Float64.
+  plain     the plain readout's held F with Z, its scale, or its hidden normalisers recomputed (its P is normalised by
+            Z, which plays the part of |u|).
 
     python src/held_sets.py [--n N]     Writes results/held_sets.json (minutes on a laptop GPU).
 """
@@ -120,5 +122,36 @@ out = dict(tag=TAG, positions=len(rows), grid=GRID,
            u_local_power_median=float(np.median(np.log(uratio) / np.log(0.99))),
            spearman_with_leave_one_out_median={k: float(np.nanmedian(v)) for k, v in rho.items()},
            ig_u_recomputed_gap_max=float(np.max(gap_u)), ig_u_recomputed_gap_median=float(np.median(gap_u)))
+# the plain readout (referee round 7): it reads u without dividing by |u|, but its P is normalised by Z, so a held Z
+# plays the part of the held |u|; median F(alpha)/F(1) with Z, the readout's scale, or the hidden normalisers recomputed
+PTAG = "words_born-p2r16_s0"
+prow = json.load(open(f"results/{PTAG}_word_evidence.json"))["rows"]
+prow = prow[:NPOS] if NPOS else prow
+prun = json.load(open(f"results/{PTAG}.json"))
+pm = build(prun["model"], d["vocab"], xt.shape[1])
+pm.load_state_dict(torch.load(f"results/{PTAG}.pt", map_location="cpu"))
+pm = pm.double().to(dev).eval()
+assert pm.pair and not pm.thermal
+pr = {}
+for rw in prow:
+    i = rw["i"]
+    ids = torch.tensor(xt[rw["window"]][None, :i + 1], device=dev)
+    pos, tgt2 = torch.tensor([i], device=dev), torch.tensor([[rw["born_pred"]]], device=dev)
+    a0 = pm.amplitudes(ids).detach()
+    shp = (1, i + 1) + (1,) * (a0.dim() - 2)
+    base = Frozen()
+    with torch.no_grad():
+        F1 = float(E.born_scores(pm, ids, pos, tgt2, a0, base))
+        K = len(base.values)                  # the last two: the readout's scale (largest intensity), Z
+        sets = {"all held (BEW's F)": set(), "Z recomputed": {K - 1}, "scale and Z recomputed": {K - 2, K - 1},
+                "hidden normalisers recomputed": set(range(K - 2)), "all recomputed (real P - 1/V)": set(range(K))}
+        for name, free in sets.items():
+            o = []
+            for al in GRID:
+                sc = torch.ones(i + 1, dtype=torch.float64, device=dev); sc[:i] = al
+                o.append(float(E.born_scores(pm, ids, pos, tgt2, a0 * sc.view(shp), Partial(base.values, free))) / F1)
+            pr.setdefault(name, []).append(o)
+out["plain_readout"] = dict(tag=PTAG, positions=len(prow),
+                            held_over_F_median={k: np.median(np.array(v), 0).tolist() for k, v in pr.items()})
 print(json.dumps(out, indent=1))
 json.dump(out, open("results/held_sets.json", "w"), indent=1)

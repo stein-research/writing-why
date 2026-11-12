@@ -67,9 +67,11 @@ falls to a tenth of itself when the earlier words are scaled by 0.99, while the 
 value (`src/held_path.py`), so on the 16-pass model BEW closely matches rescaled gradient times input (median 0.8 % apart); integrated gradients of the real probability
 with 512 ordinary nodes close to $1.2\times10^{-10}$ and agree far better with the model's own deletions (median
 Spearman with leave-one-out 0.70 against BEW's 0.21 on 16 passes, 0.54 against 0.42 on the plain readout;
-`src/decisive.py`). The fall comes from one held normaliser, the norm of the readout's input: recomputing it alone,
-the held function follows the probability near the input and its integrated gradients reach Spearman 0.55 with
-the model's deletions, but it is no longer a polynomial (`src/held_sets.py`). The copied word itself is often not decisive for the model: deleting it changes the 16-pass
+`src/decisive.py`). Near the input the fall comes mostly from one held normaliser, the readout's scale (the norm of its
+input for 16 passes, Z for the plain readout): recomputing it alone, the held function follows the probability
+near the input and, for 16 passes, its integrated gradients reach Spearman 0.55 with the model's deletions, but it
+is no longer a polynomial (`src/held_sets.py`). BEW's guaranteed node count is loose in practice: 100 nodes
+reproduce every 16-pass share to 1.3e-11 in 0.07 s (`src/bew_nodes.py`). The copied word itself is often not decisive for the model: deleting it changes the 16-pass
 prediction at 16 % of the copy positions.
 
 ![Why the 16-pass model wrote "park"](docs/story.png)
