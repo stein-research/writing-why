@@ -42,7 +42,7 @@ for ax, (slug, title, foot, fc) in zip(axs, RUNS):
     ax.bar(x + 0.19, dv, 0.36, color=ACCENT, label="ibm_kingston, 95 % shot noise",
            yerr=np.vstack([dv - ci[:, 0], ci[:, 1] - dv]).clip(min=0), ecolor=INK, error_kw=dict(lw=1.0, capsize=3))
     for k in range(len(W)):
-        fsz = 9.5 if len(W) > 3 else 11.5                    # four words in a panel: smaller, still centred
+        fsz = 11.5                                           # bar values: about 5.8 pt printed
         ax.text(x[k] - 0.19, ex[k] + 0.015, f"{ex[k]:.3f}", ha="center", va="bottom", fontsize=fsz, color=MUTED)
         ax.text(x[k] + 0.19, ci[k, 1] + 0.015, f"{dv[k]:.3f}", ha="center", va="bottom", fontsize=fsz, color=ACCENT)
     ax.set_xticks(x, W, fontsize=13.5, color=INK)

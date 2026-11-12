@@ -68,9 +68,9 @@ ax.add_patch(FancyBboxPatch((XS[1] - BW / 2 - 0.35, Y - BH / 2 - 0.35), L2 + 0.4
                             BH + 0.7, boxstyle="round,pad=0,rounding_size=0.25", fc=F["blk"], ec=INK, lw=1.1, zorder=1))
 ax.text(L2 + 0.4, Y + BH / 2 + 0.62, r"$\times 2$ blocks", ha="right", va="center", fontsize=17, color=INK)
 box(XS[0], "emb", "State preparation", "a word's amplitudes", fs=17.5, sfs=16)
-box(XS[1], "att", "Hadamard tests", r"Re, Im $\langle q_i|k_j\rangle$, $+\,k_\mathrm{ref}$", meas=True, sfs=15.5)
-box(XS[2], "ff", "Balanced reading", r"$\Sigma_j\,$Re$[(W_jh)\overline{(V_jh)}]$", meas=True, fs=17.5, sfs=15.5)
-box(XS[3], "lin", "Controller", r"$\psi=\Sigma_k A_ku\otimes B_ku$", sfs=15.5)
+box(XS[1], "att", "Hadamard tests", r"Re, Im $\langle q_i|k_j\rangle$, $+\,k_\mathrm{ref}$", meas=True, sfs=16.5)
+box(XS[2], "ff", "Balanced reading", r"$\Sigma_j\,$Re$[(W_jh)\overline{(V_jh)}]$", meas=True, fs=17.5, sfs=16.5)
+box(XS[3], "lin", "Controller", r"$\psi=\Sigma_k A_ku\otimes B_ku$", sfs=16.5)
 box(XS[4], "lin", "Mask, 16 passes", r"$|1+g\,\psi/16|/M$", fs=18)
 box(XS[5], "out", "Camera", r"$|1+g\,\psi/16|^{32}$", meas=True)
 for a, b in ((XS[0] + BW / 2, XS[1] - BW / 2), (XS[1] + BW / 2, XS[2] - BW / 2), (XS[2] + BW / 2, L2 + 0.4),
@@ -87,9 +87,9 @@ ax.plot([XS[5] + BW / 2 + 0.95, XS[5] + BW / 2 + 0.95, xl, xl], [Y - 0.3, yb, yb
 arrow(xl, XS[0] - BW / 2, color=ACCENT)
 ax.text((XS[0] + XS[5]) / 2, yb - 0.32, "sample, append, repeat", ha="center", va="center", fontsize=16,
         color=ACCENT)
-ax.text(XS[1], Y + BH / 2 + 0.5, "run on ibm_kingston", ha="center", va="bottom", fontsize=14.5, color="white",
+ax.text(XS[1], Y + BH / 2 + 0.5, "run on ibm_kingston", ha="center", va="bottom", fontsize=16.5, color="white",
         fontweight="bold", zorder=8, bbox=dict(boxstyle="round,pad=0.25,rounding_size=0.12", fc=ACCENT, ec="none"))
-ax.text((XS[4] + XS[5]) / 2, Y + BH / 2 + 0.5, "simulated light", ha="center", va="bottom", fontsize=14.5,
+ax.text((XS[4] + XS[5]) / 2, Y + BH / 2 + 0.5, "simulated light", ha="center", va="bottom", fontsize=16.5,
         color="white", fontweight="bold", zorder=8,
         bbox=dict(boxstyle="round,pad=0.25,rounding_size=0.12", fc=LIGHT, ec="none"))
 note(XS[0], "query and key computed\nclassically, loaded as\n4 qubits' amplitudes")

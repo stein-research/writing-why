@@ -181,10 +181,10 @@ masked = np.ma.masked_array(wfull, np.concatenate([future, np.zeros((L, 1), bool
 cm = att_cmap.copy()
 cm.set_bad("#cfd4da")                                              # light grey: masked, not a small weight
 ax.imshow(masked, cmap=cm, aspect="auto", interpolation="nearest")
-ax.set_xticks([]), ax.set_yticks(range(L), toks, fontsize=14.5, color=MUTED)
+ax.set_xticks([]), ax.set_yticks(range(L), toks, fontsize=15, color=MUTED)
 ax.tick_params(length=0, pad=2)
 [s.set_color(LINE) for s in ax.spines.values()]
-ax.text(L, -0.75, "ref", ha="center", va="bottom", fontsize=13.5, color=MUTED)
+ax.text(L, -0.75, "ref", ha="center", va="bottom", fontsize=14.5, color=MUTED)
 head(ax, "Born\nattention", "$|\\langle q_i|k_j\\rangle|^2$\n/ row sum", above=0.1)
 arrow(0.325, 0.34, ym)
 ax = axes(0.355, ys, SW, SH, off=False)
