@@ -8,7 +8,7 @@ leaves out, on the trained 16-pass model.
     (64 x 128 grid), coherently: the field is the uniform beam times the mask, real and nonnegative, so the leaked
     light adds in amplitude; zero outside the grid.
 
-For each setting: next-word accuracy on the 64 validation windows of Table 5 (the code's 'test' split, positions
+For each setting: next-word accuracy on the 64 validation windows of Table 6 (the code's 'test' split, positions
 with a target), its change from the ideal cell computed by the same code, and the median total-variation distance
 to the ideal P_16. Two draws of the loss pattern per sigma.
 
