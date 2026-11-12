@@ -37,8 +37,15 @@ P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to
 - At every finite *n* the readout is a normalised tempered exponential, a ratio of polynomials; only the limit is
   the softmax.
 - On qubits the *n* passes are *n* post-selected rounds; their acceptance rate is the light that reaches the camera.
-- BEW is the integrated gradient of the probability with its normalisers held. That is a polynomial, so a known
-  number of Gauss-Legendre nodes computes it with no quadrature error.
+
+**Born evidence per word (BEW)** is the integrated gradient of the probability with its normalisers held at their
+values for the actual input. That held function $F$ is a polynomial of degree at most $D = 400n$ in the word
+amplitudes, so $D/2$ Gauss-Legendre nodes compute each earlier word's share with no quadrature error, and the
+shares add up exactly ($F_q$: the current word alone):
+
+```math
+e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a_{\lt i},\, a_i)\,d\alpha, \qquad \sum_{t \lt i} e_t = P(w) - \tfrac{1}{V} - F_q .
+```
 
 ![Why the 16-pass model wrote "park"](docs/story.png)
 
