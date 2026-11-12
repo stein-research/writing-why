@@ -1,0 +1,41 @@
+{
+ "shots": 20000,
+ "ns": [
+  0,
+  1,
+  2,
+  4
+ ],
+ "ideal": {
+  "draws": 20,
+  "passed": 20,
+  "closest_to_own": {
+   "1": 20,
+   "2": 20,
+   "4": 20
+  },
+  "acceptance_within": {
+   "1": 20,
+   "2": 20,
+   "4": 20
+  },
+  "acceptance_falls": 20,
+  "top_share_rises": 20
+ },
+ "FakeKingston": {
+  "draws": 20,
+  "passed": 20,
+  "closest_to_own": {
+   "1": 20,
+   "2": 20,
+   "4": 20
+  },
+  "acceptance_within": {
+   "1": 20,
+   "2": 20,
+   "4": 20
+  },
+  "acceptance_falls": 20,
+  "top_share_rises": 20
+ }
+}

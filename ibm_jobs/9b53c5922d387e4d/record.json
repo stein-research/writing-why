@@ -1,0 +1,172 @@
+{
+ "purpose": "the n-pass readout as n post-selected rounds, 16 words on 4 qubits, n = 0, 1, 2, 4",
+ "backend": "ibm_kingston",
+ "shots": 20000,
+ "n_circuits": 4,
+ "repeat": 0,
+ "circuit_keys": [
+  "e543bc622977dfd8",
+  "f7a691e68da69b75",
+  "a7fa8fdac2445025",
+  "67ae77f6e7acd3a1"
+ ],
+ "command": "rounds_hw.py --device ibm_kingston --submit",
+ "code": {
+  "git_commit": "edefa6e5e0a90a18d814cd7188e443376aeb959d",
+  "uncommitted_changes": false
+ },
+ "versions": {
+  "python": "3.12.3",
+  "qiskit": "2.6.1",
+  "qiskit_ibm_runtime": "0.51.0"
+ },
+ "inputs": [
+  {
+   "file": "runs/npass_quantum.json",
+   "sha256": "6ab178669ebca673077f6ffd7129965ff016ed3a673cda4246048ef8987ce2c9"
+  }
+ ],
+ "transpile": {
+  "optimization_level": 3,
+  "seeds_tried": 8,
+  "per_circuit": [
+   {
+    "seed": 0,
+    "expected_fidelity": 0.984502179022538,
+    "seed0": 0.984502179022538
+   },
+   {
+    "seed": 2,
+    "expected_fidelity": 0.9148099132784665,
+    "seed0": 0.914020515569771
+   },
+   {
+    "seed": 1,
+    "expected_fidelity": 0.8584371018310857,
+    "seed0": 0.8303920764573564
+   },
+   {
+    "seed": 5,
+    "expected_fidelity": 0.711873462701278,
+    "seed0": 0.691936884249853
+   }
+  ]
+ },
+ "dynamical_decoupling": "XY4",
+ "circuits": [
+  {
+   "note": "n = 0: H on 4 qubits, 0 uniformly controlled Ry rounds on separate ancillas, measure all",
+   "logical_qubits": 4,
+   "physical_qubits": [
+    89,
+    128,
+    118,
+    149
+   ],
+   "depth": 4,
+   "ops": {
+    "rz": 8,
+    "sx": 4,
+    "measure": 4
+   }
+  },
+  {
+   "note": "n = 1: H on 4 qubits, 1 uniformly controlled Ry rounds on separate ancillas, measure all",
+   "logical_qubits": 5,
+   "physical_qubits": [
+    144,
+    143,
+    136,
+    141,
+    142
+   ],
+   "depth": 78,
+   "ops": {
+    "sx": 52,
+    "rz": 36,
+    "cz": 25,
+    "x": 5,
+    "measure": 5
+   }
+  },
+  {
+   "note": "n = 2: H on 4 qubits, 2 uniformly controlled Ry rounds on separate ancillas, measure all",
+   "logical_qubits": 6,
+   "physical_qubits": [
+    142,
+    144,
+    141,
+    136,
+    123,
+    143
+   ],
+   "depth": 203,
+   "ops": {
+    "sx": 117,
+    "rz": 105,
+    "cz": 49,
+    "measure": 6,
+    "x": 3
+   }
+  },
+  {
+   "note": "n = 4: H on 4 qubits, 4 uniformly controlled Ry rounds on separate ancillas, measure all",
+   "logical_qubits": 8,
+   "physical_qubits": [
+    69,
+    66,
+    57,
+    68,
+    89,
+    70,
+    78,
+    67
+   ],
+   "depth": 335,
+   "ops": {
+    "sx": 272,
+    "rz": 171,
+    "cz": 130,
+    "measure": 8,
+    "x": 5
+   }
+  }
+ ],
+ "status": "done",
+ "job_id": "dbqka4gk09pc73atd900",
+ "created": "2026-11-12T04:48:18+00:00",
+ "finished": "2026-11-12T04:48:51+00:00",
+ "quantum_seconds": 23,
+ "ibm_metrics": {
+  "caller": "qiskit_ibm_runtime~sampler.py",
+  "qiskit_version": "qiskit_ibm_runtime-0.51.0,qiskit-2.6.1*,qiskit_aer-0.18.2*",
+  "timestamps": {
+   "created": "2026-11-12T04:48:18.239756Z",
+   "finished": "2026-11-12T04:48:50.2739Z",
+   "running": "2026-11-12T04:48:20.159255Z"
+  },
+  "usage": {
+   "qpu_charge_time_seconds": 23,
+   "value": 0.383236,
+   "unit": "resource_units",
+   "status": "complete",
+   "details": [
+    {
+     "value": 0.383236,
+     "unit": "resource_units",
+     "metric": {
+      "id": "caffe3ca-729c-5750-8777-df63bbf8bfd9",
+      "value": 23
+     }
+    }
+   ]
+  },
+  "circuits_execution_time_ns": 21285647616
+ },
+ "result_metadata": {
+  "execution": {
+   "execution_spans": "ExecutionSpans([DoubleSliceSpan(<start='2026-11-12 04:48:22', stop='2026-11-12 04:48:46', size=80000>)])"
+  },
+  "version": 2
+ }
+}

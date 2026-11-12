@@ -45,7 +45,10 @@ A softmax only in the limit, a ratio of polynomials at every finite $n$: for rea
 tempered exponential at $t=1-1/n$ (Amid et al., NeurIPS 2019), so the readout is a normalised tempered
 exponential (not their shift-normalised tempered softmax). On qubits the $n$ passes are $n$ post-selected rounds
 of a diagonal block encoding of the mask, the construction of Reinhardt and Hauser (arXiv:2608.11173) with $L=n$;
-their acceptance rate is the light that reaches the camera, $2.9\times10^{-4}$. At $n=16$ the accuracy is that of a
+their acceptance rate is the light that reaches the camera, $2.9\times10^{-4}$. Run on ibm_kingston for 16 words on 4 qubits
+(`src/rounds_hw.py`, n = 1, 2, 4), the rounds failed the criteria fixed before the job at n = 2 and 4 (a coherent
+two-qubit error biased the kept words); with gate twirling, a diagnostic after the fact, they gave the predicted
+distributions at every n. At $n=16$ the accuracy is that of a
 readout trained at the softmax limit, while the distribution is still far from it (median total variation 0.22). A causal Born-attention language
 model with a plain readout was trained earlier in CNet (Crasmaru, arXiv:2610.08592, Sec. 11). On light no quantum
 resource is used: "Born" names the $|\text{amplitude}|^2$ detection law.

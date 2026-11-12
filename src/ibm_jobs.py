@@ -313,16 +313,19 @@ def _finish(folder, rec, job, n):
 
 
 def sampler_counts(circs, backend_name, shots, keys, account, purpose, inputs=(), circuit_notes=None,
-                   dry_run=False, optimization_level=3, seeds=8, repeat=0, retry_failed=False, dd=True):
+                   dry_run=False, optimization_level=3, seeds=8, repeat=0, retry_failed=False, dd=True, twirl=False):
     """Counts of every circuit on IBM backend `backend_name` (one SamplerV2 job), through the ledger (see the module
     docstring). inputs: files the circuits were built from (recorded with their sha256). circuit_notes: one short text
     per circuit (what it measures). retry_failed: send again a job IBM failed (otherwise it stops). seeds: transpiler
-    seeds tried per circuit, the best by calibration kept. dd: IBM's dynamical decoupling (XY4) on idle qubits. Returns (counts or
+    seeds tried per circuit, the best by calibration kept. dd: IBM's dynamical decoupling (XY4) on idle qubits. twirl: SamplerV2's Pauli twirling of the
+    two-qubit gates (default randomisations; measurements not twirled). Returns (counts or
     None on a dry run, the ledger folder)."""
     from qiskit import qpy, transpile
     key = job_key(circs, backend_name, shots, repeat)       # repeat k > 0: the same circuits again, on purpose
     if not dd:                                                  # a job without decoupling is a different job
         key = hashlib.sha256((key + "|nodd").encode()).hexdigest()[:16]
+    if twirl:                                                   # so is a job with gate twirling
+        key = hashlib.sha256((key + "|twirl").encode()).hexdigest()[:16]
     folder = LEDGER / key
     rec_path = folder / "record.json"
     rec = json.loads(rec_path.read_text()) if rec_path.exists() else None
@@ -387,7 +390,7 @@ def sampler_counts(circs, backend_name, shots, keys, account, purpose, inputs=()
                         .is_relative_to(HERE) else str(p), "sha256": _sha256(p)} for p in inputs],
                transpile=dict(optimization_level=optimization_level, seeds_tried=seeds,
                               per_circuit=[dict(seed=s, expected_fidelity=f, seed0=f0) for s, f, f0 in tinfo]),
-               dynamical_decoupling="XY4" if dd else None,
+               dynamical_decoupling="XY4" if dd else None, gate_twirling=bool(twirl),
                circuits=[dict(note=(circuit_notes[i] if circuit_notes else ""), logical_qubits=c.num_qubits,
                               physical_qubits=t.layout.final_index_layout() if t.layout else None,
                               depth=t.depth(), ops={k: int(v) for k, v in t.count_ops().items()})
@@ -408,6 +411,8 @@ def sampler_counts(circs, backend_name, shots, keys, account, purpose, inputs=()
     if dd:
         sampler.options.dynamical_decoupling.enable = True
         sampler.options.dynamical_decoupling.sequence_type = "XY4"
+    if twirl:
+        sampler.options.twirling.enable_gates = True
     job = sampler.run(tq, shots=shots)                          # if this raises, the lock stays: it may have been sent
     rec.update(status="submitted", job_id=job.job_id(), created=_now())
     _save(folder, rec)                                          # written before waiting: a crash cannot lose the job
