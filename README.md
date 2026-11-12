@@ -15,9 +15,10 @@ University).
 ![One written word, "park" after "Lily went to the park . At the": (a) on light, (b) on IBM's ibm_kingston](docs/overview.png)
 
 *One written word, "park", (a) on light (simulated) and (b) with its attention overlaps measured on IBM's
-ibm_kingston, the same weights: the hybrid run recovers the same word, one of 8,192, and with block 1's attention
-from the device every earlier word's share lies within shot noise of the exact one (a check an ideal device passes
-equally well).*
+ibm_kingston, the same weights: the hybrid run recovers the same word, one of 8,192 (a uniform attention gives
+"park" too, so this word tests no attention), and with block 1's attention from the device every earlier word's
+share lies within shot noise of the exact one (a check an ideal device passes equally well, and an uninformative
+attention fails: 6 of 7 shares outside; `src/attention_null.py`).*
 
 A small causal language model in which the light meets no nonlinearity but quadratic detection, and the next word is
 drawn from a Born probability. Passing light $n$ times through one mask sharpens the readout towards a softmax, while
@@ -61,8 +62,10 @@ are computed without quadrature error by $D/2$ Gauss–Legendre nodes ($F_q$: th
 its amplitude along the path); in double precision the gap is at most $5.2\times10^{-11}$. The held $F$, however,
 falls to a tenth of itself when the earlier words are scaled by 0.99, while the recomputed P − 1/V keeps 99.5 % of its
 value (`src/held_path.py`), so on the 16-pass model BEW closely matches rescaled gradient times input (median 0.8 % apart); integrated gradients of the real probability
-with 512 ordinary nodes close to $1.2\times10^{-10}$ and find the copied word three times as often on the 16-pass
-model.
+with 512 ordinary nodes close to $1.2\times10^{-10}$ and agree far better with the model's own deletions (median
+Spearman with leave-one-out 0.70 against BEW's 0.21 on 16 passes, 0.54 against 0.43 on the plain readout;
+`src/decisive.py`). The copied word itself is often not decisive for the model: deleting it changes the 16-pass
+prediction at 16 % of the copy positions.
 
 ![Why the 16-pass model wrote "park"](docs/story.png)
 
@@ -91,7 +94,7 @@ Why the model wrote "park": each earlier word's exact share, deeper red for a la
 
 A hybrid run: the attention overlaps read by Hadamard tests on IBM's ibm_kingston, the rest classical or simulated
 light. Criteria were committed eleven minutes before the first job (time-stamped, not an external
-preregistration, and they could hardly fail); the evidence test with the device's readings was made
+preregistration, and they could hardly fail: a uniform attention gives the park run's word too); the evidence test with the device's readings was made
 afterwards, from the same counts:
 
 | prompt | exact | hybrid run (95 % shot-noise interval) | evidence, block 1's attention from the device |

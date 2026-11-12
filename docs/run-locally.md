@@ -50,7 +50,9 @@ Download the datasets into `data/tinystories/` and `data/wikitext103/` first ([d
 | `python src/npass_check.py` | Appendix A: the n-pass formula against the model, its distance to the softmax limit, the 1/n term, and the share of 16 copies that would agree (results/npass_check.json) |
 | `python src/word_rank_agree.py words_born-therm16p2_s0 words_born-p2r16_s0` | the rank agreement of BEW and gradient times input |
 | `python src/held_path.py words_born-therm16p2_s0 words_born-p2r16_s0` | the held function against the real probability along BEW's path (Table 4), and integrated gradients of the real probability (Table 3's "IG of the real $P$" rows) |
-| `python src/error_budget.py` | the calibration circuits' scatter against shot noise (Section 4.5, error budget), from `ibm_jobs/` |
+| `python src/error_budget.py` | the calibration circuits' scatter against shot noise (Appendix D, error budget), from `ibm_jobs/` |
+| `python src/decisive.py` | how often the copy's deciding words decide for the model, the recency rows and the $\rho_\mathrm{LOO}$ column of Table 3 |
+| `python src/attention_null.py` | the device prompts with the attention made uninformative: what the answer and the device-readings test can see (Section 4.5) |
 | `python src/readout_limit.py words_born-therm16p2_s0` | the distance of the 16-pass readout from its softmax limit |
 | `python src/time_evidence.py words_born-therm16p2_s0 words_born-p2r16_s0 words_softmax-w96_s0` | the cost per explained word |
 | `python src/compile_optics.py words_born-therm16p2_s0 --bits 8` and `--photons 10 11 12` | the exact optical compile, the light, the SLM precision and shot noise (Table 5) |

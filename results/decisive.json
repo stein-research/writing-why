@@ -1,0 +1,130 @@
+{
+ "16 passes": {
+  "tag": "words_born-therm16p2_s0",
+  "positions": 300,
+  "positions_predicting_copy": 196,
+  "flip_delete_copied": [
+   0.16,
+   0.12,
+   0.2
+  ],
+  "flip_delete_key": [
+   0.04,
+   0.02,
+   0.06333333333333334
+  ],
+  "flip_delete_copied_on_copy_predictions": [
+   0.21428571428571427,
+   0.15816326530612246,
+   0.27040816326530615
+  ],
+  "flip_delete_key_on_copy_predictions": [
+   0.04081632653061224,
+   0.015306122448979591,
+   0.07142857142857142
+  ],
+  "copied_word_rank_by_drop_median": 8.0,
+  "recency_flip1_previous_word": [
+   0.26666666666666666,
+   0.21666666666666667,
+   0.31333333333333335
+  ],
+  "recency_bottom5_five_earliest": [
+   0.12333333333333334,
+   0.08666666666666667,
+   0.16
+  ],
+  "spearman_with_leave_one_out_median": {
+   "evidence": 0.2122965418713817,
+   "recency": 0.06812605361884824,
+   "gradient x input": 0.21247637821312831,
+   "IG of the real P": 0.6981725171380344,
+   "attention": 0.09721816827079985
+  }
+ },
+ "plain readout": {
+  "tag": "words_born-p2r16_s0",
+  "positions": 300,
+  "positions_predicting_copy": 137,
+  "flip_delete_copied": [
+   0.09,
+   0.056666666666666664,
+   0.12333333333333334
+  ],
+  "flip_delete_key": [
+   0.03666666666666667,
+   0.016666666666666666,
+   0.06
+  ],
+  "flip_delete_copied_on_copy_predictions": [
+   0.0948905109489051,
+   0.051094890510948905,
+   0.145985401459854
+  ],
+  "flip_delete_key_on_copy_predictions": [
+   0.014598540145985401,
+   0.0,
+   0.0364963503649635
+  ],
+  "copied_word_rank_by_drop_median": 12.0,
+  "recency_flip1_previous_word": [
+   0.26,
+   0.21325000000000002,
+   0.31
+  ],
+  "recency_bottom5_five_earliest": [
+   0.09333333333333334,
+   0.06333333333333334,
+   0.12666666666666668
+  ],
+  "spearman_with_leave_one_out_median": {
+   "evidence": 0.4246826311169629,
+   "recency": 0.08583125737587005,
+   "gradient x input": 0.4382945159415747,
+   "IG of the real P": 0.5391823267860629,
+   "attention": 0.05920872271981177
+  }
+ },
+ "softmax": {
+  "tag": "words_softmax-w96_lr0.02w_s0",
+  "positions": 300,
+  "positions_predicting_copy": 217,
+  "flip_delete_copied": [
+   0.25333333333333335,
+   0.20666666666666667,
+   0.3
+  ],
+  "flip_delete_key": [
+   0.09666666666666666,
+   0.06666666666666667,
+   0.13
+  ],
+  "flip_delete_copied_on_copy_predictions": [
+   0.2903225806451613,
+   0.2304147465437788,
+   0.35023041474654376
+  ],
+  "flip_delete_key_on_copy_predictions": [
+   0.08294930875576037,
+   0.05069124423963134,
+   0.11981566820276497
+  ],
+  "copied_word_rank_by_drop_median": 4.0,
+  "recency_flip1_previous_word": [
+   0.30333333333333334,
+   0.25,
+   0.35333333333333333
+  ],
+  "recency_bottom5_five_earliest": [
+   0.13,
+   0.09333333333333334,
+   0.17
+  ],
+  "spearman_with_leave_one_out_median": {
+   "evidence": 0.049308861073566954,
+   "recency": 0.0898002837498636,
+   "gradient x input": -0.11676548089591567,
+   "attention": 0.07445869220355628
+  }
+ }
+}

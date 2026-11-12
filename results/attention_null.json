@@ -1,0 +1,321 @@
+{
+ "park": {
+  "exact": [
+   [
+    "park",
+    0.9506
+   ],
+   [
+    "end",
+    0.0073
+   ],
+   [
+    "top",
+    0.0071
+   ]
+  ],
+  "uniform": [
+   [
+    "park",
+    0.6655
+   ],
+   [
+    "beach",
+    0.0407
+   ],
+   [
+    "market",
+    0.0294
+   ]
+  ],
+  "uniform block 1": [
+   [
+    "park",
+    0.9094
+   ],
+   [
+    "top",
+    0.0192
+   ],
+   [
+    "bottom",
+    0.0085
+   ]
+  ],
+  "uniform block 2": [
+   [
+    "park",
+    0.76
+   ],
+   [
+    "store",
+    0.0208
+   ],
+   [
+    "beach",
+    0.0134
+   ]
+  ],
+  "random magnitudes": {
+   "park": 137,
+   "top": 10,
+   "market": 8,
+   "big": 6,
+   "building": 5,
+   "draws": 200
+  },
+  "noise sigma 0.1": {
+   "park": 200,
+   "draws": 200
+  },
+  "noise sigma 0.3": {
+   "park": 181,
+   "sun": 8,
+   "end": 5,
+   "top": 2,
+   "little": 2,
+   "draws": 200
+  },
+  "noise sigma 0.5": {
+   "park": 144,
+   "end": 13,
+   "sun": 11,
+   "top": 5,
+   "little": 4,
+   "draws": 200
+  },
+  "evidence": {
+   "words": 7,
+   "rebuild_check_max_abs": 2.9976021664879227e-15,
+   "device": {
+    "outside": 0,
+    "r": 0.9961587348032088
+   },
+   "uniform_block1": {
+    "outside": 6,
+    "r": 0.9422752906909427,
+    "shares": [
+     0.1371,
+     0.1328,
+     0.0946,
+     0.0374,
+     0.2138,
+     0.0699,
+     0.2237
+    ]
+   },
+   "permuted_block1": {
+    "outside_median": 6.0,
+    "outside_min": 5,
+    "outside_max": 7,
+    "r_median": 0.8348084792389259,
+    "draws": 10
+   }
+  }
+ },
+ "kite": {
+  "exact": [
+   [
+    "kite",
+    0.6696
+   ],
+   [
+    "favorite",
+    0.057
+   ],
+   [
+    "plane",
+    0.0218
+   ]
+  ],
+  "uniform": [
+   [
+    "favorite",
+    0.1884
+   ],
+   [
+    "kite",
+    0.0541
+   ],
+   [
+    "toy",
+    0.0471
+   ]
+  ],
+  "uniform block 1": [
+   [
+    "kite",
+    0.8647
+   ],
+   [
+    "plane",
+    0.0409
+   ],
+   [
+    "bike",
+    0.0158
+   ]
+  ],
+  "uniform block 2": [
+   [
+    "favorite",
+    0.2037
+   ],
+   [
+    "toy",
+    0.0843
+   ],
+   [
+    "red",
+    0.0486
+   ]
+  ],
+  "random magnitudes": {
+   "favorite": 83,
+   "kite": 20,
+   "toy": 19,
+   "red": 16,
+   "wings": 11,
+   "draws": 200
+  },
+  "noise sigma 0.1": {
+   "kite": 200,
+   "draws": 200
+  },
+  "noise sigma 0.3": {
+   "kite": 143,
+   "favorite": 28,
+   "mom": 17,
+   "tree": 3,
+   "with": 1,
+   "draws": 200
+  },
+  "noise sigma 0.5": {
+   "kite": 84,
+   "mom": 29,
+   "favorite": 23,
+   ".": 10,
+   "toy": 9,
+   "draws": 200
+  },
+  "evidence": {
+   "words": 8,
+   "rebuild_check_max_abs": 3.219646771412954e-15,
+   "device": {
+    "outside": 1,
+    "r": 0.9919061581670101
+   },
+   "uniform_block1": {
+    "outside": 8,
+    "r": 0.9221251573345162,
+    "shares": [
+     0.0808,
+     0.0838,
+     0.0553,
+     0.0814,
+     0.2253,
+     0.0555,
+     0.081,
+     0.2015
+    ]
+   },
+   "permuted_block1": {
+    "outside_median": 7.0,
+    "outside_min": 4,
+    "outside_max": 8,
+    "r_median": 0.8809348436804991,
+    "draws": 10
+   }
+  }
+ },
+ "kite deleted": {
+  "exact": [
+   [
+    "favorite",
+    0.1354
+   ],
+   [
+    "toy",
+    0.092
+   ],
+   [
+    "room",
+    0.0633
+   ]
+  ],
+  "uniform": [
+   [
+    "favorite",
+    0.1099
+   ],
+   [
+    "toy",
+    0.0782
+   ],
+   [
+    "big",
+    0.045
+   ]
+  ],
+  "uniform block 1": [
+   [
+    "favorite",
+    0.1092
+   ],
+   [
+    "house",
+    0.0884
+   ],
+   [
+    "room",
+    0.0676
+   ]
+  ],
+  "uniform block 2": [
+   [
+    "favorite",
+    0.1249
+   ],
+   [
+    "toy",
+    0.1248
+   ],
+   [
+    "ball",
+    0.0448
+   ]
+  ],
+  "random magnitudes": {
+   "favorite": 50,
+   "toy": 35,
+   "mom": 33,
+   "red": 21,
+   "big": 15,
+   "draws": 200
+  },
+  "noise sigma 0.1": {
+   "favorite": 140,
+   "toy": 23,
+   "mom": 20,
+   "house": 11,
+   "room": 6,
+   "draws": 200
+  },
+  "noise sigma 0.3": {
+   "mom": 52,
+   "favorite": 42,
+   "toy": 39,
+   "house": 24,
+   "room": 21,
+   "draws": 200
+  },
+  "noise sigma 0.5": {
+   "mom": 51,
+   "toy": 32,
+   "favorite": 23,
+   "room": 15,
+   "house": 10,
+   "draws": 200
+  }
+ }
+}
