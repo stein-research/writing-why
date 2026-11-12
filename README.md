@@ -59,7 +59,7 @@ e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a_{\lt i},\, a_i)\,d\a
 
 are computed without quadrature error by $D/2$ Gauss–Legendre nodes ($F_q$: the current word alone, which stays at
 its amplitude along the path); in double precision the gap is at most $5.2\times10^{-11}$. The held $F$, however,
-falls to a tenth of itself when the earlier words are scaled by 0.99, while the real probability keeps 99.5 % of its
+falls to a tenth of itself when the earlier words are scaled by 0.99, while the recomputed P − 1/V keeps 99.5 % of its
 value (`src/held_path.py`), so on the 16-pass model BEW closely matches rescaled gradient times input (median 0.8 % apart); integrated gradients of the real probability
 with 512 ordinary nodes close to $1.2\times10^{-10}$ and find the copied word three times as often on the 16-pass
 model.
