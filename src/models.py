@@ -202,7 +202,7 @@ class CausalBorn(nn.Module):
             assert not softlimit or thermal, "softlimit needs t<n> (any n) for the thermal code paths"
             if thermal:
                 self.log_gain = nn.Parameter(torch.tensor(math.log(math.sqrt(vocab))))
-        # linhead (the paper's control, Table 1): the same Born body, its last block's measured numbers u read by an
+        # linhead (the paper's control, Table 2): the same Born body, its last block's measured numbers u read by an
         # ordinary linear softmax head over the words. Not a Born readout, no exact evidence; pair_a / pair_b unused.
         self.linhead = bool(linhead)
         if linhead:
