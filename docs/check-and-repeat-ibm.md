@@ -24,6 +24,7 @@ These read only the files in the repository and send nothing.
 | what the device-readings test would catch (Section 4.5): the plan's systematics 1.8 of 7 and 2.2 of 8 shares outside, shot noise only 0.85 and 1.1 | the park and kite commands with `--devpower 20` | per simulated draw, the exact shares outside the device's interval widths; the ideal simulator's | about forty minutes a prompt |
 | the passes as post-selected rounds (Appendix B): $S_{16}=2.9\times10^{-4}$ | `python src/npass_quantum.py` | the rounds' success at n = 1 to 16, the copies' figure, the fixed-mask rounds | minutes, about 4 GB |
 | the rounds on ibm_kingston, 16 words on 4 qubits (Table 9, Appendix B): failed the fixed criteria at n = 2, 4; with gate twirling, passed | `python src/rounds_hw.py --device ibm_kingston` (the run) and the same with `--twirl` (the diagnostic); the criteria are `results/rounds_criteria.json` | acceptance, distance to $P_n$ and top share per n, and the verdict, from the ledger's counts | seconds |
+| the rounds beyond the criteria (Appendix B): chi-square against $P_n$, the register's lowest bit, bootstrap of criterion (a), and the sent circuits simulated | `python src/rounds_stats.py` | per run and n | a minute |
 | the rounds' plan: 20 of 20 simulated draws pass, ideal and FakeKingston | `python src/rounds_hw.py --power 20` and `python src/rounds_hw.py` | the pass counts; the simulated runs | minutes |
 
 Without `--submit`, `hw_word.py` rebuilds every circuit from the model, finds each in `ibm_jobs/` by its key, takes

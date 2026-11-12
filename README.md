@@ -47,8 +47,8 @@ exponential (not their shift-normalised tempered softmax). On qubits the $n$ pas
 of a diagonal block encoding of the mask, the construction of Reinhardt and Hauser (arXiv:2608.11173) with $L=n$;
 their acceptance rate is the light that reaches the camera, $2.9\times10^{-4}$. Run on ibm_kingston for 16 words on 4 qubits
 (`src/rounds_hw.py`, n = 1, 2, 4), the rounds failed the criteria fixed before the job at n = 2 and 4 (a coherent
-two-qubit error biased the kept words); with gate twirling, a diagnostic after the fact, they gave the predicted
-distributions at every n. At $n=16$ the accuracy is that of a
+two-qubit error biased the kept words); with gate twirling, a diagnostic after the fact, they passed every criterion,
+though still not within shot noise of the prediction at n = 2 and 4 (`src/rounds_stats.py`). At $n=16$ the accuracy is that of a
 readout trained at the softmax limit, while the distribution is still far from it (median total variation 0.22). A causal Born-attention language
 model with a plain readout was trained earlier in CNet (Crasmaru, arXiv:2610.08592, Sec. 11). On light no quantum
 resource is used: "Born" names the $|\text{amplitude}|^2$ detection law.
@@ -66,8 +66,10 @@ its amplitude along the path); in double precision the gap is at most $5.2\times
 falls to a tenth of itself when the earlier words are scaled by 0.99, while the recomputed P − 1/V keeps 99.5 % of its
 value (`src/held_path.py`), so on the 16-pass model BEW closely matches rescaled gradient times input (median 0.8 % apart); integrated gradients of the real probability
 with 512 ordinary nodes close to $1.2\times10^{-10}$ and agree far better with the model's own deletions (median
-Spearman with leave-one-out 0.70 against BEW's 0.21 on 16 passes, 0.54 against 0.43 on the plain readout;
-`src/decisive.py`). The copied word itself is often not decisive for the model: deleting it changes the 16-pass
+Spearman with leave-one-out 0.70 against BEW's 0.21 on 16 passes, 0.54 against 0.42 on the plain readout;
+`src/decisive.py`). The fall comes from one held normaliser, the norm of the readout's input: recomputing it alone,
+the held function follows the probability near the input and its integrated gradients reach Spearman 0.55 with
+the model's deletions, but it is no longer a polynomial (`src/held_sets.py`). The copied word itself is often not decisive for the model: deleting it changes the 16-pass
 prediction at 16 % of the copy positions.
 
 ![Why the 16-pass model wrote "park"](docs/story.png)
