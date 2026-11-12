@@ -48,7 +48,8 @@ of a diagonal block encoding of the mask, the construction of Reinhardt and Haus
 their acceptance rate is the light that reaches the camera, $2.9\times10^{-4}$. Run on ibm_kingston for 16 words on 4 qubits
 (`src/rounds_hw.py`, n = 1, 2, 4), the rounds failed the criteria fixed before the job at n = 2 and 4 (a coherent
 two-qubit error biased the kept words); with gate twirling, a diagnostic after the fact, they passed every criterion,
-though still not within shot noise of the prediction at n = 2 and 4 (`src/rounds_stats.py`). At $n=16$ the accuracy is that of a
+though still not within shot noise of the prediction at n = 2 and 4 (`src/rounds_stats.py`). With more rounds the kept words move towards the softmax limit, as theory says
+(distance 0.61, 0.57, 0.49 at n = 1, 2, 4), but four rounds are far from it. At $n=16$ the accuracy is that of a
 readout trained at the softmax limit, while the distribution is still far from it (median total variation 0.22). A causal Born-attention language
 model with a plain readout was trained earlier in CNet (Crasmaru, arXiv:2610.08592, Sec. 11). On light no quantum
 resource is used: "Born" names the $|\text{amplitude}|^2$ detection law.

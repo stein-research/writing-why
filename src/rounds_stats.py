@@ -7,7 +7,10 @@ Per run (the run under the criteria, ledger 9b53c5922d387e4d; the twirled diagno
                       the rounds only act on the ancillas), a model-free sign of an error on the register;
   register_bit0_one   the share of all shots whose lowest register bit reads 1 (ideally 0.5);
   odd_share           the odd words' share among the kept shots, and its ideal value under P_n;
-  bootstrap_a         the share of 2,000 multinomial resamples of the kept counts that pass criterion (a).
+  bootstrap_a         the share of 2,000 multinomial resamples of the kept counts that pass criterion (a);
+  tv_to_softmax       the total-variation distance of the kept words to the readout's n -> infinity limit on these 16
+                      cells, the softmax exp(2 Re z_w) / sum_v exp(2 Re z_v) (computed after the runs), and the ideal
+                      P_n's distance (n = 1, 2, 4, 8, 16, 64 under 'ideal_tv_to_softmax').
 And the transpiled circuits as sent, run on the ideal simulator and on the FakeKingston noise model (20,000 shots):
 acceptance, TV to P_n, TV to the nearest other P_m, top share, odd share.
 
@@ -23,6 +26,8 @@ from scipy.stats import chisquare
 
 toy = json.load(open("results/npass_quantum.json"))["toy_cells"]["w0_p32"]
 T = {int(k): np.array(v) for k, v in toy["t"].items()}
+Z = np.array(toy["z_re"]) + 1j * np.array(toy["z_im"])
+LIM = np.exp(2 * Z.real) / np.exp(2 * Z.real).sum()
 NS = [0, 1, 2, 4]
 RUNS = {"run": "9b53c5922d387e4d", "twirled": "1d55487d942cd945"}
 
@@ -48,7 +53,10 @@ def split(n, counts):
     return kept, reg
 
 
-out = {"device": {}, "sent_circuits_simulated": {}}
+out = {"device": {}, "sent_circuits_simulated": {},
+       "ideal_tv_to_softmax": {str(n): tv((lambda p: p / p.sum())(np.abs(1 + Z / n) ** (2 * n)), LIM)
+                               for n in (1, 2, 4, 8, 16, 64)}}
+print("ideal TV to the softmax limit", out["ideal_tv_to_softmax"])
 rng = np.random.default_rng(1)
 for label, key in RUNS.items():
     C = json.load(open(f"ibm_jobs/{key}/counts.json"))
@@ -63,7 +71,7 @@ for label, key in RUNS.items():
                          register_uniform_p=float(chisquare(reg, np.full(16, reg.sum() / 16)).pvalue),
                          register_bit0_one=float(reg[1::2].sum() / reg.sum()),
                          odd_share=float(q[1::2].sum()), odd_share_ideal=float(P(n)[1::2].sum()),
-                         bootstrap_a=float(boot)))
+                         bootstrap_a=float(boot), tv_to_softmax=tv(q, LIM)))
         print(label, rows[-1], flush=True)
     out["device"][label] = rows
 with open(f"ibm_jobs/{RUNS['run']}/transpiled.qpy", "rb") as f:

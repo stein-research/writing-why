@@ -9,7 +9,8 @@
     "register_bit0_one": 0.50525,
     "odd_share": 0.50525,
     "odd_share_ideal": 0.5,
-    "bootstrap_a": 1.0
+    "bootstrap_a": 1.0,
+    "tv_to_softmax": 0.6697634406872495
    },
    {
     "n": 1,
@@ -19,7 +20,8 @@
     "register_bit0_one": 0.4802,
     "odd_share": 0.4762747576906869,
     "odd_share_ideal": 0.4894332005872262,
-    "bootstrap_a": 1.0
+    "bootstrap_a": 1.0,
+    "tv_to_softmax": 0.6290974482725844
    },
    {
     "n": 2,
@@ -29,7 +31,8 @@
     "register_bit0_one": 0.66335,
     "odd_share": 0.6317948717948718,
     "odd_share_ideal": 0.4747487350953496,
-    "bootstrap_a": 0.0
+    "bootstrap_a": 0.0,
+    "tv_to_softmax": 0.607499053222862
    },
    {
     "n": 4,
@@ -39,7 +42,8 @@
     "register_bit0_one": 0.7473,
     "odd_share": 0.7718499240945564,
     "odd_share_ideal": 0.4460386584410292,
-    "bootstrap_a": 0.0
+    "bootstrap_a": 0.0,
+    "tv_to_softmax": 0.528989596871347
    }
   ],
   "twirled": [
@@ -51,7 +55,8 @@
     "register_bit0_one": 0.49475,
     "odd_share": 0.49475,
     "odd_share_ideal": 0.5,
-    "bootstrap_a": 1.0
+    "bootstrap_a": 1.0,
+    "tv_to_softmax": 0.6671134406872494
    },
    {
     "n": 1,
@@ -61,7 +66,8 @@
     "register_bit0_one": 0.4986,
     "odd_share": 0.49011923622112896,
     "odd_share_ideal": 0.4894332005872262,
-    "bootstrap_a": 1.0
+    "bootstrap_a": 1.0,
+    "tv_to_softmax": 0.6121901562713402
    },
    {
     "n": 2,
@@ -71,7 +77,8 @@
     "register_bit0_one": 0.5305,
     "odd_share": 0.5132194665418811,
     "odd_share_ideal": 0.4747487350953496,
-    "bootstrap_a": 0.9125
+    "bootstrap_a": 0.9125,
+    "tv_to_softmax": 0.5742100480807918
    },
    {
     "n": 4,
@@ -81,7 +88,8 @@
     "register_bit0_one": 0.5058,
     "odd_share": 0.46102857142857145,
     "odd_share_ideal": 0.4460386584410292,
-    "bootstrap_a": 0.998
+    "bootstrap_a": 0.998,
+    "tv_to_softmax": 0.49324915497296373
    }
   ]
  },
@@ -154,5 +162,13 @@
     "odd_share": 0.4499205087440382
    }
   ]
+ },
+ "ideal_tv_to_softmax": {
+  "1": 0.6128197475603486,
+  "2": 0.5573234000546612,
+  "4": 0.4607009497533713,
+  "8": 0.3279760300298249,
+  "16": 0.1986887613884188,
+  "64": 0.0579258029450822
  }
 }
