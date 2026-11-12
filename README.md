@@ -14,106 +14,66 @@ University).
 
 ![One written word, "park" after "Lily went to the park . At the": (a) on light, (b) on IBM's ibm_kingston](docs/overview.png)
 
-*One written word, "park", (a) on light (simulated) and (b) with its attention overlaps measured on IBM's
-ibm_kingston, the same weights: the hybrid run recovers the same word, one of 8,192 (a uniform attention gives
-"park" too, so this word tests no attention), and with block 1's attention from the device every earlier word's
-share lies within shot noise of the exact one (a check an ideal device passes equally well, and an uninformative
-attention fails: 6 of 7 shares outside; `src/attention_null.py`).*
+*One written word, "park", through the trained 16-pass model: (a) on light (simulated), (b) with its attention
+overlaps measured on IBM's ibm_kingston. Red words raised the probability of "park".*
 
-A small causal language model in which the light meets no nonlinearity but quadratic detection, and the next word is
-drawn from a Born probability. Passing light $n$ times through one mask sharpens the readout towards a softmax, while
-each word's probability stays a ratio of polynomials in the words' amplitudes, so the evidence for every word it
-writes, the **Born evidence per word (BEW)**, is computed exactly for that polynomial with its normalisers held. The
-held polynomial follows the probability only near the actual input, which limits what the exactness buys (below). The same weights also run with their attention
-read on a quantum computer.
+A small causal language model in which every nonlinearity on the light is a quadratic detection, so the next word
+is drawn from a Born probability. Passing light *n* times through one mask sharpens the readout towards a softmax,
+while each word's probability stays a ratio of polynomials in the words' amplitudes. With its normalisers held, the
+evidence for every word it writes, the **Born evidence per word (BEW)**, is then exact. The paper also measures how
+far that exactness goes.
 
 ## How it works
 
 ![The two Born language models, identical up to the readout](docs/born_pair.png)
 
-*The two models, drawn as optics (simulated): the plain readout reads the readout state once, $|\psi|^2$; the
-16-pass readout passes light through one mask 16 times, $|1+g\psi/16|^{32}$.*
-
-The readout field $\psi_w$ over the 8,192 words is constructed as a rank-16 factorisation across a $64\times128$ grid
-from the last block's measured outputs. The $n$-pass readout gives
+*The two models, drawn as optics (simulated): the plain readout reads the state once, |ψ|²; the 16-pass readout
+passes light through one mask 16 times, |1 + gψ/16|³².*
 
 ```math
-P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}}, \qquad \lim_{n\to\infty} P_n(w) = \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}}.
+P_n(w) = \frac{|1+g\psi_w/n|^{2n}}{\sum_v |1+g\psi_v/n|^{2n}} \;\xrightarrow{\;n\to\infty\;}\; \frac{e^{2g\,\mathrm{Re}\,\psi_w}}{\sum_v e^{2g\,\mathrm{Re}\,\psi_v}}
 ```
 
-A softmax only in the limit, a ratio of polynomials at every finite $n$: for real $x \ge -n$, $(1+x/n)^n$ is the
-tempered exponential at $t=1-1/n$ (Amid et al., NeurIPS 2019), so the readout is a normalised tempered
-exponential (not their shift-normalised tempered softmax). On qubits the $n$ passes are $n$ post-selected rounds
-of a diagonal block encoding of the mask, the construction of Reinhardt and Hauser (arXiv:2608.11173) with $L=n$;
-their acceptance rate is the light that reaches the camera, $2.9\times10^{-4}$. Run on ibm_kingston for 16 words on 4 qubits
-(`src/rounds_hw.py`, n = 1, 2, 4), the rounds failed the criteria fixed before the job at n = 2 and 4 (a coherent
-two-qubit error biased the kept words); with gate twirling, a diagnostic after the fact, they passed every criterion,
-though still not within shot noise of the prediction at n = 2 and 4 (`src/rounds_stats.py`). With more rounds the kept words move towards the softmax limit, as theory says
-(distance 0.61, 0.57, 0.49 at n = 1, 2, 4), but four rounds are far from it. At $n=16$ the accuracy is that of a
-readout trained at the softmax limit, while the distribution is still far from it (median total variation 0.22). A causal Born-attention language
-model with a plain readout was trained earlier in CNet (Crasmaru, arXiv:2610.08592, Sec. 11). On light no quantum
-resource is used: "Born" names the $|\text{amplitude}|^2$ detection law.
-
-With every normaliser held at its value for the actual input, the explained quantity $F(a)$, equal to $P(w)-1/V$ at
-that input, is a polynomial of degree at most $D=400n$ in the word amplitudes. Its integrated gradients over the
-earlier words,
-
-```math
-e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a_{\lt i},\, a_i)\,d\alpha, \qquad \sum_{t \lt i} e_t = P(w) - \tfrac{1}{V} - F_q,
-```
-
-are computed without quadrature error by $D/2$ Gauss–Legendre nodes ($F_q$: the current word alone, which stays at
-its amplitude along the path); in double precision the gap is at most $5.2\times10^{-11}$. The held $F$, however,
-falls to a tenth of itself when the earlier words are scaled by 0.99, while the recomputed P − 1/V keeps 99.5 % of its
-value (`src/held_path.py`), so on the 16-pass model BEW closely matches rescaled gradient times input (median 0.8 % apart); integrated gradients of the real probability
-with 512 ordinary nodes close to $1.2\times10^{-10}$ and agree far better with the model's own deletions (median
-Spearman with leave-one-out 0.70 against BEW's 0.21 on 16 passes, 0.54 against 0.42 on the plain readout;
-`src/decisive.py`). Near the input the fall comes mostly from one held normaliser, the readout's scale (the norm of its
-input for 16 passes, Z for the plain readout): recomputing it alone, the held function follows the probability
-near the input and, for 16 passes, its integrated gradients reach Spearman 0.55 with the model's deletions, but it
-is no longer a polynomial (`src/held_sets.py`). BEW's guaranteed node count is loose in practice: 100 nodes
-reproduce every 16-pass share to 1.3e-11 in 0.07 s (`src/bew_nodes.py`). The copied word itself is often not decisive for the model: deleting it changes the 16-pass
-prediction at 16 % of the copy positions.
+- At every finite *n* the readout is a normalised tempered exponential, a ratio of polynomials; only the limit is
+  the softmax.
+- On qubits the *n* passes are *n* post-selected rounds; their acceptance rate is the light that reaches the camera.
+- BEW is the integrated gradient of the probability with its normalisers held. That is a polynomial, so a known
+  number of Gauss-Legendre nodes computes it with no quadrature error.
 
 ![Why the 16-pass model wrote "park"](docs/story.png)
 
-Why the model wrote "park": each earlier word's exact share, deeper red for a larger push; grey words came after.
+*Why the model wrote "park": each earlier word's exact share, deeper red for a larger push; grey words came after.*
 
 ## What the paper finds
 
 | | 16 passes | plain readout | softmax transformer |
 |---|---|---|---|
-| TinyStories V2 next-word accuracy (3 seeds) | 49.0 +- 0.1 % | 43.0 +- 0.1 % | 51.2 +- 0.3 % |
-| WikiText-103 (3 seeds) | 27.8 +- 0.2 % | | 30.18 +- 0.04 % |
-| evidence sums to the explained score | to 5.2e-11 (no quadrature error) | to 1e-13 | integrated gradients, approximate |
+| TinyStories V2 next-word accuracy (3 seeds) | 49.0 ± 0.1 % | 43.0 ± 0.1 % | 51.2 ± 0.3 % |
+| WikiText-103 (3 seeds) | 27.8 ± 0.2 % | | 30.18 ± 0.04 % |
 
-- On TinyStories, under the setup tested, replacing the readout does not close the gap: the same body with the
-  readout's softmax limit scores the same (49.0 %), with a linear softmax head less (48.1 %). The softmax transformer was tuned over
-  nine settings.
-- The exact evidence ranks words as gradient times input does, because the held polynomial follows the probability
-  only near the actual input; integrated gradients of the real probability rank the deciding words better on the
-  16-pass model. Exactness here is a node count known in advance, not a smaller error.
-- In simulation the weights compile exactly to an opto-electronic system (meshes, balanced detectors, modulators, a
-  controller and the 16-pass mask); the paper lists what the simulation idealises.
+- **Writing.** Sixteen passes come within 2.2 points of a softmax transformer of the same size. The same body read at
+  the softmax limit scores the same, so the gap is in the body, not the readout.
+- **Exact, and its limit.** BEW is exact for the held polynomial (gap 5e-11), but that polynomial follows the
+  probability only near the input. With the earlier words scaled by 0.99 it keeps 10.5 % of its value, while the
+  probability keeps 99.5 %. So on 16
+  passes BEW closely matches gradient × input. Integrated gradients of the real probability agree far better with the
+  model's own word deletions: Spearman 0.70, against 0.21 for BEW.
+- **Why.** One held normaliser, the readout's scale, causes most of the fall near the input.
+- **Light.** In simulation the weights compile exactly to an opto-electronic system; the paper lists what it
+  idealises.
 
 ### On a quantum computer
 
 ![The 16-pass model on qubits and light](docs/born_qubits.png)
 
-A hybrid run: the attention overlaps read by Hadamard tests on IBM's ibm_kingston, the rest classical or simulated
-light. Criteria were committed eleven minutes before the first job (time-stamped, not an external
-preregistration, and they could hardly fail: a uniform attention gives the park run's word too); the evidence test with the device's readings was made
-afterwards, from the same counts:
+| on ibm_kingston | result |
+|---|---|
+| the attention overlaps, read by Hadamard tests (two prompts, one deletion) | the model's top word in every run; with block 1's measured attention, 14 of 15 word shares within shot noise of the exact ones (14 of 15 outside with an uninformative attention) |
+| the readout as post-selected rounds, 16 words on 4 qubits, n = 1, 2, 4 | failed the criteria fixed before the job at n = 2 and 4 (a coherent two-qubit error); with gate twirling, a diagnostic after the fact, it passed them and moved towards the softmax limit as *n* grew |
 
-| prompt | exact | hybrid run (95 % shot-noise interval) | evidence, block 1's attention from the device |
-|---|---|---|---|
-| Lily went to the park . At the | park 0.951 | park 0.948 (0.913-0.962) | 7 of 7 shares within shot noise |
-| Sue had a red kite . She flew her | kite 0.670 | kite 0.723 (0.555-0.812) | 7 of 8 ("a": 0.037 against 0.039-0.055) |
-| the same, "kite" deleted | favorite 0.135 | favorite 0.122; kite in none of 200 redraws | answer only |
-
-Six jobs, 389 quantum seconds, all recorded in [`ibm_jobs/`](ibm_jobs/). A demonstration, not statistics, and no
-quantum advantage is claimed; the paper also says what the time-stamped criteria, the evidence test and the deletion
-cannot show.
+Eight jobs, 436 quantum seconds, every one recorded in [`ibm_jobs/`](ibm_jobs/) with its raw counts. A demonstration,
+not statistics, and no quantum advantage is claimed. The numbers behind every line, and the command that gives each,
+are in [docs/run-locally.md](docs/run-locally.md) and [docs/check-and-repeat-ibm.md](docs/check-and-repeat-ibm.md).
 
 ## Contents
 
