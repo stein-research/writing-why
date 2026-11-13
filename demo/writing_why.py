@@ -160,7 +160,7 @@ def explain(model, ids, T):
 
 
 def _chip(v, lim):
-    """Red raised, blue lowered (Reading Why's evidence colours), white near zero."""
+    """Red for the word, blue against it (Reading Why's evidence colours), white near zero."""
     a = min(abs(v) / lim, 1.0) ** 0.6 if lim > 0 else 0.0
     c = np.array([232, 67, 28]) if v > 0 else np.array([31, 120, 209])
     rgb = (255 - a * (255 - c)).astype(int)

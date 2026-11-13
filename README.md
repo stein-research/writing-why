@@ -18,7 +18,7 @@ Companion to the paper by Teerawat Tongloy<sup>1</sup>, Jiraporn Pongsopa<sup>2<
 ![One written word, "park" after "Lily went to the park . At the": (a) on light, (b) on IBM's ibm_kingston](docs/overview.png)
 
 *One written word, "park", through the trained 16-pass model: (a) on light (simulated), (b) with its attention
-overlaps measured on IBM's ibm_kingston. Red words raised the probability of "park".*
+overlaps measured on IBM's ibm_kingston. Red words count for "park", blue against it.*
 
 A small causal language model in which every nonlinearity on the light is a quadratic detection, so the next word
 is drawn from a Born probability. Passing light *n* times through one mask sharpens the readout towards a softmax,
