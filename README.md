@@ -133,3 +133,7 @@ the code, and take full responsibility for the content.
 Code: MIT ([`LICENSE`](LICENSE)). TinyStories: CDLA-Sharing-1.0; WikiText-103: CC BY-SA and GFDL; the vocabularies
 derived from them keep those licences (see [`data/README.md`](data/README.md)). Please cite the paper
 ([`CITATION.cff`](CITATION.cff)).
+
+## Contact
+
+Teerawat Tongloy, teerawat.to@kmitl.ac.th
