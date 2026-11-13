@@ -19,6 +19,7 @@ import importlib
 import json
 import os
 import sys
+import time
 from dataclasses import dataclass
 
 import numpy as np
@@ -68,15 +69,21 @@ def _probs(model, x):
         return torch.softmax(model(x)[0, -1], -1)
 
 
-def write(model, prompt, words=250, temp=0.7, top_p=0.9, seed=0, draws=1, only=None):
+def write(model, prompt, words=250, temp=0.7, top_p=0.9, seed=0, draws=1, only=None, live=False, delay=0.03):
     """Draw `draws` stories from one generator seeded with `seed` (as src/sample.py) and return draw `only` (1-based;
-    the last when None). Sampling: p^(1/temp), renormalised, the smallest set of words holding top_p."""
+    the last when None). Sampling: p^(1/temp), renormalised, the smallest set of words holding top_p.
+    live: print the returned draw word by word as it is written (`delay` seconds between words); the words and the
+    checksum are the same as without it."""
     task = model.task
     banned, eos = [0, task.UNK], task.EOS
     gen = torch.Generator(device="cpu").manual_seed(seed)
     keep = None
     for k in range(1, draws + 1):
         ids = [model.index.get(t, task.UNK) for t in task.tokens(prompt)]
+        shown = live and k == (only or draws)                 # stream only the draw that is returned
+        if shown:
+            said = task.decode(ids, model.words).replace("\n\n", " ").strip()
+            print(said, end="", flush=True)
         for _ in range(words):
             x = torch.tensor([ids[-stories.L:]], device=DEV)
             pv = _probs(model, x).double().clamp(min=0).cpu()
@@ -88,8 +95,15 @@ def write(model, prompt, words=250, temp=0.7, top_p=0.9, seed=0, draws=1, only=N
                 srt[(cum - srt / srt.sum()) >= top_p] = 0
                 pv = torch.zeros_like(pv).scatter_(0, idx, srt)
             ids.append(int(torch.multinomial(pv / pv.sum(), 1, generator=gen)))
+            if shown:
+                now = task.decode(ids, model.words).replace("\n\n", " ").strip()
+                print(now[len(said):] if now.startswith(said) else "\n" + now, end="", flush=True)
+                said = now
+                time.sleep(delay)
             if ids[-1] == eos:
                 break
+        if shown:
+            print()
         if only is None or k == only:
             keep = ids
     ids = keep

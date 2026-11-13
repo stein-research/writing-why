@@ -7,8 +7,8 @@ Companion to the paper by Teerawat Tongloy<sup>1</sup>, Jiraporn Pongsopa<sup>2<
 
 | | |
 |---|---|
-| Write a story and see why each word was chosen | [demo/demo.ipynb](demo/demo.ipynb) |
-| Train a model, then let it write | [demo/train.ipynb](demo/train.ipynb) |
+| Try it: write a story word by word, and see why each word was chosen (CPU, no install) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/stein-research/writing-why/blob/main/demo/demo.ipynb) |
+| Train a model on TinyStories, then let it write (GPU; downloads the data) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/stein-research/writing-why/blob/main/demo/train.ipynb) |
 | Run it on your own computer, and the paper's analyses | [docs/run-locally.md](docs/run-locally.md) |
 | Check the IBM runs from their raw counts (no account), or repeat them | [docs/check-and-repeat-ibm.md](docs/check-and-repeat-ibm.md) |
 | Paper | arXiv identifier to be added |
