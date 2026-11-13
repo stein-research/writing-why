@@ -18,6 +18,7 @@ import html
 import importlib
 import json
 import os
+import re
 import sys
 import time
 from dataclasses import dataclass
@@ -69,11 +70,37 @@ def _probs(model, x):
         return torch.softmax(model(x)[0, -1], -1)
 
 
-def write(model, prompt, words=250, temp=0.7, top_p=0.9, seed=0, draws=1, only=None, live=False, delay=0.03):
+class _Wrap:
+    """Print text as it grows, breaking lines at spaces so no line passes `width` characters."""
+    def __init__(self, width):
+        self.width, self.col, self.space = width, 0, False
+
+    def __call__(self, text):
+        for piece in re.findall(r"\s+|\S+", text):
+            if not piece.strip():
+                if "\n" in piece:
+                    print("\n" * piece.count("\n"), end="")
+                    self.col, self.space = 0, False
+                else:
+                    self.space = self.col > 0
+                continue
+            if self.space and self.col + 1 + len(piece) > self.width:
+                print("\n", end="")
+                self.col, self.space = 0, False
+            if self.space:
+                print(" ", end="")
+                self.col += 1
+            print(piece, end="", flush=True)
+            self.col += len(piece)
+            self.space = False
+
+
+def write(model, prompt, words=250, temp=0.7, top_p=0.9, seed=0, draws=1, only=None, live=False, delay=0.03,
+          width=100):
     """Draw `draws` stories from one generator seeded with `seed` (as src/sample.py) and return draw `only` (1-based;
     the last when None). Sampling: p^(1/temp), renormalised, the smallest set of words holding top_p.
-    live: print the returned draw word by word as it is written (`delay` seconds between words); the words and the
-    checksum are the same as without it."""
+    live: print the returned draw word by word as it is written (`delay` seconds between words, lines broken at
+    spaces within `width` characters); the words and the checksum are the same as without it."""
     task = model.task
     banned, eos = [0, task.UNK], task.EOS
     gen = torch.Generator(device="cpu").manual_seed(seed)
@@ -82,8 +109,9 @@ def write(model, prompt, words=250, temp=0.7, top_p=0.9, seed=0, draws=1, only=N
         ids = [model.index.get(t, task.UNK) for t in task.tokens(prompt)]
         shown = live and k == (only or draws)                 # stream only the draw that is returned
         if shown:
+            out = _Wrap(width)
             said = task.decode(ids, model.words).replace("\n\n", " ").strip()
-            print(said, end="", flush=True)
+            out(said)
         for _ in range(words):
             x = torch.tensor([ids[-stories.L:]], device=DEV)
             pv = _probs(model, x).double().clamp(min=0).cpu()
@@ -97,7 +125,7 @@ def write(model, prompt, words=250, temp=0.7, top_p=0.9, seed=0, draws=1, only=N
             ids.append(int(torch.multinomial(pv / pv.sum(), 1, generator=gen)))
             if shown:
                 now = task.decode(ids, model.words).replace("\n\n", " ").strip()
-                print(now[len(said):] if now.startswith(said) else "\n" + now, end="", flush=True)
+                out(now[len(said):] if now.startswith(said) else "\n" + now)
                 said = now
                 time.sleep(delay)
             if ids[-1] == eos:
