@@ -1,5 +1,5 @@
 {
- "fixed": "2026-11-12, before any job was sent (the owner, approving the job: 'Yes, send it')",
+ "fixed": "2026-11-12, before any job was sent",
  "experiment": "the n-pass readout as n post-selected rounds on qubits (rounds_hw.py): 16 words of the trained 16-pass model (results/npass_quantum.json, toy_cells w0_p32) on a 4-qubit register, n = 0, 1, 2, 4 rounds, each a uniformly controlled Ry on its own ancilla (deferred measurement), every qubit measured",
  "device": "ibm_kingston, one SamplerV2 job of 4 circuits, 20,000 shots each, through the ledger (ibm_jobs/)",
  "ideal": {
