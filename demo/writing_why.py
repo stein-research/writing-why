@@ -179,13 +179,13 @@ def show(story, r, top=5):
             continue
         w_html = html.escape(w).replace("\n", "<br>")
         if t == T:
-            out.append(f'<b style="border:2px solid #2b2f36;border-radius:4px;padding:0 3px">{w_html}</b>')
+            out.append(f'<b style="border:2px solid currentColor;border-radius:4px;padding:0 3px">{w_html}</b>')
         elif t < T - 1 and abs(ev[t]) > 0.04 * lim:
             bg, fg = _chip(ev[t], lim)
             out.append(f'<span style="background:{bg};color:{fg};border-radius:3px;padding:0 2px" '
                        f'title="{ev[t]:+.4f}">{w_html}</span>')
         else:
-            out.append(f'<span style="color:{"#9aa0a6" if t > T else "#2b2f36"}">{w_html}</span>')
+            out.append(f'<span style="color:{"#9aa0a6" if t > T else "inherit"}">{w_html}</span>')
     best = [t for t in np.argsort(-np.abs(ev[:T - 1])) if story.words[t].strip()][:top]
     rows = "".join(f"<tr><td>{html.escape(story.words[t])}</td><td style='text-align:right'>{ev[t]:+.4f}</td></tr>"
                    for t in best)
