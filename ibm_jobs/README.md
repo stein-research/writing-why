@@ -5,9 +5,11 @@ paper can be checked from the raw counts, without an IBM account. Each folder is
 circuits, the backend and the shots; [`index.md`](index.md) lists them with their IBM job ids, times and quantum
 seconds. Account details are removed.
 
-## The six jobs
+Eight jobs: six read the attention of the 16-pass model, two ran the readout as post-selected rounds.
 
-Only the attention overlaps ran on the device: every $\langle q_i|k_j\rangle$ that the word after the prompt needs,
+## The six attention jobs
+
+In the hybrid runs only the attention overlaps ran on the device: every $\langle q_i|k_j\rangle$ that the word after the prompt needs,
 in the 16-pass model (seed 0), read by a five-qubit Hadamard test, 2,000 shots per circuit. Block 1 needs every row
 (block 2 reads every earlier position), each with its reference key; block 2 only the last row. Each block is one job,
 and block 2's circuits are built from block 1's measured overlaps. Every job also holds 32 calibration circuits as
@@ -37,6 +39,19 @@ measured it, and the job's purpose says so:
 The pass criteria were fixed before any job was sent, in [`../results/hw_word_criteria.json`](../results/hw_word_criteria.json),
 committed with the script eleven minutes before the first job; what changed in the script before the later jobs is
 in [`hw_word_committed_vs_as_run.diff`](hw_word_committed_vs_as_run.diff) (nothing in the analysis).
+
+## The two rounds jobs
+
+The n-pass readout as n post-selected rounds (Appendix B): 16 words on a 4-qubit register, one ancilla per round,
+n = 0, 1, 2, 4, 20,000 shots per circuit (`src/rounds_hw.py`).
+
+| folder | run | circuits sent | quantum s |
+|---|---|---|---|
+| [`9b53c5922d387e4d`](9b53c5922d387e4d/record.json) | the run under the fixed criteria: failed at n = 2 and 4 | 4 | 23 |
+| [`1d55487d942cd945`](1d55487d942cd945/record.json) | the same circuits with two-qubit gate twirling, a post-hoc diagnostic: passed | 4 | 24 |
+
+In all, 47 quantum seconds. The criteria were fixed before the first job, in
+[`../results/rounds_criteria.json`](../results/rounds_criteria.json).
 
 | run | criterion | exact | ibm_kingston | evidence with the device's row sums |
 |---|---|---|---|---|

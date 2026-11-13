@@ -1,6 +1,7 @@
 # Checking and repeating the IBM jobs
 
-Every hardware number in the paper comes from six jobs on IBM's ibm_kingston, each recorded in
+Every hardware number in the paper comes from eight jobs on IBM's ibm_kingston (six read the attention, two ran the
+readout as post-selected rounds), each recorded in
 [`ibm_jobs/`](../ibm_jobs/): the circuits as built and as sent, the backend's calibration at the time and the raw
 counts ([`ibm_jobs/README.md`](../ibm_jobs/README.md) says what each file holds and which job is which). This page
 shows, from the least to the most work, how to check those numbers with no IBM account, how to run the same

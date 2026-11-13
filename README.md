@@ -62,7 +62,8 @@ e_t = a_t \int_0^1 \frac{\partial F}{\partial a_t}(\alpha a_{\lt i},\, a_i)\,d\a
 | WikiText-103 (3 seeds) | 27.8 ± 0.2 % | | 30.18 ± 0.04 % |
 
 - **Writing.** Sixteen passes come within 2.2 points of a softmax transformer of the same size. The same body read at
-  the softmax limit scores the same, so the gap is in the body, not the readout.
+  the softmax limit scores the same, so replacing the readout by its limit did not close the gap under the training
+  setup tested.
 - **Exact, and its limit.** BEW is exact for the held polynomial (gap 5e-11), but that polynomial follows the
   probability only near the input. With the earlier words scaled by 0.99 it keeps 10.5 % of its value, while the
   probability keeps 99.5 %. So on 16
