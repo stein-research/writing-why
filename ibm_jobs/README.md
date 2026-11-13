@@ -40,6 +40,15 @@ The pass criteria were fixed before any job was sent, in [`../results/hw_word_cr
 committed with the script eleven minutes before the first job; what changed in the script before the later jobs is
 in [`hw_word_committed_vs_as_run.diff`](hw_word_committed_vs_as_run.diff) (nothing in the analysis).
 
+| run | criterion | exact | ibm_kingston | evidence with the device's row sums |
+|---|---|---|---|---|
+| park | the same word, evidence $r \ge 0.95$ | park 0.951 | park 0.948 (95 % shot-noise interval 0.913-0.962) | $r = 0.995$ (0.964-0.999) |
+| kite | the same word, evidence $r \ge 0.95$ | kite 0.670 | kite 0.723 (0.555-0.812) | $r = 0.998$ (0.990-1.000) |
+| kite deleted | not kite | favorite 0.135 | favorite 0.122 (0.073-0.178); kite in none of 200 redraws | answer only |
+
+Made after the runs, from the same counts: with block 1's attention numerators and row sums from the device
+(`--devnum`), 7 of 7 (park) and 7 of 8 (kite) earlier words' shares lie within their 95 % shot-noise intervals.
+
 ## The two rounds jobs
 
 The n-pass readout as n post-selected rounds (Appendix B): 16 words on a 4-qubit register, one ancilla per round,
@@ -52,15 +61,6 @@ n = 0, 1, 2, 4, 20,000 shots per circuit (`src/rounds_hw.py`).
 
 In all, 47 quantum seconds. The criteria were fixed before the first job, in
 [`../results/rounds_criteria.json`](../results/rounds_criteria.json).
-
-| run | criterion | exact | ibm_kingston | evidence with the device's row sums |
-|---|---|---|---|---|
-| park | the same word, evidence $r \ge 0.95$ | park 0.951 | park 0.948 (95 % shot-noise interval 0.913-0.962) | $r = 0.995$ (0.964-0.999) |
-| kite | the same word, evidence $r \ge 0.95$ | kite 0.670 | kite 0.723 (0.555-0.812) | $r = 0.998$ (0.990-1.000) |
-| kite deleted | not kite | favorite 0.135 | favorite 0.122 (0.073-0.178); kite in none of 200 redraws | answer only |
-
-Made after the runs, from the same counts: with block 1's attention numerators and row sums from the device
-(`--devnum`), 7 of 7 (park) and 7 of 8 (kite) earlier words' shares lie within their 95 % shot-noise intervals.
 
 ## What each folder holds
 
